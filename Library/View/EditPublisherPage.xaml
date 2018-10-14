@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Library.EditPublisherPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <TableView Intent="Data">
+                <TableRoot>
+                    <TableSection>
+                        <EntryCell x:Name="Name" Label="Name: " Text="{Binding Name}"/>
+                        <EntryCell x:Name="City" Label="City: " Text="{Binding City}"/>
+                        <EntryCell Label="Book "/>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+            <Button Text="Add/edit" Clicked="OnEditClicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

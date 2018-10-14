@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Library.BookPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="BookTitle" Text="{Binding Path=Book.Title}"
+                HorizontalOptions ="CenterAndExpand" />
+            <Image>
+
+            </Image>
+            <Label Text="Authors:"/>
+            <Button x:Name="Authors" HorizontalOptions="StartAndExpand" 
+                    BackgroundColor="White" BorderColor="White" 
+                    Text="{Binding Path=Book.AuthorsNames}" 
+                    Command="{Binding AuthorsNamesCommand}"/>
+            <Label Text="Tags"/>
+            <Label Text="Year"/>
+            <Label Text="{Binding Path=Book.YearOfPublishing}"/>
+            <Label Text="Publisher"/>
+            <Button x:Name="PublisherName" BackgroundColor="White" 
+                    BorderColor="White" HorizontalOptions="StartAndExpand" 
+                    Text="{Binding  Path=Book.Publisher.Name}" 
+                    Command="{Binding PublisherCommand}" />
+            <Label Text="Pages"/>
+            <Label Text="{Binding Book.Pages}"/>
+            <Label Text="ISBN"/>
+            <Label Text="{Binding Book.ISBN}"/>
+            <Button x:Name="Add" Text="Edit" Command="{Binding EditCommand}"/>
+            <Button x:Name="Remove" Text="Remove" Command="{Binding RemoveCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
