@@ -61,18 +61,18 @@ namespace Library
         {
             if (nameList == "BooksList")
             {
-                //BooksView.ItemsSource = null;
-                //BooksView.ItemsSource = _catalogueViewModel.Catalogue.BooksList;
+                BooksView.ItemsSource = null;
+                BooksView.ItemsSource = _catalogueViewModel.Catalogue.BooksList;
             }
             if (nameList == "AuthorsList")
             {
-                //AuthorsView.ItemsSource = null;
-                //AuthorsView.ItemsSource = _catalogueViewModel.Catalogue.AuthorsList;
+                AuthorsView.ItemsSource = null;
+                AuthorsView.ItemsSource = _catalogueViewModel.Catalogue.AuthorsList;
             }
             if (nameList == "PublishersList")
             {
-                //PublishersView.ItemsSource = null;
-                //PublishersView.ItemsSource = _catalogueViewModel.Catalogue.PublishersList;
+                PublishersView.ItemsSource = null;
+                PublishersView.ItemsSource = _catalogueViewModel.Catalogue.PublishersList;
             }
         }
 

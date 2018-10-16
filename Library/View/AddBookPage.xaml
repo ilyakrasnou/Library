@@ -1,24 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Library.EditBookPage">
+             x:Class="Library.AddBookPage">
     <ContentPage.Content>
         <StackLayout>
             <Button x:Name="AddAuthor" 
                     Text="Add author" 
-                    Command="{Binding AddAuthorCommand}"/>
+                    Command="{Binding AddAuthorCommand}"
+                    IsEnabled="{Binding IsFullAdd}"/>
             <Button x:Name="RemoveAuthor" 
                     Text="Remove author" 
-                    Command="{Binding RemoveAuthorCommand}"/>
+                    Command="{Binding RemoveAuthorCommand}"
+                    IsEnabled="{Binding IsFullAdd}"/>
             <TableView Intent="Data">
                 <TableRoot>
                     <TableSection>
                         <EntryCell x:Name="Title" 
                                    Label="Title: "
                                    Text="{Binding NewTitle, Mode=TwoWay}"/>
-                        <ViewCell>
-                            <Button Text="Переименовать" Command="{Binding RenameBookCommand}"/>
-                        </ViewCell>
                         <ViewCell>
                             <Label Text="Authors:"/>
                         </ViewCell>
@@ -44,6 +43,8 @@
                     </TableSection>
                 </TableRoot>
             </TableView>
+            <Button Text="Add" IsEnabled="{Binding Path=IsFullAdd}" 
+                    Command="{Binding AddBookCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -23,7 +23,7 @@ namespace Library
             this.AddBook("Assembler", new[] { "Yurov", "Bagryanczev" }, "201", "2006", "98745623114", "Piter", new[] { "computer science", "programming" });
             this.AddBook("Assemblerr. Practicum", new[] { "Yurov" }, "305", "2007", "9876521483", "Piter", new[] { "programming" });
             this.AddAuthor("Fichtengolcz", null, "1934", new[] { "Math analys t.1", "Math analys t.2", "Math analys t.3" });
-             this.AddAuthor("Bubela", null, null, new[] { "Dragon", "Adept", "Warrior" });
+            this.AddAuthor("Bubela", null, null, new[] { "Dragon", "Adept", "Warrior" });
         }
 
         public bool AddBook(string title, string[] nameAuthors, string pages, string yearOfPublishing, string ISBN, string namePublisher, string[] tags)
@@ -116,6 +116,7 @@ namespace Library
         {
             bool isAuthorAdded = false;
             bool isPublisherAdded = false;
+            if (string.IsNullOrWhiteSpace(book.Title)) return false;
             if (this.FindBook(book.Title) != null) return false;
             foreach (var nameAuthor in book)
             {
@@ -147,6 +148,7 @@ namespace Library
         {
             bool isBooksAdded = false;
             if (author == null) return false;
+            if (string.IsNullOrWhiteSpace(author.FullName)) return false;
             if (this.FindAuthor(author.FullName) != null) return false;
             //if (author.IsEmpty()) return false;
             foreach (var newBook in author)
@@ -171,6 +173,7 @@ namespace Library
         {
             bool isBookAdded = false;
             if (publisher == null) return false;
+            if (string.IsNullOrWhiteSpace(publisher.Name)) return false;
             if (this.FindPublisher(publisher.Name) != null) return false;
             //if (publisher.IsEmpty()) return false;
             List<Book> books = new List<Book>();
@@ -335,6 +338,39 @@ namespace Library
             if (isAuthorRemoved)
                 RefreshingList?.Invoke("AuthorsList");
             return true;
+        }
+
+        public void RenameBook(Book book, string newTitle)
+        {
+            if (string.IsNullOrWhiteSpace(newTitle)) throw new FormatException();
+            if (newTitle == book.Title) return;
+            if (_books.Remove(book.Title))
+            {
+                book.Title = newTitle;
+                _books.Add(book.Title, book);
+            }
+        }
+
+        public void RenameAuthor(Author author, string newName)
+        {
+            if (string.IsNullOrWhiteSpace(newName)) throw new FormatException();
+            if (newName == author.FullName) return;
+            if (_authors.Remove(author.FullName))
+            {
+                author.FullName = newName;
+                _authors.Add(author.FullName, author);
+            }
+        }
+
+        public void RenamePublisher(Publisher publisher, string newName)
+        {
+            if (string.IsNullOrWhiteSpace(newName)) throw new FormatException();
+            if (newName == publisher.Name) return;
+            if (_publishers.Remove(publisher.Name))
+            {
+                publisher.Name = newName;
+                _publishers.Add(publisher.Name, publisher);
+            }
         }
     }
 }

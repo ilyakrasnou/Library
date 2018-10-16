@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Globalization;
@@ -17,12 +18,13 @@ namespace Library
             get => _title;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new FormatException("Book can't be without title");
+                if (string.IsNullOrWhiteSpace(value)) throw new FormatException("Author can't be without title");
                 _title = value;
                 OnPropertyChanged();
             }
         }
-        private SortedList<string, Author> _authors;
+        private ObservableCollection<Author> _authors;
+        public ObservableCollection<Author> Authors => _authors;
         private uint? _pages;
         public string Pages
         {
@@ -91,7 +93,7 @@ namespace Library
             get
             {
                 if (i <= _authors.Count)
-                    return _authors.Values[i];
+                    return _authors[i];
                 else throw new IndexOutOfRangeException();
             }
         }
@@ -108,7 +110,7 @@ namespace Library
             string[] authors = new string[_authors.Count];
             int i = 0;
             foreach (var author in _authors)
-                authors[i++] = author.Key;
+                authors[i++] = author.FullName;
             return authors;
         }
 
@@ -117,7 +119,7 @@ namespace Library
         public Book(string title, List<Author> authors, string pages, string yearOfPublishing, string ISBN, Publisher publisher, string[] tags)
         {
             Title = title;
-            _authors = new SortedList<string, Author>();
+            _authors = new ObservableCollection<Author>();
             if (authors != null)
                 foreach (var author in authors)
                     AddAuthor(author);
@@ -136,21 +138,21 @@ namespace Library
         public Book(string title)
         { 
             Title = title;
-            _authors = new SortedList<string, Author>();
+            _authors = new ObservableCollection<Author>();
         }
 
-        /*public Book()
+        public Book()
         {
-            _authors = new SortedList<string, Author>();
-        }*/
+            _authors = new ObservableCollection<Author>();
+        }
 
         public void AddAuthor(Author author)
         {
             if (author == null) return;
             if (author.FullName == null) throw new FormatException("Author must have FullName");
-            if (_authors.TryGetValue(author.FullName, out var newAuthor) == false)
+            if (_authors.Contains(author) == false)
             {
-                _authors.Add(author.FullName, author);
+                _authors.Add(author);
                 OnPropertyChanged();
             }
         }
@@ -159,7 +161,7 @@ namespace Library
         {
             if (author == null) return;
             if (author.FullName == null) throw new FormatException("Author must have FullName");
-            if (_authors.Remove(author.FullName) == false) return;
+            if (_authors.Remove(author) == false) return;
             OnPropertyChanged("AuthorsNames");
         }
 
@@ -170,9 +172,9 @@ namespace Library
                 string names = null;
                 if (_authors.Count != 0)
                 {
-                    names = _authors.Values[0].FullName;
+                    names = _authors[0].FullName;
                     for (int i = 1; i < _authors.Count; ++i)
-                        names = names + ',' + ' ' + _authors.Values[i].FullName;
+                        names = names + ',' + ' ' + _authors[i].FullName;
                 }
                 return names;
             }
@@ -181,7 +183,7 @@ namespace Library
         public IEnumerator<Author> GetEnumerator()
         {
             for (var i = 0; i < _authors.Count; ++i)
-                yield return _authors.Values[i];
+                yield return _authors[i];
             yield break;
         }
 

@@ -1,51 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
-using System.Windows.Input;
 using Xamarin.Forms;
+using System.Windows.Input;
 
 namespace Library
 {
-    class EditBookViewModel
+    class AddBookViewModel
     {
         public Book Book { get; protected set; }
         private readonly Page _page;
         public string NewTitle { get; set; }
+        public bool IsFullAdd { get; protected set; }
 
         public ICommand AddAuthorCommand { get; protected set; }
         public ICommand RemoveAuthorCommand { get; protected set; }
-        public ICommand RenameBookCommand { get; protected set; }
+        public ICommand AddBookCommand { get; protected set; }
 
-        public EditBookViewModel(Page page)
+        public AddBookViewModel(Page page, bool isFullAdd)
         {
             _page = page ?? throw new NotImplementedException();
             Book = new Book();
             NewTitle = null;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
-            RenameBookCommand = new Command(RenameBook);
+            AddBookCommand = new Command(OnAddBookClicked);
+            IsFullAdd = isFullAdd;
         }
 
-        public EditBookViewModel(Page page, Book book)
+        public AddBookViewModel(Page page)
         {
-            Book = book;
-            NewTitle = Book.Title;
             _page = page ?? throw new NotImplementedException();
+            Book = new Book();
+            NewTitle = null;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
-            RenameBookCommand = new Command(RenameBook);
-        }
-
-        public void RenameBook(object sender)
-        {
-            try
-            {
-                Catalogue.GetCatalogue().RenameBook(Book, NewTitle);
-            }
-            catch(FormatException)
-            {
-            }
+            AddBookCommand = new Command(OnAddBookClicked);
+            IsFullAdd = true;
         }
 
         protected async void OnAddAuthorClicked(object sender)
@@ -68,27 +59,19 @@ namespace Library
                 catalogue.RemoveAuthor(author);
         }
 
-        /*public void OnEditClicked(object sender, EventArgs e)
+        protected void OnAddBookClicked(object sender)
         {
-            if (Book != null)
+            if (string.IsNullOrWhiteSpace(Book.Title))
             {
-                if (string.IsNullOrWhiteSpace(Title.Text) == true) return;
-                Book.Title = Title.Text;
-                Book.YearOfPublishing = Year.Text;
-                Book.Pages = Pages.Text;
-                Book.ISBN = ISBN.Text;
+                _page.DisplayAlert("Error", "This book can't be added.\nBook must have title!", "Cancel");
+                return;
             }
-            else
+            if (IsFullAdd)
             {
-                //if ()
-                Book = new Book(Title.Text);
-                Book.YearOfPublishing = Year.Text;
-                Book.Publisher = Publisher.BindingContext as Publisher;
-                foreach (var cell in Authors)
-                {
-
-                }
+                Catalogue catalogue = Catalogue.GetCatalogue();
+                catalogue.AddBook(Book);
             }
-        }*/
+            _page.Navigation.PopAsync();
+        }
     }
 }

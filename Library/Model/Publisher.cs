@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -34,7 +35,9 @@ namespace Library
                 OnPropertyChanged();
             }
         }
-        private SortedList<string, Book> _books;
+        private ObservableCollection<Book> _books;
+
+        public ObservableCollection<Book> Books => _books;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -48,7 +51,7 @@ namespace Library
             get
             {
                 if (i <= _books.Count)
-                    return _books.Values[i];
+                    return _books[i];
                 else throw new IndexOutOfRangeException();
             }
         }
@@ -65,22 +68,32 @@ namespace Library
             City = city;
             if (books != null)
                 foreach (var book in books)
-                    _books.Add(book.Title, book);
-            else _books = new SortedList<string, Book>();
+                    _books.Add(book);
+            else _books = new ObservableCollection<Book>();
         }
 
         public Publisher(string name)
         {
             Name = name;
-            _books = new SortedList<string, Book>();
+            _books = new ObservableCollection<Book>();
+        }
+
+        public string[] BooksToStringArray()
+        {
+            if (_books == null) return null;
+            string[] books = new string[_books.Count];
+            int i = 0;
+            foreach (var book in _books)
+                books[i++] = book.Title;
+            return books;
         }
 
         public void AddBook(Book book)
         {
             if (book == null) return;
-            if (_books.TryGetValue(book.Title, out var newBook) == false)
+            if (_books.Contains(book) == false)
             {
-                _books.Add(book.Title, book);
+                _books.Add(book);
             }
             OnPropertyChanged();
         }
@@ -89,14 +102,14 @@ namespace Library
         {
             if (book == null) return;
             if (book.Title == null) throw new FormatException("Author must have FullName");
-            _books.Remove(book.Title);
+            _books.Remove(book);
             OnPropertyChanged();
         }
 
         public IEnumerator<Book> GetEnumerator()
         {
             for (var i = 0; i < _books.Count; ++i)
-                yield return _books.Values[i];
+                yield return _books[i];
             yield break;
         }
 
