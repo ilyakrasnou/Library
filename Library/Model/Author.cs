@@ -106,7 +106,7 @@ namespace Library
             OnPropertyChanged();
         }
 
-        public int Count() => _books == null ? 0 : _books.Count; 
+        public int Count() => _books == null ? 0 : _books.Count;
 
         public void RemoveBook(Book book)
         {

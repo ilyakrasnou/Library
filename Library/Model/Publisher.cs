@@ -62,6 +62,11 @@ namespace Library
             else return false;
         }
 
+        public Publisher()
+        {
+            _books = new ObservableCollection<Book>();
+        }
+
         public Publisher(string name, string city, List<Book> books)
         {
             Name = name;
@@ -119,7 +124,7 @@ namespace Library
         }
     }
 
-    public class PublisherToString: IValueConverter
+    public class PublisherToString : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

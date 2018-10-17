@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Library.AddAuthorPage">
+             x:Class="Library.AddPublisherPage">
     <ContentPage.Content>
         <StackLayout>
             <TableView Intent="Data">
@@ -13,11 +13,9 @@
                         <ViewCell>
                             <Button x:Name="RemoveBook" IsVisible="{Binding IsFullAdd}" Text="Remove book" Command="{Binding RemoveBookCommand}"/>
                         </ViewCell>
-                        <EntryCell x:Name="FullName" Label="Full name: " Text="{Binding Author.FullName}"/>
-                        <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday}"/>
-                        <ViewCell>
-                            <Label Text="Book " IsVisible="{Binding IsFullAdd}"/>
-                        </ViewCell>
+                        <EntryCell x:Name="Name" Label="Name: " Text="{Binding Name}"/>
+                        <EntryCell x:Name="City" Label="City: " Text="{Binding City}"/>
+                        <EntryCell Label="Book "/>
                         <ViewCell>
                             <ListView x:Name="BooksView" IsEnabled="{Binding IsFullAdd}" IsVisible="{Binding IsFullAdd}" ItemsSource="{Binding Author}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
                                 <ListView.ItemTemplate>
@@ -34,8 +32,7 @@
                     </TableSection>
                 </TableRoot>
             </TableView>
-            <Button Text="Add/edit" Command="{Binding AddAuthorCommand}"/>
+            <Button Text="Add" Command="{Binding AddPublisherCommand}"/>
         </StackLayout>
     </ContentPage.Content>
-
 </ContentPage>

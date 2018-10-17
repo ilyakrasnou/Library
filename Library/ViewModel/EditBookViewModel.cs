@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace Library
 {
@@ -50,9 +51,11 @@ namespace Library
 
         protected async void OnAddAuthorClicked(object sender)
         {
-            var page = new AddAuthorPage(false);
-            await _page.Navigation.PushModalAsync(page);
-            Book.AddAuthor(((AddAuthorViewModel)page.BindingContext).Author);
+            var page = new AddAuthorPage(Book, true);
+            await Application.Current.MainPage.Navigation.PushModalAsync(page);
+            //Book.AddAuthor(((AddAuthorViewModel)page.BindingContext).Author);
+            //Application.Current.MainPage.Navigation.PushAsync(page).RunSynchronously();
+            //Book.AddAuthor(((AddAuthorViewModel)page.BindingContext).Author);
         }
 
         protected async void OnRemoveAuthorClicked(object sender)

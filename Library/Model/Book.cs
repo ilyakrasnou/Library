@@ -85,7 +85,7 @@ namespace Library
 
         protected void OnPropertyChanged([CallerMemberName] string propName = null)
         {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
         public Author this[int i]
@@ -136,7 +136,7 @@ namespace Library
         }
 
         public Book(string title)
-        { 
+        {
             Title = title;
             _authors = new ObservableCollection<Author>();
         }
@@ -193,7 +193,7 @@ namespace Library
         }
     }
 
-    public class BookToTitleString: IValueConverter
+    public class BookToTitleString : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

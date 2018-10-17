@@ -41,9 +41,9 @@ namespace Library
 
         protected async void OnAddAuthorClicked(object sender)
         {
-            var page = new AddAuthorPage(false);
+            var page = new AddAuthorPage(Book, false);
             await _page.Navigation.PushModalAsync(page);
-            Book.AddAuthor(((AddAuthorViewModel)page.BindingContext).Author);
+            //Book.AddAuthor(((AddAuthorViewModel)page.BindingContext).Author);
         }
 
         protected async void OnRemoveAuthorClicked(object sender)
