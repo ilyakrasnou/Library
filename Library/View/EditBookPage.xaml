@@ -1,7 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Library;assembly=Library"
+             xmlns:converterBool="clr-namespace:Library"
              x:Class="Library.EditBookPage">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!--<local:BoolToRenameButtonText x:Key="boolToRename" />-->
+            <converterBool:BoolToRenameButtonText x:Key="ConterterBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
         <StackLayout>
             <Button x:Name="AddAuthor" 
@@ -15,9 +25,11 @@
                     <TableSection>
                         <EntryCell x:Name="Title" 
                                    Label="Title: "
-                                   Text="{Binding NewTitle, Mode=TwoWay}"/>
+                                   Text="{Binding NewTitle, Mode=TwoWay}" IsEnabled="{Binding CouldRename}"/>
                         <ViewCell>
-                            <Button Text="Переименовать" Command="{Binding RenameBookCommand}"/>
+                            <!--, Converter={StaticResource boolToRename}-->
+                            <!--,  Converter={StaticResource ConterterBool}-->
+                            <Button Text="{Binding Path = CouldRename}" Command="{Binding RenameBookCommand}" CommandParameter=""/>
                         </ViewCell>
                         <ViewCell>
                             <Label Text="Authors:"/>

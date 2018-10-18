@@ -10,7 +10,7 @@ namespace Library
     {
         public Author Author { get; protected set; }
         private readonly Page _page;
-        public string NewFullName { get; set; }
+//        public string NewFullName { get; set; }
         public bool IsFullAdd { get => _bookForAddition == null ? true : false; }
         private Book _bookForAddition;
         private bool _isAddToCatalogue;
@@ -23,7 +23,7 @@ namespace Library
         {
             _page = page ?? throw new NotImplementedException();
             Author = new Author();
-            NewFullName = null;
+            //NewFullName = null;
             _bookForAddition = book;
             _isAddToCatalogue = isAddToCatalogue;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -35,7 +35,7 @@ namespace Library
         {
             _page = page ?? throw new NotImplementedException();
             Author = new Author();
-            NewFullName = null;
+            //NewFullName = null;
             _bookForAddition = null;
             _isAddToCatalogue = false;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -45,9 +45,7 @@ namespace Library
 
         protected async void OnAddBookClicked(object sender)
         {
-            var page = new AddBookPage(false);
-            await _page.Navigation.PushModalAsync(page);
-            Author.AddBook(((AddBookViewModel)page.BindingContext).Book);
+            await _page.Navigation.PushModalAsync(new AddBookPage(Author, false));
         }
 
         protected async void OnRemoveBookClicked(object sender)

@@ -5,14 +5,24 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Library
 {
-    class EditBookViewModel
+    class EditBookViewModel: INotifyPropertyChanged
     {
         public Book Book { get; protected set; }
         private readonly Page _page;
         public string NewTitle { get; set; }
+        private bool _couldRename;
+        public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); } }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
 
         public ICommand AddAuthorCommand { get; protected set; }
         public ICommand RemoveAuthorCommand { get; protected set; }
@@ -40,13 +50,22 @@ namespace Library
 
         public void RenameBook(object sender)
         {
-            try
+            if (CouldRename == true)
             {
-                Catalogue.GetCatalogue().RenameBook(Book, NewTitle);
+                try
+                {
+                    Catalogue.GetCatalogue().RenameBook(Book, NewTitle);
+                }
+                catch (FormatException)
+                {
+                    NewTitle = Book.Title;
+                    OnPropertyChanged(NewTitle);
+                }
+                //((Button)sender).Text = "Rename";
             }
-            catch(FormatException)
-            {
-            }
+            //else
+                //((View)sender).Text = "Save";
+            CouldRename = !CouldRename;
         }
 
         protected async void OnAddAuthorClicked(object sender)

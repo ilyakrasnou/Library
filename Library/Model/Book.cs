@@ -81,6 +81,8 @@ namespace Library
         public string PublisherName { get => _publisher != null ? _publisher.Name : null; }
         private List<string> Tags;
 
+        //private string _names;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propName = null)
@@ -153,7 +155,7 @@ namespace Library
             if (_authors.Contains(author) == false)
             {
                 _authors.Add(author);
-                OnPropertyChanged();
+                OnPropertyChanged(AuthorsNames);
             }
         }
 
@@ -162,7 +164,7 @@ namespace Library
             if (author == null) return;
             if (author.FullName == null) throw new FormatException("Author must have FullName");
             if (_authors.Remove(author) == false) return;
-            OnPropertyChanged("AuthorsNames");
+            OnPropertyChanged(AuthorsNames);
         }
 
         public string AuthorsNames
@@ -170,6 +172,7 @@ namespace Library
             get
             {
                 string names = null;
+                //_names = null;
                 if (_authors.Count != 0)
                 {
                     names = _authors[0].FullName;

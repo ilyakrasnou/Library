@@ -40,19 +40,7 @@ namespace Library
 
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
         {
-            var answer = await DisplayAlert("Удаление книги из автора", "Удалить выбранную книгу?", "Да", "Нет");
-            if (!answer) return;
-            Book book = e.SelectedItem as Book;
-            if (book == null) return;
-            Author.RemoveBook(book);
-            book.RemoveAuthor(Author);
-            BooksView.ItemsSource = null;
-            BooksView.ItemsSource = Author;
-            if (Author.IsEmpty())
-            {
-                Catalogue catalogue = Catalogue.GetCatalogue();
-                catalogue.RemoveAuthor(Author);
-            }
+            (()BindingContext)
         }
     }
 }

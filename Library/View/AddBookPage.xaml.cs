@@ -18,10 +18,16 @@ namespace Library
             BindingContext = new AddBookViewModel(this);
 		}
 
-        public AddBookPage(bool isFullAdd)
+        public AddBookPage(Author author, bool isAddToCatalogue)
         {
             InitializeComponent();
-            BindingContext = new AddBookViewModel(this, isFullAdd);
+            BindingContext = new AddBookViewModel(this, author, isAddToCatalogue);
         }
-	}
+
+        public AddBookPage(Publisher publisher, bool isAddToCatalogue)
+        {
+            InitializeComponent();
+            BindingContext = new AddBookViewModel(this, publisher, isAddToCatalogue);
+        }
+    }
 }

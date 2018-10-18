@@ -6,11 +6,11 @@ using Xamarin.Forms;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 
-namespace Library.ViewModel
+namespace Library
 {
-    class EditAuthorViewModel: INotifyPropertyChanged
+    class EditPublisherViewModel: INotifyPropertyChanged
     {
-        public Author Author { get; protected set; }
+        public Publisher Publisher { get; protected set; }
         private readonly Page _page;
         public string NewTitle { get; set; }
         private bool _couldRename;
@@ -27,20 +27,20 @@ namespace Library.ViewModel
         public ICommand RemoveBookCommand { get; protected set; }
         public ICommand RenameAuthorCommand { get; protected set; }
 
-        public EditAuthorViewModel(Page page)
+        public EditPublisherViewModel(Page page)
         {
             _page = page ?? throw new NotImplementedException();
-            Author = new Author();
+            Publisher = new Publisher();
             NewTitle = null;
             AddBookCommand = new Command(OnAddBookClicked);
             RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenameAuthorCommand = new Command(RenameAuthor);
         }
 
-        public EditAuthorViewModel(Page page, Author author)
+        public EditPublisherViewModel(Page page, Publisher publisher)
         {
-            Author = author;
-            NewTitle = Author.FullName;
+            Publisher = publisher;
+            NewTitle = Publisher.Name;
             _page = page ?? throw new NotImplementedException();
             AddBookCommand = new Command(OnAddBookClicked);
             RemoveBookCommand = new Command(OnRemoveBookClicked);
@@ -53,11 +53,11 @@ namespace Library.ViewModel
             {
                 try
                 {
-                    Catalogue.GetCatalogue().RenameAuthor(Author, NewTitle);
+                    Catalogue.GetCatalogue().RenamePublisher(Publisher, NewTitle);
                 }
                 catch (FormatException)
                 {
-                    NewTitle = Author.FullName;
+                    NewTitle = Publisher.Name;
                     OnPropertyChanged(NewTitle);
                 }
             }
@@ -66,19 +66,19 @@ namespace Library.ViewModel
 
         protected async void OnAddBookClicked(object sender)
         {
-            await _page.Navigation.PushModalAsync(new AddBookPage(Author, true));
+            await _page.Navigation.PushModalAsync(new AddBookPage(Publisher, true));
         }
 
         protected async void OnRemoveBookClicked(object sender)
         {
-            var action = await _page.DisplayActionSheet("Select author to remove", "Cancel", null, Author.BooksToStringArray());
+            var action = await _page.DisplayActionSheet("Select author to remove", "Cancel", null, Publisher.BooksToStringArray());
             if (action == "Cancel") return;
             Catalogue catalogue = Catalogue.GetCatalogue();
             var book = catalogue.FindBook(action);
             if (book == null) return;
-            /*Author.RemoveBook(book);
-            book.RemoveAuthor(Author);*/
-            catalogue.RemoveBook(book);
+            Publisher.RemoveBook(book);
+            if (book.Publisher == Publisher)
+                book.Publisher = null;
         }
     }
 }
