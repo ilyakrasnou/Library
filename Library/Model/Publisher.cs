@@ -83,6 +83,8 @@ namespace Library
             _books = new ObservableCollection<Book>();
         }
 
+        public bool ContainsBook(Book book) => _books.Contains(book);
+
         public string[] BooksToStringArray()
         {
             if (_books == null) return null;

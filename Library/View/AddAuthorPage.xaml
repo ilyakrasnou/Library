@@ -10,11 +10,8 @@
                         <ViewCell>
                             <Button x:Name="AddBook" IsVisible="{Binding IsFullAdd}" Text="Add book" Command="{Binding AddBookCommand}"/>
                         </ViewCell>
-                        <ViewCell>
-                            <Button x:Name="RemoveBook" IsVisible="{Binding IsFullAdd}" Text="Remove book" Command="{Binding RemoveBookCommand}"/>
-                        </ViewCell>
-                        <EntryCell x:Name="FullName" Label="Full name: " Text="{Binding Author.FullName}"/>
-                        <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday}"/>
+                        <EntryCell x:Name="FullName" Label="Full name: " Text="{Binding Author.FullName, Mode=TwoWay}"/>
+                        <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday, Mode=TwoWay}"/>
                         <ViewCell>
                             <Label Text="Book " IsVisible="{Binding IsFullAdd}"/>
                         </ViewCell>

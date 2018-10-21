@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 using System.Windows.Input;
+using Acr.UserDialogs;
 
 namespace Library
 {
@@ -54,24 +55,28 @@ namespace Library
             AddBookCommand = new Command(OnAddBookClicked);
         }
 
-        protected async void OnAddAuthorClicked(object sender)
+        protected void OnAddAuthorClicked(object sender)
         {
-            var page = new AddAuthorPage(Book, false);
-            await _page.Navigation.PushModalAsync(page);
-            //Book.AddAuthor(((AddAuthorViewModel)page.BindingContext).Author);
+            Catalogue catalogue = Catalogue.GetCatalogue();
+            var config = new ActionSheetConfig();
+            config.SetTitle("Add author: ");
+            config.SetDestructive("New author", async () => { await _page.Navigation.PushModalAsync(new AddAuthorPage(Book, false)); });
+            config.SetCancel("Cancel");
+            foreach (var author in catalogue.AuthorsList)
+            {
+                if (!Book.ContainsAuthor(author))
+                    config.Add(author.FullName, () => Book.AddAuthor(author));
+            }
+            UserDialogs.Instance.ActionSheet(config);
         }
 
         protected async void OnRemoveAuthorClicked(object sender)
         {
             var action = await _page.DisplayActionSheet("Select author to remove", "Cancel", null, Book.AuthorsToStringArray());
             if (action == "Cancel") return;
-            Catalogue catalogue = Catalogue.GetCatalogue();
-            var author = catalogue.FindAuthor(action);
+            var author = Catalogue.GetCatalogue().FindAuthor(action);
             if (author == null) return;
             Book.RemoveAuthor(author);
-            author.RemoveBook(Book);
-            if (author.IsEmpty())
-                catalogue.RemoveAuthor(author);
         }
 
         protected void OnAddBookClicked(object sender)

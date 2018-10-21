@@ -8,13 +8,16 @@
                 <TableRoot>
                     <TableSection>
                         <ViewCell>
-                            <Button x:Name="AddBook" Text="Add book"/>
+                            <Button x:Name="AddBook" Text="Add book" Command="{Binding AddBookCommand}"/>
                         </ViewCell>
-                        <EntryCell x:Name="FullName" Label="Full name: " Text="{Binding FullName}"/>
-                        <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Birthday}"/>
+                        <EntryCell x:Name="FullName" Label="Full name: " Text="{Binding Author.FullName}" IsEnabled="{Binding CouldRename}"/>
+                        <ViewCell>
+                            <Button Text="{Binding CouldRename}" Command="{Binding RenameAuthorCommand}"/>
+                        </ViewCell>
+                        <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday, Mode=TwoWay}"/>
                         <TextCell Text="Book "/>
                         <ViewCell>
-                            <ListView x:Name="BooksView" HasUnevenRows="True" Grid.Row="1" ItemSelected="OnRemoveBookClicked" Grid.Column="0">
+                            <ListView x:Name="BooksView" ItemsSource="{Binding Author}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
@@ -29,7 +32,6 @@
                     </TableSection>
                 </TableRoot>
             </TableView>
-            <Button Text="Add/edit" Clicked="OnEditClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using Acr.UserDialogs;
 
 namespace Library
 {
@@ -68,13 +69,23 @@ namespace Library
             CouldRename = !CouldRename;
         }
 
-        protected async void OnAddAuthorClicked(object sender)
+        protected void OnAddAuthorClicked(object sender)
         {
-            var page = new AddAuthorPage(Book, true);
-            await Application.Current.MainPage.Navigation.PushModalAsync(page);
-            //Book.AddAuthor(((AddAuthorViewModel)page.BindingContext).Author);
-            //Application.Current.MainPage.Navigation.PushAsync(page).RunSynchronously();
-            //Book.AddAuthor(((AddAuthorViewModel)page.BindingContext).Author);
+            Catalogue catalogue = Catalogue.GetCatalogue();
+            var config = new ActionSheetConfig();
+            config.SetTitle("Add author: ");
+            config.SetDestructive("New author", async () => { await _page.Navigation.PushModalAsync(new AddAuthorPage(Book, true)); });
+            config.SetCancel("Cancel");
+            foreach (var author in catalogue.AuthorsList)
+            {
+                if (!Book.ContainsAuthor(author))
+                    config.Add(author.FullName, () => 
+                    {
+                        author.AddBook(Book);
+                        Book.AddAuthor(author);
+                    });
+            }
+            UserDialogs.Instance.ActionSheet(config);
         }
 
         protected async void OnRemoveAuthorClicked(object sender)
@@ -89,28 +100,5 @@ namespace Library
             if (author.IsEmpty())
                 catalogue.RemoveAuthor(author);
         }
-
-        /*public void OnEditClicked(object sender, EventArgs e)
-        {
-            if (Book != null)
-            {
-                if (string.IsNullOrWhiteSpace(Title.Text) == true) return;
-                Book.Title = Title.Text;
-                Book.YearOfPublishing = Year.Text;
-                Book.Pages = Pages.Text;
-                Book.ISBN = ISBN.Text;
-            }
-            else
-            {
-                //if ()
-                Book = new Book(Title.Text);
-                Book.YearOfPublishing = Year.Text;
-                Book.Publisher = Publisher.BindingContext as Publisher;
-                foreach (var cell in Authors)
-                {
-
-                }
-            }
-        }*/
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using Acr.UserDialogs;
 
-namespace Library.ViewModel
+namespace Library
 {
     class EditAuthorViewModel: INotifyPropertyChanged
     {
@@ -33,7 +35,7 @@ namespace Library.ViewModel
             Author = new Author();
             NewTitle = null;
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command(OnRemoveBookClicked);
+            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
             RenameAuthorCommand = new Command(RenameAuthor);
         }
 
@@ -43,7 +45,7 @@ namespace Library.ViewModel
             NewTitle = Author.FullName;
             _page = page ?? throw new NotImplementedException();
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command(OnRemoveBookClicked);
+            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
             RenameAuthorCommand = new Command(RenameAuthor);
         }
 
@@ -64,20 +66,31 @@ namespace Library.ViewModel
             CouldRename = !CouldRename;
         }
 
-        protected async void OnAddBookClicked(object sender)
+        protected void OnAddBookClicked(object sender)
         {
-            await _page.Navigation.PushModalAsync(new AddBookPage(Author, true));
+            Catalogue catalogue = Catalogue.GetCatalogue();
+            var config = new ActionSheetConfig();
+            config.SetTitle("Add book: ");
+            config.SetDestructive("New book", async () => { await _page.Navigation.PushModalAsync(new AddBookPage(Author, true)); });
+            config.SetCancel("Cancel");
+            foreach (var book in catalogue.BooksList)
+            {
+                if (!Author.ContainsBook(book))
+                    config.Add(book.Title, () => 
+                    {
+                        book.AddAuthor(Author);
+                        Author.AddBook(book);
+                    });
+            }
+            UserDialogs.Instance.ActionSheet(config);
         }
 
-        protected async void OnRemoveBookClicked(object sender)
+        public void OnRemoveBookClicked(Book sender)
         {
-            var action = await _page.DisplayActionSheet("Select author to remove", "Cancel", null, Author.BooksToStringArray());
-            if (action == "Cancel") return;
-            Catalogue catalogue = Catalogue.GetCatalogue();
-            var book = catalogue.FindBook(action);
+            if (sender == null) return;
+            var catalogue = Catalogue.GetCatalogue();
+            var book = catalogue.FindBook(((Book)sender).Title);
             if (book == null) return;
-            /*Author.RemoveBook(book);
-            book.RemoveAuthor(Author);*/
             catalogue.RemoveBook(book);
         }
     }

@@ -12,26 +12,27 @@ namespace Library
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditPublisherPage : ContentPage
 	{
-        private Publisher _publisher;
 
 		public EditPublisherPage ()
 		{
 			InitializeComponent ();
-            _publisher = null;
-            BindingContext = _publisher;
+            BindingContext = new EditPublisherViewModel(this);
 		}
 
         public EditPublisherPage(Publisher publisher)
         {
             InitializeComponent();
-            _publisher = publisher;
-            BindingContext = _publisher;
+            BindingContext = new EditPublisherViewModel(this, publisher);
         }
 
-        public void OnEditClicked(object sender, EventArgs e)
+        protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
         {
-            _publisher.Name = Name.Text;
-            _publisher.City = City.Text;
+            var action = await DisplayActionSheet("Do you really like to delete this book?", "Cancel", "Ok");
+            if (action == "Cancel") return;
+            ((EditPublisherViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
+            var binding = BooksView.ItemsSource;
+            BooksView.ItemsSource = null;
+            BooksView.ItemsSource = binding;
         }
     }
 }

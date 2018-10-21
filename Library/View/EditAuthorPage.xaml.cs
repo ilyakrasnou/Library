@@ -12,35 +12,27 @@ namespace Library
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditAuthorPage : ContentPage
 	{
-        public Author Author;
-
-        public ICommand RemoveBookCommand;
 
 		public EditAuthorPage ()
 		{
 			InitializeComponent ();
-            Author = null;
-            BindingContext = Author;
+            BindingContext = new EditAuthorViewModel(this);
 		}
 
         public EditAuthorPage(Author author)
         {
             InitializeComponent();
-            Author = author;
-            BindingContext = Author;
-            BooksView.ItemsSource = Author;
-            //RemoveBookCommand = new Command(OnRemoveBookClicked);
-        }
-
-        public void OnEditClicked(object sender, EventArgs e)
-        {
-            Author.FullName = FullName.Text;
-            Author.Birthday = Birthday.Text;
+            BindingContext = new EditAuthorViewModel(this, author);
         }
 
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
         {
-            (()BindingContext)
+            var action = await DisplayActionSheet("Do you really like to delete this book?", "Cancel", "Ok");
+            if (action == "Cancel") return;
+            ((EditAuthorViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
+            var binding = BooksView.ItemsSource;
+            BooksView.ItemsSource = null;
+            BooksView.ItemsSource = binding;
         }
     }
 }

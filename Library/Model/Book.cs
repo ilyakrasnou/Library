@@ -76,6 +76,7 @@ namespace Library
                     _publisher = value;
                     OnPropertyChanged();
                 }
+                else throw new FieldAccessException();
             }
         }
         public string PublisherName { get => _publisher != null ? _publisher.Name : null; }
@@ -147,6 +148,8 @@ namespace Library
         {
             _authors = new ObservableCollection<Author>();
         }
+
+        public bool ContainsAuthor(Author author) =>_authors.Contains(author);
 
         public void AddAuthor(Author author)
         {

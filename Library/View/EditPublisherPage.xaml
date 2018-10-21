@@ -7,13 +7,31 @@
             <TableView Intent="Data">
                 <TableRoot>
                     <TableSection>
-                        <EntryCell x:Name="Name" Label="Name: " Text="{Binding Name}"/>
-                        <EntryCell x:Name="City" Label="City: " Text="{Binding City}"/>
-                        <EntryCell Label="Book "/>
+                        <ViewCell>
+                            <Button x:Name="AddBook" Text="Add book" Command="{Binding AddBookCommand}"/>
+                        </ViewCell>
+                        <EntryCell x:Name="Name" Label="Name: " Text="{Binding Publisher.Name}" IsEnabled="{Binding CouldRename}"/>
+                        <ViewCell>
+                            <Button Text="{Binding CouldRename}" Command="{Binding RenamePublisherCommand}"/>
+                        </ViewCell>
+                        <EntryCell x:Name="City" Label="City: " Text="{Binding Publisher.City, Mode=TwoWay}"/>
+                        <TextCell Text="Book "/>
+                        <ViewCell>
+                            <ListView x:Name="BooksView" ItemsSource="{Binding Publisher}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <ViewCell.View>
+                                                <Label Text="{Binding Title}"/>
+                                            </ViewCell.View>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </ViewCell>
                     </TableSection>
                 </TableRoot>
             </TableView>
-            <Button Text="Add/edit" Clicked="OnEditClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

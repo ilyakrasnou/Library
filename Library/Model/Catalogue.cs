@@ -238,15 +238,21 @@ namespace Library
             get => _books.Values;
         }
 
+        public ICollection<string> BooksNamesList => _books.Keys;
+
         public ICollection<Author> AuthorsList
         {
             get => _authors.Values;
         }
 
+        public ICollection<string> AuthorsNamesList => _authors.Keys;
+
         public ICollection<Publisher> PublishersList
         {
             get => _publishers.Values;
         }
+
+        public ICollection<string> PublishersNamesList => _publishers.Keys;
 
         public bool RemoveBook(Book book)
         {

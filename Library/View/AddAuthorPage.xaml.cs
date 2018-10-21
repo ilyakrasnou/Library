@@ -29,9 +29,14 @@ namespace Library
             BindingContext = new AddAuthorViewModel(this);
         }*/
 
-        protected void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
+        protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
         {
-            var x = ((AddAuthorViewModel)BindingContext).RemoveBookCommand;
+            var action = await DisplayActionSheet("Do you really like to delete this book?", "Cancel", "Ok");
+            if (action == "Cancel") return;
+            ((AddAuthorViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
+            var binding = BooksView.ItemsSource;
+            BooksView.ItemsSource = null;
+            BooksView.ItemsSource = binding;
         }
     }
 }

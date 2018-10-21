@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using Xamarin.Forms;
 using System.Windows.Input;
+using Acr.UserDialogs;
 
 namespace Library
 {
@@ -27,7 +29,7 @@ namespace Library
             _bookForAddition = book;
             _isAddToCatalogue = isAddToCatalogue;
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command(OnRemoveBookClicked);
+            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
             AddAuthorCommand = new Command(OnAddAuthorClicked);
         }
 
@@ -39,24 +41,29 @@ namespace Library
             _bookForAddition = null;
             _isAddToCatalogue = false;
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command(OnRemoveBookClicked);
+            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
             AddAuthorCommand = new Command(OnAddAuthorClicked);
         }
 
-        protected async void OnAddBookClicked(object sender)
+        protected void OnAddBookClicked(object sender)
         {
-            await _page.Navigation.PushModalAsync(new AddBookPage(Author, false));
+            Catalogue catalogue = Catalogue.GetCatalogue();
+            var config = new ActionSheetConfig();
+            config.SetTitle("Add book: ");
+            config.SetDestructive("New book", async () => { await _page.Navigation.PushModalAsync(new AddBookPage(Author, false)); });
+            config.SetCancel("Cancel");
+            foreach (var book in catalogue.BooksList)
+            {
+                if (!Author.ContainsBook(book))
+                    config.Add(book.Title, () => Author.AddBook(book) );
+            }
+            UserDialogs.Instance.ActionSheet(config);
         }
 
-        protected async void OnRemoveBookClicked(object sender)
+        public void OnRemoveBookClicked(Book sender)
         {
-            var action = await _page.DisplayActionSheet("Select book to remove", "Cancel", null, Author.BooksToStringArray());
-            if (action == "Cancel") return;
-            Catalogue catalogue = Catalogue.GetCatalogue();
-            var book = catalogue.FindBook(action);
-            if (book == null) return;
-            Author.RemoveBook(book);
-            book.RemoveAuthor(Author);
+            if (sender == null) return;
+            Author.RemoveBook(sender);
         }
 
         protected void OnAddAuthorClicked(object sender)
@@ -75,6 +82,10 @@ namespace Library
             if (IsFullAdd)
             {   
                 catalogue.AddAuthor(Author);
+                foreach (var book in Author)
+                {
+                    book.AddAuthor(Author);
+                }
             }
             else
             {
