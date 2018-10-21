@@ -16,7 +16,7 @@
                             <Label Text="Book " IsVisible="{Binding IsFullAdd}"/>
                         </ViewCell>
                         <ViewCell>
-                            <ListView x:Name="BooksView" IsEnabled="{Binding IsFullAdd}" IsVisible="{Binding IsFullAdd}" ItemsSource="{Binding Author}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
+                            <ListView x:Name="BooksView" IsEnabled="{Binding IsFullAdd}" IsVisible="{Binding IsFullAdd}" ItemsSource="{Binding Author.Books}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>

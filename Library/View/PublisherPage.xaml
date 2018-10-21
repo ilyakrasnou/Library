@@ -9,7 +9,7 @@
             <Label Text="City"/>
             <Label Text="{Binding Publisher.City}"/>
             <ListView x:Name="BooksView" 
-                      ItemsSource="{Binding Publisher}" 
+                      ItemsSource="{Binding Publisher.Books}" 
                       HasUnevenRows="True" 
                       ItemSelected="BooksView_ItemSelected">
                 <ListView.ItemTemplate>

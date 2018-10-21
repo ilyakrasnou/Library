@@ -28,6 +28,8 @@ namespace Library
         public ICommand AddAuthorCommand { get; protected set; }
         public ICommand RemoveAuthorCommand { get; protected set; }
         public ICommand RenameBookCommand { get; protected set; }
+        public ICommand AddPublisherCommand { get; protected set; }
+        public ICommand RemovePublisherCommand { get; protected set; }
 
         public EditBookViewModel(Page page)
         {
@@ -37,6 +39,8 @@ namespace Library
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
             RenameBookCommand = new Command(RenameBook);
+            RemovePublisherCommand = new Command(OnRemovePublisherClicked);
+            AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
         public EditBookViewModel(Page page, Book book)
@@ -47,6 +51,8 @@ namespace Library
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
             RenameBookCommand = new Command(RenameBook);
+            RemovePublisherCommand = new Command(OnRemovePublisherClicked);
+            AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
         public void RenameBook(object sender)
@@ -99,6 +105,39 @@ namespace Library
             author.RemoveBook(Book);
             if (author.IsEmpty())
                 catalogue.RemoveAuthor(author);
+        }
+
+        protected void OnAddPublisherClicked(object sender)
+        {
+            Catalogue catalogue = Catalogue.GetCatalogue();
+            var config = new ActionSheetConfig();
+            config.SetTitle("Add publisher: ");
+            config.SetDestructive("New publisher", async () => 
+            {
+                OnRemovePublisherClicked(null);
+                await _page.Navigation.PushModalAsync(new AddPublisherPage(Book, true));
+            });
+            config.SetCancel("Cancel");
+            foreach (var publisher in catalogue.PublishersList)
+            {
+                if (Book.Publisher != publisher)
+                    config.Add(publisher.Name, () =>
+                    {
+                        OnRemovePublisherClicked(null);
+                        publisher.AddBook(Book);
+                        Book.Publisher = publisher;
+                    });
+            }
+            UserDialogs.Instance.ActionSheet(config);
+        }
+
+        protected void OnRemovePublisherClicked(object sender)
+        {
+            if (Book.Publisher == null) return;
+            Book.Publisher.RemoveBook(Book);
+            if (Book.Publisher.IsEmpty())
+                Catalogue.GetCatalogue().RemovePublisher(Book.Publisher);
+            Book.Publisher = null;
         }
     }
 }

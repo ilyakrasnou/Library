@@ -18,7 +18,7 @@ namespace Library
             get => _title;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new FormatException("Author can't be without title");
+                //if (string.IsNullOrWhiteSpace(value)) throw new FormatException("Author can't be without title");
                 _title = value;
                 OnPropertyChanged();
             }
@@ -71,12 +71,8 @@ namespace Library
             get => _publisher;
             set
             {
-                if (value != null)
-                {
-                    _publisher = value;
-                    OnPropertyChanged();
-                }
-                else throw new FieldAccessException();
+                _publisher = value;
+                OnPropertyChanged();
             }
         }
         public string PublisherName { get => _publisher != null ? _publisher.Name : null; }

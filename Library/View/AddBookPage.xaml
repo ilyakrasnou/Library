@@ -7,11 +7,11 @@
             <Button x:Name="AddAuthor" 
                     Text="Add author" 
                     Command="{Binding AddAuthorCommand}"
-                    IsEnabled="{Binding IsFullAdd}"/>
+                    IsVisible="{Binding IsFullAdd}"/>
             <Button x:Name="RemoveAuthor" 
                     Text="Remove author" 
                     Command="{Binding RemoveAuthorCommand}"
-                    IsEnabled="{Binding IsFullAdd}"/>
+                    IsVisible="{Binding IsFullAdd}"/>
             <TableView Intent="Data">
                 <TableRoot>
                     <TableSection>
@@ -25,7 +25,8 @@
                             <Button Text="{Binding Book.AuthorsNames}" 
                                     HorizontalOptions="StartAndExpand"
                                     BackgroundColor="White" 
-                                    BorderColor="Gray"/>
+                                    BorderColor="Gray"
+                                    IsVisible="{Binding IsFullAdd}"/>
                         </ViewCell>
 
                         <EntryCell x:Name="Tags" 
@@ -33,7 +34,16 @@
                         <EntryCell x:Name="Year" Label="Year: " 
                                    Keyboard="Numeric" 
                                    Text="{Binding Book.YearOfPublishing, Mode=TwoWay}"/>
-                        <EntryCell x:Name="Publisher" Label="Publisher: "/>
+                        <EntryCell x:Name="Publisher" Label="Publisher: " Text="{Binding Path=Book.Publisher.Name}"
+                                   IsEnabled="{Binding IsFullAdd}"/>
+                        <ViewCell>
+                            <Button Text="Add" Command="{Binding AddPublisherCommand}"
+                                    IsVisible="{Binding IsFullAdd}"/>
+                        </ViewCell>
+                        <ViewCell>
+                            <Button Text="Remove" Command="{Binding RemovePublisherCommand}"
+                                    IsVisible="{Binding IsFullAdd}"/>
+                        </ViewCell>
                         <EntryCell x:Name="Pages" Label="Pages: " 
                                    Keyboard="Numeric" 
                                    Text="{Binding Book.Pages, Mode=TwoWay}"/>

@@ -18,7 +18,7 @@ namespace Library
             get => _name;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new FormatException("Publisher can't be without name");
+                //if (string.IsNullOrWhiteSpace(value)) throw new FormatException("Publisher can't be without name");
                 _name = value;
                 OnPropertyChanged();
             }

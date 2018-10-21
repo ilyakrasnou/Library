@@ -17,7 +17,7 @@
                         <EntryCell x:Name="City" Label="City: " Text="{Binding Publisher.City, Mode=TwoWay}"/>
                         <TextCell Text="Book "/>
                         <ViewCell>
-                            <ListView x:Name="BooksView" ItemsSource="{Binding Publisher}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
+                            <ListView x:Name="BooksView" ItemsSource="{Binding Publisher.Books}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>

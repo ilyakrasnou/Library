@@ -22,7 +22,7 @@
                     <Label Text="Few words"/>
                     
                 </StackLayout>
-                <ListView x:Name="BooksView" ItemsSource="{Binding Author}" 
+                <ListView x:Name="BooksView" ItemsSource="{Binding Author.Books}" 
                           ItemSelected="BooksView_ItemSelected" 
                           HasUnevenRows="True" Grid.Row="1" 
                           Grid.Column="0">

@@ -12,7 +12,7 @@ namespace Library
         public Book Book { get; protected set; }
         private readonly Page _page;
         //public string NewTitle { get; set; }
-        public bool IsFullAdd { get => _authorForAddition == null ? true : _publisherForAddition == null ? true : false; }
+        public bool IsFullAdd { get => _authorForAddition == null ? _publisherForAddition == null ? true : false : false; }
         private Author _authorForAddition;
         private Publisher _publisherForAddition;
         private bool _isAddToCatalogue;
@@ -20,6 +20,8 @@ namespace Library
         public ICommand AddAuthorCommand { get; protected set; }
         public ICommand RemoveAuthorCommand { get; protected set; }
         public ICommand AddBookCommand { get; protected set; }
+        public ICommand AddPublisherCommand { get; protected set; }
+        public ICommand RemovePublisherCommand { get; protected set; }
 
         public AddBookViewModel(Page page, Author author, bool isAddToCatalogue)
         {
@@ -31,6 +33,8 @@ namespace Library
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
             AddBookCommand = new Command(OnAddBookClicked);
+            RemovePublisherCommand = new Command(OnRemovePublisherClicked);
+            AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
         public AddBookViewModel(Page page, Publisher publisher, bool isAddToCatalogue)
@@ -43,6 +47,8 @@ namespace Library
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
             AddBookCommand = new Command(OnAddBookClicked);
+            RemovePublisherCommand = new Command(OnRemovePublisherClicked);
+            AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
         public AddBookViewModel(Page page)
@@ -121,17 +127,34 @@ namespace Library
             }
             Application.Current.MainPage.Navigation.PopModalAsync();
         }
-        /*if (string.IsNullOrWhiteSpace(Book.Title))
-        {
-            _page.DisplayAlert("Error", "This book can't be added.\nBook must have title!", "Cancel");
-            return;
-        }
-        if (IsFullAdd)
+
+        protected void OnAddPublisherClicked(object sender)
         {
             Catalogue catalogue = Catalogue.GetCatalogue();
-            catalogue.AddBook(Book);
+            var config = new ActionSheetConfig();
+            config.SetTitle("Add publisher: ");
+            config.SetDestructive("New publisher", async () => 
+            {
+                OnRemovePublisherClicked(null);
+                await _page.Navigation.PushModalAsync(new AddPublisherPage(Book, false));
+            });
+            config.SetCancel("Cancel");
+            foreach (var publisher in catalogue.PublishersList)
+            {
+                if (Book.Publisher != publisher)
+                    config.Add(publisher.Name, () =>
+                    {
+                        OnRemovePublisherClicked(null);
+                        Book.Publisher = publisher;
+                    });
+            }
+            UserDialogs.Instance.ActionSheet(config);
         }
-        _page.Navigation.PopAsync();
-    }*/
+
+        protected void OnRemovePublisherClicked(object sender)
+        {
+            if (Book.Publisher == null) return;
+            Book.Publisher = null;
+        }
     }
 }

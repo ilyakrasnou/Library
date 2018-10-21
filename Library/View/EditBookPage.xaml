@@ -46,7 +46,13 @@
                         <EntryCell x:Name="Year" Label="Year: " 
                                    Keyboard="Numeric" 
                                    Text="{Binding Book.YearOfPublishing, Mode=TwoWay}"/>
-                        <EntryCell x:Name="Publisher" Label="Publisher: "/>
+                        <EntryCell x:Name="Publisher" Label="Publisher: " Text="{Binding Path=Book.Publisher.Name}"/>
+                        <ViewCell>
+                            <Button Text="Add" Command="{Binding AddPublisherCommand}"/>
+                        </ViewCell>
+                        <ViewCell>
+                            <Button Text="Remove" Command="{Binding RemovePublisherCommand}"/>
+                        </ViewCell>
                         <EntryCell x:Name="Pages" Label="Pages: " 
                                    Keyboard="Numeric" 
                                    Text="{Binding Book.Pages, Mode=TwoWay}"/>

@@ -12,9 +12,8 @@
                         </ViewCell>
                         <EntryCell x:Name="Name" Label="Name: " Text="{Binding Publisher.Name, Mode=TwoWay}"/>
                         <EntryCell x:Name="City" Label="City: " Text="{Binding Publisher.City, Mode=TwoWay}"/>
-                        <EntryCell Label="Book "/>
                         <ViewCell>
-                            <ListView x:Name="BooksView" IsEnabled="{Binding IsFullAdd}" IsVisible="{Binding IsFullAdd}" ItemsSource="{Binding Publisher}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
+                            <ListView x:Name="BooksView" IsEnabled="{Binding IsFullAdd}" IsVisible="{Binding IsFullAdd}" ItemsSource="{Binding Publisher.Books}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>

@@ -17,7 +17,7 @@
                         <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday, Mode=TwoWay}"/>
                         <TextCell Text="Book "/>
                         <ViewCell>
-                            <ListView x:Name="BooksView" ItemsSource="{Binding Author}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
+                            <ListView x:Name="BooksView" ItemsSource="{Binding Author.Books}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
