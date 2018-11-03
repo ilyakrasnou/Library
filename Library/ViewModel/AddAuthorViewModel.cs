@@ -29,7 +29,7 @@ namespace Library
             _bookForAddition = book;
             _isAddToCatalogue = isAddToCatalogue;
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
+            RemoveBookCommand = new Command(OnRemoveBookClicked);
             AddAuthorCommand = new Command(OnAddAuthorClicked);
         }
 
@@ -39,9 +39,9 @@ namespace Library
             Author = new Author();
             //NewFullName = null;
             _bookForAddition = null;
-            _isAddToCatalogue = false;
+            _isAddToCatalogue = true;
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
+            RemoveBookCommand = new Command(OnRemoveBookClicked);
             AddAuthorCommand = new Command(OnAddAuthorClicked);
         }
 
@@ -60,6 +60,18 @@ namespace Library
             UserDialogs.Instance.ActionSheet(config);
         }
 
+        protected void OnRemoveBookClicked(object sender)
+        {
+            var config = new ActionSheetConfig();
+            config.SetTitle("Select book to remove");
+            config.SetCancel("Cancel");
+            foreach (var book in Author)
+            {
+                config.Add(book.Title, () => Author.RemoveBook(book));
+            }
+            UserDialogs.Instance.ActionSheet(config);
+        }
+
         public void OnRemoveBookClicked(Book sender)
         {
             if (sender == null) return;
@@ -70,7 +82,7 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Author.FullName))
             {
-                _page.DisplayAlert("Error", "This author can't be added.\nBook must have full name!", "Cancel");
+                _page.DisplayAlert("Error", "This author can't be added.\nAuthor must have full name!", "Cancel");
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
@@ -82,16 +94,12 @@ namespace Library
             if (IsFullAdd)
             {   
                 catalogue.AddAuthor(Author);
-                foreach (var book in Author)
-                {
-                    book.AddAuthor(Author);
-                }
             }
             else
             {
-                Author.AddBook(_bookForAddition);
                 if (_isAddToCatalogue)
-                {                   
+                {
+                    Author.AddBook(_bookForAddition);
                     catalogue.AddAuthor(Author);
                 }
                 else

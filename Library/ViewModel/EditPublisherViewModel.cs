@@ -34,7 +34,7 @@ namespace Library
             Publisher = new Publisher();
             NewTitle = null;
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
+            RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenamePublisherCommand = new Command(RenamePublisher);
         }
 
@@ -44,7 +44,7 @@ namespace Library
             NewTitle = Publisher.Name;
             _page = page ?? throw new NotImplementedException();
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
+            RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenamePublisherCommand = new Command(RenamePublisher);
         }
 
@@ -80,6 +80,21 @@ namespace Library
                         book.Publisher = Publisher;
                         Publisher.AddBook(book);
                     });
+            }
+            UserDialogs.Instance.ActionSheet(config);
+        }
+
+        protected void OnRemoveBookClicked(object sender)
+        {
+            var config = new ActionSheetConfig();
+            config.SetTitle("Select book to remove");
+            config.SetCancel("Cancel");
+            foreach (var book in Publisher)
+            {
+                config.Add(book.Title, () =>
+                {
+                    Catalogue.GetCatalogue().RemoveBook(book);
+                });
             }
             UserDialogs.Instance.ActionSheet(config);
         }

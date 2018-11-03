@@ -56,9 +56,12 @@ namespace Library
             _page = page ?? throw new NotImplementedException();
             Book = new Book();
             //NewTitle = null;
+            _isAddToCatalogue = true;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
             AddBookCommand = new Command(OnAddBookClicked);
+            RemovePublisherCommand = new Command(OnRemovePublisherClicked);
+            AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
         protected void OnAddAuthorClicked(object sender)
@@ -76,13 +79,21 @@ namespace Library
             UserDialogs.Instance.ActionSheet(config);
         }
 
-        protected async void OnRemoveAuthorClicked(object sender)
+        protected void OnRemoveAuthorClicked(object sender)
         {
-            var action = await _page.DisplayActionSheet("Select author to remove", "Cancel", null, Book.AuthorsToStringArray());
+            var config = new ActionSheetConfig();
+            config.SetTitle("Select author to remove");
+            config.SetCancel("Cancel");
+            foreach(var author in Book)
+            {
+                config.Add(author.FullName, () => Book.RemoveAuthor(author));
+            }
+            UserDialogs.Instance.ActionSheet(config);
+            /*var action = await _page.DisplayActionSheet("Select author to remove", "Cancel", null, Book.AuthorsToStringArray());
             if (action == "Cancel") return;
             var author = Catalogue.GetCatalogue().FindAuthor(action);
             if (author == null) return;
-            Book.RemoveAuthor(author);
+            Book.RemoveAuthor(author);*/
         }
 
         protected void OnAddBookClicked(object sender)
@@ -105,10 +116,10 @@ namespace Library
             else
             {
                 if (_publisherForAddition != null)
-                {
-                    Book.Publisher = _publisherForAddition;
+                {                   
                     if (_isAddToCatalogue)
                     {
+                        Book.Publisher = _publisherForAddition;
                         catalogue.AddBook(Book);
                     }
                     else
@@ -116,9 +127,9 @@ namespace Library
                 }
                 if (_authorForAddition != null)
                 {
-                    Book.AddAuthor(_authorForAddition);
                     if (_isAddToCatalogue)
                     {
+                        Book.AddAuthor(_authorForAddition);
                         catalogue.AddBook(Book);
                     }
                     else

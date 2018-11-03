@@ -28,7 +28,7 @@ namespace Library
             _bookForAddition = book;
             _isAddToCatalogue = isAddToCatalogue;
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
+            RemoveBookCommand = new Command(OnRemoveBookClicked);
             AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
@@ -38,9 +38,9 @@ namespace Library
             Publisher = new Publisher();
             //NewName = null;
             _bookForAddition = null;
-            _isAddToCatalogue = false;
+            _isAddToCatalogue = true;
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
+            RemoveBookCommand = new Command(OnRemoveBookClicked);
             AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
@@ -58,6 +58,18 @@ namespace Library
                     {
                         Publisher.AddBook(book);
                     });
+            }
+            UserDialogs.Instance.ActionSheet(config);
+        }
+
+        protected void OnRemoveBookClicked(object sender)
+        {
+            var config = new ActionSheetConfig();
+            config.SetTitle("Select book to remove");
+            config.SetCancel("Cancel");
+            foreach (var book in Publisher)
+            {
+                config.Add(book.Title, () => Publisher.RemoveBook(book));
             }
             UserDialogs.Instance.ActionSheet(config);
         }
@@ -86,10 +98,10 @@ namespace Library
                 catalogue.AddPublisher(Publisher);
             }
             else
-            {
-                Publisher.AddBook(_bookForAddition);
+            {               
                 if (_isAddToCatalogue)
                 {
+                    Publisher.AddBook(_bookForAddition);
                     catalogue.AddPublisher(Publisher);
                 }
                 else

@@ -35,7 +35,7 @@ namespace Library
             Author = new Author();
             NewTitle = null;
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
+            RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenameAuthorCommand = new Command(RenameAuthor);
         }
 
@@ -45,7 +45,7 @@ namespace Library
             NewTitle = Author.FullName;
             _page = page ?? throw new NotImplementedException();
             AddBookCommand = new Command(OnAddBookClicked);
-            RemoveBookCommand = new Command<Book>(OnRemoveBookClicked);
+            RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenameAuthorCommand = new Command(RenameAuthor);
         }
 
@@ -81,6 +81,21 @@ namespace Library
                         book.AddAuthor(Author);
                         Author.AddBook(book);
                     });
+            }
+            UserDialogs.Instance.ActionSheet(config);
+        }
+
+        protected void OnRemoveBookClicked(object sender)
+        {
+            var config = new ActionSheetConfig();
+            config.SetTitle("Select book to remove");
+            config.SetCancel("Cancel");
+            foreach (var book in Author)
+            {
+                config.Add(book.Title, () =>
+                {
+                    Catalogue.GetCatalogue().RemoveBook(book);
+                });
             }
             UserDialogs.Instance.ActionSheet(config);
         }

@@ -94,9 +94,24 @@ namespace Library
             UserDialogs.Instance.ActionSheet(config);
         }
 
-        protected async void OnRemoveAuthorClicked(object sender)
+        protected void OnRemoveAuthorClicked(object sender)
         {
-            var action = await _page.DisplayActionSheet("Select author to remove", "Cancel", null, Book.AuthorsToStringArray());
+            var config = new ActionSheetConfig();
+            config.SetTitle("Select author to remove");
+            config.SetCancel("Cancel");
+            foreach (var author in Book)
+            {
+                config.Add(author.FullName, () =>
+                {
+                    Book.RemoveAuthor(author);
+                    if (author.IsEmpty())
+                        Catalogue.GetCatalogue().RemoveAuthor(author);
+                    else author.RemoveBook(Book);
+                });
+            }
+            UserDialogs.Instance.ActionSheet(config);
+
+            /*var action = await _page.DisplayActionSheet("Select author to remove", "Cancel", null, Book.AuthorsToStringArray());
             if (action == "Cancel") return;
             Catalogue catalogue = Catalogue.GetCatalogue();
             var author = catalogue.FindAuthor(action);
@@ -104,7 +119,7 @@ namespace Library
             Book.RemoveAuthor(author);
             author.RemoveBook(Book);
             if (author.IsEmpty())
-                catalogue.RemoveAuthor(author);
+                catalogue.RemoveAuthor(author);*/
         }
 
         protected void OnAddPublisherClicked(object sender)

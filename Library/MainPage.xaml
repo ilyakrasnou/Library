@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:converter="clr-namespace:Library.Converters"
             x:Class="Library.MainPage">
     <ContentPage Title="Books">
+        <!--<ContentPage.ToolbarItems>
+            <ToolbarItem Command="{Binding AddBookCommand}" Icon="{converter:ImageResource Source='Library.ImageResources.icon_add.png'}"/>
+        </ContentPage.ToolbarItems>-->
+        <ContentPage.ToolbarItems>
+            <ToolbarItem Command="{Binding AddBookCommand}"/>
+        </ContentPage.ToolbarItems>
         <ListView x:Name="BooksView" 
                   ItemsSource="{Binding Catalogue.BooksList}"
                   ItemSelected="BooksView_ItemSelected">
@@ -19,6 +26,9 @@
         </ListView>
     </ContentPage>
     <ContentPage Title="Authors">
+        <ContentPage.ToolbarItems>
+            <ToolbarItem Name="Add author" Command="{Binding AddAuthorCommand}"/>
+        </ContentPage.ToolbarItems>
         <ListView x:Name="AuthorsView" 
                   ItemsSource="{Binding Catalogue.AuthorsList}"
                   ItemSelected="AuthorsView_ItemSelected">
@@ -34,6 +44,9 @@
         </ListView>
     </ContentPage>
     <ContentPage Title="Publishers">
+        <ContentPage.ToolbarItems>
+            <ToolbarItem Name="Add publisher" Command="{Binding AddPublisherCommand}"/>
+        </ContentPage.ToolbarItems>
         <ListView x:Name="PublishersView"
                   ItemsSource="{Binding Catalogue.PublishersList}"
                   ItemSelected="PublishersView_ItemSelected">

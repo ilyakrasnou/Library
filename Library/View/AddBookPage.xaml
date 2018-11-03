@@ -4,22 +4,26 @@
              x:Class="Library.AddBookPage">
     <ContentPage.Content>
         <StackLayout>
-            <Button x:Name="AddAuthor" 
-                    Text="Add author" 
-                    Command="{Binding AddAuthorCommand}"
-                    IsVisible="{Binding IsFullAdd}"/>
-            <Button x:Name="RemoveAuthor" 
-                    Text="Remove author" 
-                    Command="{Binding RemoveAuthorCommand}"
-                    IsVisible="{Binding IsFullAdd}"/>
             <TableView Intent="Data">
                 <TableRoot>
                     <TableSection>
                         <EntryCell x:Name="Title" 
                                    Label="Title: "
-                                   Text="{Binding NewTitle, Mode=TwoWay}"/>
+                                   Text="{Binding Book.Title, Mode=TwoWay}"/>
                         <ViewCell>
-                            <Label Text="Authors:"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Authors:"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="StartAndExpand"/>
+                                <Button x:Name="AddAuthor" 
+                                        Text="Add author" 
+                                        Command="{Binding AddAuthorCommand}"
+                                        VerticalOptions="Center"/>
+                                <Button x:Name="RemoveAuthor" 
+                                        Text="Remove author" 
+                                        Command="{Binding RemoveAuthorCommand}"
+                                        VerticalOptions="Center"/>
+                            </StackLayout>
                         </ViewCell>
                         <ViewCell>
                             <Button Text="{Binding Book.AuthorsNames}" 
@@ -37,12 +41,14 @@
                         <EntryCell x:Name="Publisher" Label="Publisher: " Text="{Binding Path=Book.Publisher.Name}"
                                    IsEnabled="{Binding IsFullAdd}"/>
                         <ViewCell>
-                            <Button Text="Add" Command="{Binding AddPublisherCommand}"
-                                    IsVisible="{Binding IsFullAdd}"/>
-                        </ViewCell>
-                        <ViewCell>
-                            <Button Text="Remove" Command="{Binding RemovePublisherCommand}"
-                                    IsVisible="{Binding IsFullAdd}"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Button Text="Add" Command="{Binding AddPublisherCommand}"
+                                        IsVisible="{Binding IsFullAdd}" 
+                                        HorizontalOptions="CenterAndExpand"/>
+                                <Button Text="Remove" Command="{Binding RemovePublisherCommand}"
+                                        IsVisible="{Binding IsFullAdd}"
+                                        HorizontalOptions="CenterAndExpand"/>
+                            </StackLayout>
                         </ViewCell>
                         <EntryCell x:Name="Pages" Label="Pages: " 
                                    Keyboard="Numeric" 

@@ -7,15 +7,21 @@
             <TableView Intent="Data">
                 <TableRoot>
                     <TableSection>
-                        <ViewCell>
+                        <!--<ViewCell>
                             <Button x:Name="AddBook" Text="Add book" Command="{Binding AddBookCommand}"/>
-                        </ViewCell>
+                        </ViewCell>-->
                         <EntryCell x:Name="FullName" Label="Full name: " Text="{Binding Author.FullName}" IsEnabled="{Binding CouldRename}"/>
                         <ViewCell>
                             <Button Text="{Binding CouldRename}" Command="{Binding RenameAuthorCommand}"/>
                         </ViewCell>
                         <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday, Mode=TwoWay}"/>
-                        <TextCell Text="Book "/>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                <Label Text="Book " IsVisible="{Binding IsFullAdd}" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                                <Button x:Name="AddBook" Text="Add book" Command="{Binding AddBookCommand}" />
+                                <Button x:Name="RemoveAuthor" Text="Remove book" Command="{Binding RemoveBookCommand}" />
+                            </StackLayout>
+                        </ViewCell>
                         <ViewCell>
                             <ListView x:Name="BooksView" ItemsSource="{Binding Author.Books}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
                                 <ListView.ItemTemplate>

@@ -14,12 +14,7 @@
     
     <ContentPage.Content>
         <StackLayout>
-            <Button x:Name="AddAuthor" 
-                    Text="Add author" 
-                    Command="{Binding AddAuthorCommand}"/>
-            <Button x:Name="RemoveAuthor" 
-                    Text="Remove author" 
-                    Command="{Binding RemoveAuthorCommand}"/>
+            
             <TableView Intent="Data">
                 <TableRoot>
                     <TableSection>
@@ -32,7 +27,19 @@
                             <Button Text="{Binding Path = CouldRename}" Command="{Binding RenameBookCommand}" CommandParameter=""/>
                         </ViewCell>
                         <ViewCell>
-                            <Label Text="Authors:"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Authors:"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="StartAndExpand"/>
+                                <Button x:Name="AddAuthor" 
+                                        Text="Add author" 
+                                        Command="{Binding AddAuthorCommand}"
+                                        VerticalOptions="Center"/>
+                                <Button x:Name="RemoveAuthor" 
+                                        Text="Remove author" 
+                                        Command="{Binding RemoveAuthorCommand}"
+                                        VerticalOptions="Center"/>
+                            </StackLayout>
                         </ViewCell>
                         <ViewCell>
                             <Button Text="{Binding Book.AuthorsNames}" 
@@ -48,10 +55,10 @@
                                    Text="{Binding Book.YearOfPublishing, Mode=TwoWay}"/>
                         <EntryCell x:Name="Publisher" Label="Publisher: " Text="{Binding Path=Book.Publisher.Name}"/>
                         <ViewCell>
-                            <Button Text="Add" Command="{Binding AddPublisherCommand}"/>
-                        </ViewCell>
-                        <ViewCell>
-                            <Button Text="Remove" Command="{Binding RemovePublisherCommand}"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Button Text="Add" Command="{Binding AddPublisherCommand}" HorizontalOptions="CenterAndExpand"/>
+                                <Button Text="Remove" Command="{Binding RemovePublisherCommand}" HorizontalOptions="CenterAndExpand"/>
+                            </StackLayout>
                         </ViewCell>
                         <EntryCell x:Name="Pages" Label="Pages: " 
                                    Keyboard="Numeric" 

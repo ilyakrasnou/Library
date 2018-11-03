@@ -100,7 +100,6 @@ namespace Library
         public void AddBook(Book book)
         {
             if (book == null) return;
-            if (book.Title == null) throw new FormatException("Author must have Title");
             if (_books.Contains(book) == false)
             {
                 _books.Add(book);
@@ -113,7 +112,6 @@ namespace Library
         public void RemoveBook(Book book)
         {
             if (book == null) return;
-            if (book.Title == null) throw new FormatException("Author must have FullName");
             _books.Remove(book);
             OnPropertyChanged();
         }

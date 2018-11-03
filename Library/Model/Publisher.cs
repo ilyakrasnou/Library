@@ -108,7 +108,6 @@ namespace Library
         public void RemoveBook(Book book)
         {
             if (book == null) return;
-            if (book.Title == null) throw new FormatException("Author must have FullName");
             _books.Remove(book);
             OnPropertyChanged();
         }

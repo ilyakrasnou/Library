@@ -150,20 +150,18 @@ namespace Library
         public void AddAuthor(Author author)
         {
             if (author == null) return;
-            if (author.FullName == null) throw new FormatException("Author must have FullName");
             if (_authors.Contains(author) == false)
             {
                 _authors.Add(author);
-                OnPropertyChanged(AuthorsNames);
+                OnPropertyChanged("AuthorsNames");
             }
         }
 
         public void RemoveAuthor(Author author)
         {
             if (author == null) return;
-            if (author.FullName == null) throw new FormatException("Author must have FullName");
             if (_authors.Remove(author) == false) return;
-            OnPropertyChanged(AuthorsNames);
+            OnPropertyChanged("AuthorsNames");
         }
 
         public string AuthorsNames
