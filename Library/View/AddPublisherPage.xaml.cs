@@ -33,5 +33,10 @@ namespace Library
             BooksView.ItemsSource = null;
             BooksView.ItemsSource = binding;
         }
+
+        private void OnBackClicked(object sender, EventArgs e)
+        {
+            Navigation.PopModalAsync();
+        }
     }
 }

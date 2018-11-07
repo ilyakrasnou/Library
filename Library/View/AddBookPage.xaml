@@ -59,8 +59,10 @@
                     </TableSection>
                 </TableRoot>
             </TableView>
-            <Button Text="Add" IsEnabled="{Binding Path=IsFullAdd}" 
-                    Command="{Binding AddBookCommand}"/>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Add" Command="{Binding AddBookCommand}" HorizontalOptions="CenterAndExpand"/>
+                <Button Text="Back" Clicked="OnBackClicked" HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

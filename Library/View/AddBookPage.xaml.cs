@@ -29,5 +29,10 @@ namespace Library
             InitializeComponent();
             BindingContext = new AddBookViewModel(this, publisher, isAddToCatalogue);
         }
+
+        private void OnBackClicked(object sender, EventArgs e)
+        {
+            Navigation.PopModalAsync();
+        }
     }
 }

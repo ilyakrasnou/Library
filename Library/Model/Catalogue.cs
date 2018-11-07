@@ -1,19 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Library
 {
-    class Catalogue
+    class Catalogue: INotifyPropertyChanged
     {
         private static Catalogue _catalogue;
+
+        private int _sortListBy;
+
+        public int SortListBy
+        {
+            get => _sortListBy;
+            set
+            {
+                if (_sortListBy != value)
+                {
+                    _sortListBy = value;
+                    OnPropertyChanged("SortListBy"); //Нетривиальная логика: последняя цифра отвечает за список, который будем изменять
+                    if (_sortListBy % 10 == (int)SortListParam.Book) OnPropertyChanged("BooksList");
+                    else if (_sortListBy % 10 == (int)SortListParam.Author) OnPropertyChanged("AuthorsList");
+                    else if (_sortListBy % 10 == (int)SortListParam.Publisher) OnPropertyChanged("PublishersList");
+                }
+            }
+        }
+
+        private string _searchText;
+        private bool _isSearching = false;
+        public string SearchBook
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value.ToLower();
+                _isSearching = true;
+                OnPropertyChanged("BooksList");
+            }
+        }
+        public string SearchAuthor
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value.ToLower();
+                _isSearching = true;
+                OnPropertyChanged("AuthorsList");
+            }
+        }
+        public string SearchPublisher
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value.ToLower();
+                _isSearching = true;
+                OnPropertyChanged("PublishersList");
+            }
+        }
 
         private Dictionary<string, Book> _books;
         private Dictionary<string, Author> _authors;
         private Dictionary<string, Publisher> _publishers;
 
-        public delegate void RefreshingListHandler(string nameList);
-        public event RefreshingListHandler RefreshingList;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
 
         private Catalogue()
         {
@@ -55,11 +113,11 @@ namespace Library
             foreach (var author in authors)
                 author.AddBook(newBook);
             publisher.AddBook(newBook);
-            RefreshingList?.Invoke("BooksList");
+            OnPropertyChanged("BooksList");
             if (isAuthorAdded)
-                RefreshingList?.Invoke("AuthorsList");
+                OnPropertyChanged("AuthorsList");
             if (isPublisherAdded)
-                RefreshingList?.Invoke("PublishersList");
+                OnPropertyChanged("PublishersList");
             return true;
         }
 
@@ -81,8 +139,8 @@ namespace Library
             _authors.Add(newAuthor.FullName, newAuthor);
             foreach (var book in books)
                 book.AddAuthor(newAuthor);
-            RefreshingList?.Invoke("AuthorsList");
-            RefreshingList?.Invoke("BooksList");
+            OnPropertyChanged("AuthorsList");
+            OnPropertyChanged("BooksList");
             return true;
         }
 
@@ -107,8 +165,8 @@ namespace Library
                 if (book.Publisher != null) throw new MemberAccessException();
                 book.Publisher = newPublisher;
             }
-            RefreshingList?.Invoke("PublishersList");
-            RefreshingList?.Invoke("BooksList");
+            OnPropertyChanged("PublishersList");
+            OnPropertyChanged("BooksList");
             return true;
         }
 
@@ -136,11 +194,11 @@ namespace Library
             foreach (var author in book)
                 author.AddBook(book);
             book.Publisher?.AddBook(book);
-            RefreshingList?.Invoke("BooksList");
+            OnPropertyChanged("BooksList");
             if (isAuthorAdded)
-                RefreshingList?.Invoke("AuthorsList");
+                OnPropertyChanged("AuthorsList");
             if (isPublisherAdded)
-                RefreshingList?.Invoke("PublishersList");
+                OnPropertyChanged("PublishersList");
             return true;
         }
 
@@ -163,9 +221,9 @@ namespace Library
             _authors.Add(author.FullName, author);
             foreach (var book in author)
                 book.AddAuthor(author);
-            RefreshingList?.Invoke("AuthorsList");
+            OnPropertyChanged("AuthorsList");
             if (isBooksAdded)
-                RefreshingList?.Invoke("BooksList");
+                OnPropertyChanged("BooksList");
             return true;
         }
 
@@ -193,9 +251,9 @@ namespace Library
                 if (book.Publisher != null) throw new MemberAccessException();
                 book.Publisher = publisher;
             }
-            RefreshingList?.Invoke("PublishersList");
+            OnPropertyChanged("PublishersList");
             if (isBookAdded)
-                RefreshingList?.Invoke("BooksList");
+                OnPropertyChanged("BooksList");
             return true;
         }
 
@@ -233,23 +291,79 @@ namespace Library
             return _catalogue;
         }
 
-        public ICollection<Book> BooksList
+        public IEnumerable<Book> BooksList
         {
-            get => _books.Values;
+            get
+            {
+                if (_isSearching)
+                {
+                    _isSearching = false;
+                    return from book in _books.Values
+                           where book.Title.ToLower().Contains(_searchText)
+                           select book; 
+                }
+                if (SortListBy % 10 == (int)SortListParam.Book)
+                {
+                    switch (SortListBy / 10)
+                    {
+                        case (int)SortBookParam.Title: return _books.Values.OrderBy(x => x.Title);
+                        case (int)SortBookParam.Pages: return _books.Values.OrderBy(x => UInt32.TryParse(x.Pages, out var rez) ? rez : 0);
+                        case (int)SortBookParam.Year: return _books.Values.OrderBy(x => UInt32.TryParse(x.YearOfPublishing, out uint rez) ? rez : 0);
+                        case (int)SortBookParam.ISBN: return _books.Values.OrderBy(x => UInt64.TryParse(x.ISBN, out var rez) ? rez : 0);
+                    }
+                }
+                return _books.Values;
+            }
         }
 
         public ICollection<string> BooksNamesList => _books.Keys;
 
-        public ICollection<Author> AuthorsList
+        public IEnumerable<Author> AuthorsList
         {
-            get => _authors.Values;
+            get
+            {
+                if (_isSearching)
+                {
+                    _isSearching = false;
+                    return from author in _authors.Values
+                           where author.FullName.ToLower().Contains(_searchText)
+                           select author;
+                }
+                if (SortListBy % 10 == (int)SortListParam.Author)
+                {
+                    switch (SortListBy / 10)
+                    {
+                        case (int)SortAuthorParam.Name: return _authors.Values.OrderBy(x => x.FullName);
+                        case (int)SortAuthorParam.Birthday: return _authors.Values.OrderBy(x => UInt32.TryParse(x.Birthday, out var rez) ? rez : 0);
+                    }
+                }
+                return _authors.Values;
+            }
         }
 
         public ICollection<string> AuthorsNamesList => _authors.Keys;
 
-        public ICollection<Publisher> PublishersList
+        public IEnumerable<Publisher> PublishersList
         {
-            get => _publishers.Values;
+            get
+            {
+                if (_isSearching)
+                {
+                    _isSearching = false;
+                    return from publisher in _publishers.Values
+                           where publisher.Name.ToLower().Contains(_searchText)
+                           select publisher;
+                }
+                if (SortListBy % 10 == (int)SortListParam.Publisher)
+                {
+                    switch (SortListBy / 10)
+                    {
+                        case (int)SortPublisherParam.Name: return _publishers.Values.OrderBy(x => x.Name);
+                        case (int)SortPublisherParam.City: return _publishers.Values.OrderBy(x => UInt32.TryParse(x.City, out var rez) ? rez : 0);
+                    }
+                }
+                return _publishers.Values;
+            }
         }
 
         public ICollection<string> PublishersNamesList => _publishers.Keys;
@@ -279,11 +393,11 @@ namespace Library
                 }
             }
             _books.Remove(removableBook.Title);
-            RefreshingList?.Invoke("BooksList");
+            OnPropertyChanged("BooksList");
             if (isAuthorsRemoved)
-                RefreshingList?.Invoke("AuthorsList");
+                OnPropertyChanged("AuthorsList");
             if (isPublisherRemoved)
-                RefreshingList?.Invoke("PublishersList");
+                OnPropertyChanged("PublishersList");
             return true;
         }
 
@@ -314,10 +428,10 @@ namespace Library
                 _books.Remove(book.Title);
             }
             _authors.Remove(removableAuthor.FullName);
-            RefreshingList?.Invoke("AuthorsList");
-            RefreshingList?.Invoke("BooksList");
+            OnPropertyChanged("AuthorsList");
+            OnPropertyChanged("BooksList");
             if (isPublisherRemoved)
-                RefreshingList?.Invoke("PublishersList");
+                OnPropertyChanged("PublishersList");
             return true;
         }
 
@@ -339,10 +453,10 @@ namespace Library
                 _books.Remove(book.Title);
             }
             _publishers.Remove(removablePublisher.Name);
-            RefreshingList?.Invoke("PublishersList");
-            RefreshingList?.Invoke("BooksList");
+            OnPropertyChanged("PublishersList");
+            OnPropertyChanged("BooksList");
             if (isAuthorRemoved)
-                RefreshingList?.Invoke("AuthorsList");
+                OnPropertyChanged("AuthorsList");
             return true;
         }
 

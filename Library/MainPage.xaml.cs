@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +20,9 @@ namespace Library
             InitializeComponent();
             _catalogueViewModel = new CatalogueViewModel();
             BindingContext = _catalogueViewModel;
-            _catalogueViewModel.Catalogue.RefreshingList += RefreshListView;
+            _catalogueViewModel.Catalogue.PropertyChanged += RefreshListView;
+            //AddBook.Icon = (FileImageSource) ImageSource.FromFile("Library.ImageResources.icon_add.png") ;
+            //AddBook.Icon.File = "Library.ImageResources.icon_add.png";
         }
 
         public async void BooksView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -52,36 +55,47 @@ namespace Library
             }
         }
 
-        public async void AddBookClicked(object sender, EventArgs e)
+        internal void RefreshListView(object sender, PropertyChangedEventArgs e)
         {
-            /*var page = new EditBookPage();
-            await Navigation.PushAsync(page);
-            if (page.EditableBook == null) return;
-            _catalogueViewModel.Catalogue.AddBook(page.EditableBook);*/
-        }
-
-        internal void RefreshListView(string nameList)
-        {
-            if (nameList == "BooksList")
+            if (e.PropertyName == "BooksList")
             {
                 BooksView.ItemsSource = null;
                 BooksView.ItemsSource = _catalogueViewModel.Catalogue.BooksList;
             }
-            if (nameList == "AuthorsList")
+            if (e.PropertyName == "AuthorsList")
             {
                 AuthorsView.ItemsSource = null;
                 AuthorsView.ItemsSource = _catalogueViewModel.Catalogue.AuthorsList;
             }
-            if (nameList == "PublishersList")
+            if (e.PropertyName == "PublishersList")
             {
                 PublishersView.ItemsSource = null;
                 PublishersView.ItemsSource = _catalogueViewModel.Catalogue.PublishersList;
             }
+            /*IEnumerable itemsSourse;
+            if (nameList == "BooksList")
+            {
+                itemsSourse = BooksView.ItemsSource;
+                BooksView.ItemsSource = null;
+                BooksView.ItemsSource = itemsSourse;
+            }
+            if (nameList == "AuthorsList")
+            {
+                itemsSourse = AuthorsView.ItemsSource;
+                AuthorsView.ItemsSource = null;
+                AuthorsView.ItemsSource = itemsSourse;
+            }
+            if (nameList == "PublishersList")
+            {
+                itemsSourse = PublishersView.ItemsSource;
+                PublishersView.ItemsSource = null;
+                PublishersView.ItemsSource = item;
+            }*/
         }
 
         ~MainPage()
         {
-            _catalogueViewModel.Catalogue.RefreshingList -= RefreshListView;
+            _catalogueViewModel.Catalogue.PropertyChanged -= RefreshListView;
         }
     }
 

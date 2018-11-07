@@ -32,7 +32,10 @@
                     </TableSection>
                 </TableRoot>
             </TableView>
-            <Button Text="Add" Command="{Binding AddPublisherCommand}"/>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Add" Command="{Binding AddPublisherCommand}" HorizontalOptions="CenterAndExpand"/>
+                <Button Text="Back" Clicked="OnBackClicked" HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -8,58 +8,70 @@
             <ToolbarItem Command="{Binding AddBookCommand}" Icon="{converter:ImageResource Source='Library.ImageResources.icon_add.png'}"/>
         </ContentPage.ToolbarItems>-->
         <ContentPage.ToolbarItems>
-            <ToolbarItem Command="{Binding AddBookCommand}"/>
+            <ToolbarItem x:Name="AddBook" Command="{Binding AddBookCommand}"/>
+            <ToolbarItem Text="Sort by" Command="{Binding SortBooksListCommand}"/>
         </ContentPage.ToolbarItems>
-        <ListView x:Name="BooksView" 
-                  ItemsSource="{Binding Catalogue.BooksList}"
-                  ItemSelected="BooksView_ItemSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout>
-                            <Label Text="{Binding Title}"/>
-                            <Label Text="{Binding AuthorsNames}"/>
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <StackLayout>
+            <SearchBar Text="{Binding Catalogue.SearchBook}"/>
+            <ListView x:Name="BooksView" 
+                      ItemsSource="{Binding Catalogue.BooksList}"
+                      ItemSelected="BooksView_ItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding Title}"/>
+                                <Label Text="{Binding AuthorsNames}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage>
     <ContentPage Title="Authors">
         <ContentPage.ToolbarItems>
-            <ToolbarItem Name="Add author" Command="{Binding AddAuthorCommand}"/>
+            <ToolbarItem x:Name="AddAuthor" Text="Add author" Command="{Binding AddAuthorCommand}"/>
+            <ToolbarItem Text="Sort by" Command="{Binding SortAuthorsListCommand}"/>
         </ContentPage.ToolbarItems>
-        <ListView x:Name="AuthorsView" 
-                  ItemsSource="{Binding Catalogue.AuthorsList}"
-                  ItemSelected="AuthorsView_ItemSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout>
-                            <Label Text="{Binding FullName}"/>
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <StackLayout>
+            <SearchBar Text="{Binding Catalogue.SearchAuthor}"/>
+            <ListView x:Name="AuthorsView" 
+                      ItemsSource="{Binding Catalogue.AuthorsList}"
+                      ItemSelected="AuthorsView_ItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding FullName}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage>
     <ContentPage Title="Publishers">
         <ContentPage.ToolbarItems>
-            <ToolbarItem Name="Add publisher" Command="{Binding AddPublisherCommand}"/>
+            <ToolbarItem x:Name="AddPublisher" Text="Add publisher" Command="{Binding AddPublisherCommand}"/>
+            <ToolbarItem Text="Sort by" Command="{Binding SortPublishersListCommand}"/>
         </ContentPage.ToolbarItems>
-        <ListView x:Name="PublishersView"
-                  ItemsSource="{Binding Catalogue.PublishersList}"
-                  ItemSelected="PublishersView_ItemSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout>
-                            <Label Text="{Binding Name}"/>
-                            <Label Text="{Binding City}"/>
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <StackLayout>
+            <SearchBar Text="{Binding Catalogue.SearchPublisher}"/>
+            <ListView x:Name="PublishersView"
+                      ItemsSource="{Binding Catalogue.PublishersList}"
+                      ItemSelected="PublishersView_ItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding Name}"/>
+                                <Label Text="{Binding City}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage>
 </TabbedPage>
