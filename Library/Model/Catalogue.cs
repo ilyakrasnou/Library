@@ -11,57 +11,6 @@ namespace Library
     {
         private static Catalogue _catalogue;
 
-        private int _sortListBy;
-
-        public int SortListBy
-        {
-            get => _sortListBy;
-            set
-            {
-                if (_sortListBy != value)
-                {
-                    _sortListBy = value;
-                    OnPropertyChanged("SortListBy"); //Нетривиальная логика: последняя цифра отвечает за список, который будем изменять
-                    if (_sortListBy % 10 == (int)SortListParam.Book) OnPropertyChanged("BooksList");
-                    else if (_sortListBy % 10 == (int)SortListParam.Author) OnPropertyChanged("AuthorsList");
-                    else if (_sortListBy % 10 == (int)SortListParam.Publisher) OnPropertyChanged("PublishersList");
-                }
-            }
-        }
-
-        private string _searchText;
-        private bool _isSearching = false;
-        public string SearchBook
-        {
-            get => _searchText;
-            set
-            {
-                _searchText = value.ToLower();
-                _isSearching = true;
-                OnPropertyChanged("BooksList");
-            }
-        }
-        public string SearchAuthor
-        {
-            get => _searchText;
-            set
-            {
-                _searchText = value.ToLower();
-                _isSearching = true;
-                OnPropertyChanged("AuthorsList");
-            }
-        }
-        public string SearchPublisher
-        {
-            get => _searchText;
-            set
-            {
-                _searchText = value.ToLower();
-                _isSearching = true;
-                OnPropertyChanged("PublishersList");
-            }
-        }
-
         private Dictionary<string, Book> _books;
         private Dictionary<string, Author> _authors;
         private Dictionary<string, Publisher> _publishers;
@@ -291,77 +240,30 @@ namespace Library
             return _catalogue;
         }
 
-        public IEnumerable<Book> BooksList
+        public ICollection<Book> BooksList
         {
             get
             {
-                if (_isSearching)
-                {
-                    _isSearching = false;
-                    return from book in _books.Values
-                           where book.Title.ToLower().Contains(_searchText)
-                           select book; 
-                }
-                if (SortListBy % 10 == (int)SortListParam.Book)
-                {
-                    switch (SortListBy / 10)
-                    {
-                        case (int)SortBookParam.Title: return _books.Values.OrderBy(x => x.Title);
-                        case (int)SortBookParam.Pages: return _books.Values.OrderBy(x => UInt32.TryParse(x.Pages, out var rez) ? rez : 0);
-                        case (int)SortBookParam.Year: return _books.Values.OrderBy(x => UInt32.TryParse(x.YearOfPublishing, out uint rez) ? rez : 0);
-                        case (int)SortBookParam.ISBN: return _books.Values.OrderBy(x => UInt64.TryParse(x.ISBN, out var rez) ? rez : 0);
-                    }
-                }
                 return _books.Values;
             }
         }
 
         public ICollection<string> BooksNamesList => _books.Keys;
 
-        public IEnumerable<Author> AuthorsList
+        public ICollection<Author> AuthorsList
         {
             get
             {
-                if (_isSearching)
-                {
-                    _isSearching = false;
-                    return from author in _authors.Values
-                           where author.FullName.ToLower().Contains(_searchText)
-                           select author;
-                }
-                if (SortListBy % 10 == (int)SortListParam.Author)
-                {
-                    switch (SortListBy / 10)
-                    {
-                        case (int)SortAuthorParam.Name: return _authors.Values.OrderBy(x => x.FullName);
-                        case (int)SortAuthorParam.Birthday: return _authors.Values.OrderBy(x => UInt32.TryParse(x.Birthday, out var rez) ? rez : 0);
-                    }
-                }
                 return _authors.Values;
             }
         }
 
         public ICollection<string> AuthorsNamesList => _authors.Keys;
 
-        public IEnumerable<Publisher> PublishersList
+        public ICollection<Publisher> PublishersList
         {
             get
             {
-                if (_isSearching)
-                {
-                    _isSearching = false;
-                    return from publisher in _publishers.Values
-                           where publisher.Name.ToLower().Contains(_searchText)
-                           select publisher;
-                }
-                if (SortListBy % 10 == (int)SortListParam.Publisher)
-                {
-                    switch (SortListBy / 10)
-                    {
-                        case (int)SortPublisherParam.Name: return _publishers.Values.OrderBy(x => x.Name);
-                        case (int)SortPublisherParam.City: return _publishers.Values.OrderBy(x => UInt32.TryParse(x.City, out var rez) ? rez : 0);
-                    }
-                }
                 return _publishers.Values;
             }
         }

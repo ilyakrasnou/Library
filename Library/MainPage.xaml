@@ -12,9 +12,9 @@
             <ToolbarItem Text="Sort by" Command="{Binding SortBooksListCommand}"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
-            <SearchBar Text="{Binding Catalogue.SearchBook}"/>
+            <SearchBar Text="{Binding SearchBook}"/>
             <ListView x:Name="BooksView" 
-                      ItemsSource="{Binding Catalogue.BooksList}"
+                      ItemsSource="{Binding BooksList}"
                       ItemSelected="BooksView_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -35,9 +35,9 @@
             <ToolbarItem Text="Sort by" Command="{Binding SortAuthorsListCommand}"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
-            <SearchBar Text="{Binding Catalogue.SearchAuthor}"/>
+            <SearchBar Text="{Binding SearchAuthor}"/>
             <ListView x:Name="AuthorsView" 
-                      ItemsSource="{Binding Catalogue.AuthorsList}"
+                      ItemsSource="{Binding AuthorsList}"
                       ItemSelected="AuthorsView_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -57,9 +57,9 @@
             <ToolbarItem Text="Sort by" Command="{Binding SortPublishersListCommand}"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
-            <SearchBar Text="{Binding Catalogue.SearchPublisher}"/>
+            <SearchBar Text="{Binding SearchPublisher}"/>
             <ListView x:Name="PublishersView"
-                      ItemsSource="{Binding Catalogue.PublishersList}"
+                      ItemsSource="{Binding PublishersList}"
                       ItemSelected="PublishersView_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>

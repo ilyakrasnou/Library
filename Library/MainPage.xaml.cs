@@ -20,7 +20,7 @@ namespace Library
             InitializeComponent();
             _catalogueViewModel = new CatalogueViewModel();
             BindingContext = _catalogueViewModel;
-            _catalogueViewModel.Catalogue.PropertyChanged += RefreshListView;
+            _catalogueViewModel.PropertyChanged += RefreshListView;
             //AddBook.Icon = (FileImageSource) ImageSource.FromFile("Library.ImageResources.icon_add.png") ;
             //AddBook.Icon.File = "Library.ImageResources.icon_add.png";
         }
@@ -60,17 +60,17 @@ namespace Library
             if (e.PropertyName == "BooksList")
             {
                 BooksView.ItemsSource = null;
-                BooksView.ItemsSource = _catalogueViewModel.Catalogue.BooksList;
+                BooksView.ItemsSource = _catalogueViewModel.BooksList;
             }
             if (e.PropertyName == "AuthorsList")
             {
                 AuthorsView.ItemsSource = null;
-                AuthorsView.ItemsSource = _catalogueViewModel.Catalogue.AuthorsList;
+                AuthorsView.ItemsSource = _catalogueViewModel.AuthorsList;
             }
             if (e.PropertyName == "PublishersList")
             {
                 PublishersView.ItemsSource = null;
-                PublishersView.ItemsSource = _catalogueViewModel.Catalogue.PublishersList;
+                PublishersView.ItemsSource = _catalogueViewModel.PublishersList;
             }
             /*IEnumerable itemsSourse;
             if (nameList == "BooksList")
@@ -95,7 +95,7 @@ namespace Library
 
         ~MainPage()
         {
-            _catalogueViewModel.Catalogue.PropertyChanged -= RefreshListView;
+            _catalogueViewModel.PropertyChanged -= RefreshListView;
         }
     }
 
