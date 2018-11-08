@@ -38,10 +38,12 @@
                 </ListView>
                 
             </Grid>
-            <Button Text="Edit" 
-                    Command="{Binding EditAuthorCommand}"/>
-            <Button Text="Remove" 
-                    Command="{Binding RemoveAuthorCommand}"/>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Edit" 
+                        Command="{Binding EditAuthorCommand}" HorizontalOptions="FillAndExpand"/>
+                <Button Text="Remove" 
+                        Command="{Binding RemoveAuthorCommand}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

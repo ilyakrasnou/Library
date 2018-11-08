@@ -16,14 +16,7 @@ namespace Library
         public AuthorPage(Author author)
         {
             InitializeComponent();
-            BindingContext = new AuthorViewModel(this, author);
-            ((AuthorViewModel)BindingContext).Author.PropertyChanged += RefreshBooksView;
-        }
-
-        public void RefreshBooksView(object sender, PropertyChangedEventArgs e)
-        {
-            BooksView.ItemsSource = null;
-            BooksView.ItemsSource = ((AuthorViewModel)BindingContext).Author;
+            BindingContext = new AuthorViewModel(author);
         }
 
         protected internal async void BooksView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -36,9 +29,12 @@ namespace Library
             }
         }
 
-        ~AuthorPage()
+        protected override void OnAppearing()
         {
-            ((AuthorViewModel)BindingContext).Author.PropertyChanged -= RefreshBooksView;
+            if (Catalogue.GetCatalogue().FindAuthor(((AuthorViewModel)BindingContext).Author.FullName) != ((AuthorViewModel)BindingContext).Author)
+                Navigation.PopAsync();
+            else
+                base.OnAppearing();
         }
     }
 }

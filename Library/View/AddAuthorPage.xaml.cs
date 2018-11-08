@@ -14,13 +14,13 @@ namespace Library
 		public AddAuthorPage()
 		{
 			InitializeComponent();
-            BindingContext = new AddAuthorViewModel(this);
+            BindingContext = new AddAuthorViewModel();
         }
 
         public AddAuthorPage(Book book, bool isAddToCatalogue)
         {
             InitializeComponent();
-            BindingContext = new AddAuthorViewModel(this, book, isAddToCatalogue);
+            BindingContext = new AddAuthorViewModel(book, isAddToCatalogue);
         }
 
         /*public AddAuthorPage(bool book)

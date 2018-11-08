@@ -76,7 +76,6 @@ namespace Library
             }
         }
         public string PublisherName { get => _publisher != null ? _publisher.Name : null; }
-        private List<string> Tags;
 
         //private string _names;
 
@@ -115,7 +114,7 @@ namespace Library
 
         public int Count => _authors.Count;
 
-        public Book(string title, List<Author> authors, string pages, string yearOfPublishing, string ISBN, Publisher publisher, string[] tags)
+        public Book(string title, List<Author> authors, string pages, string yearOfPublishing, string ISBN, Publisher publisher)
         {
             Title = title;
             _authors = new ObservableCollection<Author>();
@@ -126,12 +125,6 @@ namespace Library
             YearOfPublishing = yearOfPublishing;
             this.ISBN = ISBN;
             Publisher = publisher;
-            Tags = new List<string>();
-            if (tags != null)
-            {
-                foreach (var tag in tags)
-                    Tags.Add(tag);
-            }
         }
 
         public Book(string title)
@@ -168,15 +161,16 @@ namespace Library
         {
             get
             {
-                string names = null;
                 //_names = null;
                 if (_authors.Count != 0)
                 {
+                    string names = null;
                     names = _authors[0].FullName;
                     for (int i = 1; i < _authors.Count; ++i)
                         names = names + ',' + ' ' + _authors[i].FullName;
+                    return names;
                 }
-                return names;
+                else return "\t\t\t";
             }
         }
 

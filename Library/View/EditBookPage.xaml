@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Library;assembly=Library"
+             xmlns:local="clr-namespace:Library"
              xmlns:converterBool="clr-namespace:Library"
              x:Class="Library.EditBookPage">
     
     <ContentPage.Resources>
         <ResourceDictionary>
-            <!--<local:BoolToRenameButtonText x:Key="boolToRename" />-->
+            <local:BoolToRenameButtonText x:Key="boolToRename" />
             <converterBool:BoolToRenameButtonText x:Key="ConterterBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -24,7 +24,7 @@
                         <ViewCell>
                             <!--, Converter={StaticResource boolToRename}-->
                             <!--,  Converter={StaticResource ConterterBool}-->
-                            <Button Text="{Binding Path = CouldRename}" Command="{Binding RenameBookCommand}" CommandParameter=""/>
+                            <Button Text="{Binding Rename, Mode=OneWay}" Command="{Binding RenameBookCommand}" CommandParameter=""/>
                         </ViewCell>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
@@ -42,26 +42,27 @@
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>
-                            <Button Text="{Binding Book.AuthorsNames}" 
-                                    HorizontalOptions="StartAndExpand"
-                                    BackgroundColor="White" 
-                                    BorderColor="Gray"/>
+                            <Entry Text="{Binding Book.AuthorsNames}" InputTransparent="True" />
                         </ViewCell>
-
-                        <EntryCell x:Name="Tags" 
-                                   Label="tags: "/>
                         <EntryCell x:Name="Year" Label="Year: " 
                                    Keyboard="Numeric" 
                                    Text="{Binding Book.YearOfPublishing, Mode=TwoWay}"/>
-                        <EntryCell x:Name="Publisher" Label="Publisher: " Text="{Binding Path=Book.Publisher.Name}"/>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
-                                <Button Text="Add" Command="{Binding AddPublisherCommand}" HorizontalOptions="CenterAndExpand"/>
-                                <Button Text="Remove" Command="{Binding RemovePublisherCommand}" HorizontalOptions="CenterAndExpand"/>
+                                <Label x:Name="Publisher" Text="Publisher: "
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="StartAndExpand"/>
+                                <Button Text="Add" Command="{Binding AddPublisherCommand}"
+                                        VerticalOptions="Center"/>
+                                <Button Text="Remove" Command="{Binding RemovePublisherCommand}" 
+                                        VerticalOptions="Center"/>
                             </StackLayout>
                         </ViewCell>
+                        <ViewCell>
+                            <Entry Text="{Binding Path=Book.Publisher.Name}" InputTransparent="True"/>
+                        </ViewCell>
                         <EntryCell x:Name="Pages" Label="Pages: " 
-                                   Keyboard="Numeric" 
+                                   Keyboard="Numeric"
                                    Text="{Binding Book.Pages, Mode=TwoWay}"/>
                         <EntryCell x:Name="ISBN" Label="ISBN: " 
                                    Keyboard="Numeric" 

@@ -27,13 +27,13 @@ namespace Library
             this._books = new Dictionary<string, Book>();
             this._authors = new Dictionary<string, Author>();
             this._publishers = new Dictionary<string, Publisher>();
-            this.AddBook("Assembler", new[] { "Yurov", "Bagryanczev" }, "201", "2006", "98745623114", "Piter", new[] { "computer science", "programming" });
-            this.AddBook("Assemblerr. Practicum", new[] { "Yurov" }, "305", "2007", "9876521483", "Piter", new[] { "programming" });
+            this.AddBook("Assembler", new[] { "Yurov", "Bagryanczev" }, "201", "2006", "98745623114", "Piter");
+            this.AddBook("Assemblerr. Practicum", new[] { "Yurov" }, "305", "2007", "9876521483", "Piter");
             this.AddAuthor("Fichtengolcz", null, "1934", new[] { "Math analys t.1", "Math analys t.2", "Math analys t.3" });
             this.AddAuthor("Bubela", null, null, new[] { "Dragon", "Adept", "Warrior" });
         }
 
-        public bool AddBook(string title, string[] nameAuthors, string pages, string yearOfPublishing, string ISBN, string namePublisher, string[] tags)
+        public bool AddBook(string title, string[] nameAuthors, string pages, string yearOfPublishing, string ISBN, string namePublisher)
         {
             bool isAuthorAdded = false;
             bool isPublisherAdded = false;
@@ -57,7 +57,7 @@ namespace Library
                 _publishers.Add(publisher.Name, publisher);
                 isPublisherAdded = true;
             }
-            Book newBook = new Book(title, authors, pages, yearOfPublishing, ISBN, publisher, tags);
+            Book newBook = new Book(title, authors, pages, yearOfPublishing, ISBN, publisher);
             _books.Add(newBook.Title, newBook);
             foreach (var author in authors)
                 author.AddBook(newBook);

@@ -12,10 +12,10 @@ namespace Library
     class EditPublisherViewModel: INotifyPropertyChanged
     {
         public Publisher Publisher { get; protected set; }
-        private readonly Page _page;
         public string NewTitle { get; set; }
         private bool _couldRename;
-        public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); } }
+        public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
+        public string Rename => _couldRename ? "Save" : "Rename";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,9 +28,8 @@ namespace Library
         public ICommand RemoveBookCommand { get; protected set; }
         public ICommand RenamePublisherCommand { get; protected set; }
 
-        public EditPublisherViewModel(Page page)
+        public EditPublisherViewModel()
         {
-            _page = page ?? throw new NotImplementedException();
             Publisher = new Publisher();
             NewTitle = null;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -38,11 +37,10 @@ namespace Library
             RenamePublisherCommand = new Command(RenamePublisher);
         }
 
-        public EditPublisherViewModel(Page page, Publisher publisher)
+        public EditPublisherViewModel(Publisher publisher)
         {
             Publisher = publisher;
             NewTitle = Publisher.Name;
-            _page = page ?? throw new NotImplementedException();
             AddBookCommand = new Command(OnAddBookClicked);
             RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenamePublisherCommand = new Command(RenamePublisher);
@@ -70,7 +68,7 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await _page.Navigation.PushModalAsync(new AddBookPage(Publisher, true)); });
+            config.SetDestructive("New book", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage(Publisher, true)); });
             config.SetCancel("Cancel");
             foreach (var book in catalogue.BooksList)
             {

@@ -24,8 +24,10 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="Edit" Command="{Binding EditPublisherCommand}"/>
-            <Button Text="Remove" Command="{Binding RemovePublisherComand}"/>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Edit" Command="{Binding EditPublisherCommand}" HorizontalOptions="FillAndExpand"/>
+                <Button Text="Remove" Command="{Binding RemovePublisherComand}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

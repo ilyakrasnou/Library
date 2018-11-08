@@ -30,8 +30,7 @@ namespace Library
             {
                 if (_sortListBy != value)
                 {
-                    _sortListBy = value;        //Нетривиальная логика: последняя цифра отвечает за список, который будем изменять
-                    //OnPropertyChanged("SortListBy");     
+                    _sortListBy = value;        //Нетривиальная логика: последняя цифра отвечает за список, который будем изменять    
                     if (_sortListBy % 10 == (int)SortListParam.Book) OnPropertyChanged("BooksList");
                     else if (_sortListBy % 10 == (int)SortListParam.Author) OnPropertyChanged("AuthorsList");
                     else if (_sortListBy % 10 == (int)SortListParam.Publisher) OnPropertyChanged("PublishersList");
@@ -104,7 +103,7 @@ namespace Library
                 if (_isSearching)
                 {
                     _isSearching = false;
-                    return from book in Catalogue.BooksList
+                    return from book in BooksList
                            where book.Title.ToLower().Contains(_searchText)
                            select book;
                 }
@@ -129,7 +128,7 @@ namespace Library
                 if (_isSearching)
                 {
                     _isSearching = false;
-                    return from author in Catalogue.AuthorsList
+                    return from author in AuthorsList
                            where author.FullName.ToLower().Contains(_searchText)
                            select author;
                 }
@@ -152,7 +151,7 @@ namespace Library
                 if (_isSearching)
                 {
                     _isSearching = false;
-                    return from publisher in Catalogue.PublishersList
+                    return from publisher in PublishersList
                            where publisher.Name.ToLower().Contains(_searchText)
                            select publisher;
                 }

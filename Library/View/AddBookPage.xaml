@@ -17,38 +17,38 @@
                                        HorizontalOptions="StartAndExpand"/>
                                 <Button x:Name="AddAuthor" 
                                         Text="Add author" 
+                                        IsVisible="{Binding IsFullAdd}"
                                         Command="{Binding AddAuthorCommand}"
                                         VerticalOptions="Center"/>
                                 <Button x:Name="RemoveAuthor" 
                                         Text="Remove author" 
+                                        IsVisible="{Binding IsFullAdd}"
                                         Command="{Binding RemoveAuthorCommand}"
                                         VerticalOptions="Center"/>
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>
-                            <Button Text="{Binding Book.AuthorsNames}" 
-                                    HorizontalOptions="StartAndExpand"
-                                    BackgroundColor="White" 
-                                    BorderColor="Gray"
-                                    IsVisible="{Binding IsFullAdd}"/>
+                            <Entry Text="{Binding Book.AuthorsNames}" InputTransparent="True" />
                         </ViewCell>
-
-                        <EntryCell x:Name="Tags" 
-                                   Label="tags: "/>
                         <EntryCell x:Name="Year" Label="Year: " 
                                    Keyboard="Numeric" 
                                    Text="{Binding Book.YearOfPublishing, Mode=TwoWay}"/>
-                        <EntryCell x:Name="Publisher" Label="Publisher: " Text="{Binding Path=Book.Publisher.Name}"
-                                   IsEnabled="{Binding IsFullAdd}"/>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
+                                <Label x:Name="Publisher" Text="Publisher: "
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="StartAndExpand"/>
                                 <Button Text="Add" Command="{Binding AddPublisherCommand}"
                                         IsVisible="{Binding IsFullAdd}" 
-                                        HorizontalOptions="CenterAndExpand"/>
+                                        VerticalOptions="Center"/>
                                 <Button Text="Remove" Command="{Binding RemovePublisherCommand}"
                                         IsVisible="{Binding IsFullAdd}"
-                                        HorizontalOptions="CenterAndExpand"/>
+                                        VerticalOptions="Center"/>
                             </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <Entry Text="{Binding Path=Book.Publisher.Name}"
+                                   InputTransparent="True"/>
                         </ViewCell>
                         <EntryCell x:Name="Pages" Label="Pages: " 
                                    Keyboard="Numeric" 
@@ -60,8 +60,8 @@
                 </TableRoot>
             </TableView>
             <StackLayout Orientation="Horizontal">
-                <Button Text="Add" Command="{Binding AddBookCommand}" HorizontalOptions="CenterAndExpand"/>
-                <Button Text="Back" Clicked="OnBackClicked" HorizontalOptions="CenterAndExpand"/>
+                <Button Text="Add" Command="{Binding AddBookCommand}" HorizontalOptions="FillAndExpand"/>
+                <Button Text="Back" Clicked="OnBackClicked" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

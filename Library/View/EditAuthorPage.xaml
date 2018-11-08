@@ -12,7 +12,7 @@
                         </ViewCell>-->
                         <EntryCell x:Name="FullName" Label="Full name: " Text="{Binding Author.FullName}" IsEnabled="{Binding CouldRename}"/>
                         <ViewCell>
-                            <Button Text="{Binding CouldRename}" Command="{Binding RenameAuthorCommand}"/>
+                            <Button Text="{Binding Rename}" Command="{Binding RenameAuthorCommand}"/>
                         </ViewCell>
                         <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday, Mode=TwoWay}"/>
                         <ViewCell>

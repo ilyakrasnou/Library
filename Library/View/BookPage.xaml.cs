@@ -21,7 +21,16 @@ namespace Library
         public BookPage(Book book)
         {          
             InitializeComponent();
-            BindingContext = new BookViewModel(this, book);
+            BindingContext = new BookViewModel(book);
         }
+
+        protected override void OnAppearing()
+        {
+            if (Catalogue.GetCatalogue().FindBook(((BookViewModel)BindingContext).Book.Title) != ((BookViewModel)BindingContext).Book)
+                Navigation.PopAsync();
+            else
+                base.OnAppearing();
+        }
+
     }
 }

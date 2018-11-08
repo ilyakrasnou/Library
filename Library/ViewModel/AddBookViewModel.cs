@@ -10,8 +10,6 @@ namespace Library
     class AddBookViewModel
     {
         public Book Book { get; protected set; }
-        private readonly Page _page;
-        //public string NewTitle { get; set; }
         public bool IsFullAdd { get => _authorForAddition == null ? _publisherForAddition == null ? true : false : false; }
         private Author _authorForAddition;
         private Publisher _publisherForAddition;
@@ -23,9 +21,8 @@ namespace Library
         public ICommand AddPublisherCommand { get; protected set; }
         public ICommand RemovePublisherCommand { get; protected set; }
 
-        public AddBookViewModel(Page page, Author author, bool isAddToCatalogue)
+        public AddBookViewModel(Author author, bool isAddToCatalogue)
         {
-            _page = page ?? throw new NotImplementedException();
             Book = new Book();
             //NewTitle = null;
             _authorForAddition = author;
@@ -37,11 +34,9 @@ namespace Library
             AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
-        public AddBookViewModel(Page page, Publisher publisher, bool isAddToCatalogue)
+        public AddBookViewModel(Publisher publisher, bool isAddToCatalogue)
         {
-            _page = page ?? throw new NotImplementedException();
             Book = new Book();
-            //NewTitle = null;
             _publisherForAddition = publisher;
             _isAddToCatalogue = isAddToCatalogue;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
@@ -51,11 +46,9 @@ namespace Library
             AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
-        public AddBookViewModel(Page page)
+        public AddBookViewModel()
         {
-            _page = page ?? throw new NotImplementedException();
             Book = new Book();
-            //NewTitle = null;
             _isAddToCatalogue = true;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
@@ -69,7 +62,7 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add author: ");
-            config.SetDestructive("New author", async () => { await _page.Navigation.PushModalAsync(new AddAuthorPage(Book, false)); });
+            config.SetDestructive("New author", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddAuthorPage(Book, false)); });
             config.SetCancel("Cancel");
             foreach (var author in catalogue.AuthorsList)
             {
@@ -100,13 +93,13 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Book.Title))
             {
-                _page.DisplayAlert("Error", "This book can't be added.\nBook must have Title!", "Cancel");
+                App.Current.MainPage.DisplayAlert("Error", "This book can't be added.\nBook must have Title!", "Cancel");
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindAuthor(Book.Title) != null)
             {
-                _page.DisplayAlert("Error", "This book can't be added.\nThere is a book with such title!", "Cancel");
+                App.Current.MainPage.DisplayAlert("Error", "This book can't be added.\nThere is a book with such title!", "Cancel");
                 return;
             }
             if (IsFullAdd)
@@ -147,7 +140,7 @@ namespace Library
             config.SetDestructive("New publisher", async () => 
             {
                 OnRemovePublisherClicked(null);
-                await _page.Navigation.PushModalAsync(new AddPublisherPage(Book, false));
+                await App.Current.MainPage.Navigation.PushModalAsync(new AddPublisherPage(Book, false));
             });
             config.SetCancel("Cancel");
             foreach (var publisher in catalogue.PublishersList)

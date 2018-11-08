@@ -14,7 +14,6 @@
                     BackgroundColor="White" BorderColor="White" 
                     Text="{Binding Path=Book.AuthorsNames}" 
                     Command="{Binding AuthorsNamesCommand}"/>
-            <Label Text="Tags"/>
             <Label Text="Year"/>
             <Label Text="{Binding Path=Book.YearOfPublishing}"/>
             <Label Text="Publisher"/>
@@ -26,8 +25,10 @@
             <Label Text="{Binding Book.Pages}"/>
             <Label Text="ISBN"/>
             <Label Text="{Binding Book.ISBN}"/>
-            <Button x:Name="Add" Text="Edit" Command="{Binding EditCommand}"/>
-            <Button x:Name="Remove" Text="Remove" Command="{Binding RemoveCommand}"/>
+            <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
+                <Button x:Name="Add" Text="Edit" Command="{Binding EditCommand}" HorizontalOptions="FillAndExpand"/>
+                <Button x:Name="Remove" Text="Remove" Command="{Binding RemoveCommand}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

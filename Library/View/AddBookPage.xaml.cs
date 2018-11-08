@@ -15,19 +15,19 @@ namespace Library
 		public AddBookPage ()
 		{
 			InitializeComponent();
-            BindingContext = new AddBookViewModel(this);
+            BindingContext = new AddBookViewModel();
 		}
 
         public AddBookPage(Author author, bool isAddToCatalogue)
         {
             InitializeComponent();
-            BindingContext = new AddBookViewModel(this, author, isAddToCatalogue);
+            BindingContext = new AddBookViewModel(author, isAddToCatalogue);
         }
 
         public AddBookPage(Publisher publisher, bool isAddToCatalogue)
         {
             InitializeComponent();
-            BindingContext = new AddBookViewModel(this, publisher, isAddToCatalogue);
+            BindingContext = new AddBookViewModel(publisher, isAddToCatalogue);
         }
 
         private void OnBackClicked(object sender, EventArgs e)

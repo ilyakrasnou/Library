@@ -15,13 +15,13 @@ namespace Library
         public AddPublisherPage()
         {
             InitializeComponent();
-            BindingContext = new AddPublisherViewModel(this);
+            BindingContext = new AddPublisherViewModel();
         }
 
         public AddPublisherPage(Book book, bool isAddToCatalogue)
         {
             InitializeComponent();
-            BindingContext = new AddPublisherViewModel(this, book, isAddToCatalogue);
+            BindingContext = new AddPublisherViewModel(book, isAddToCatalogue);
         }
 
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)

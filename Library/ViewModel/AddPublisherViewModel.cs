@@ -10,8 +10,6 @@ namespace Library
     class AddPublisherViewModel
     {
         public Publisher Publisher { get; protected set; }
-        private readonly Page _page;
-        //public string NewName { get; set; }
         public bool IsFullAdd { get => _bookForAddition == null ? true : false; }
         private Book _bookForAddition;
         private bool _isAddToCatalogue;
@@ -20,11 +18,9 @@ namespace Library
         public ICommand RemoveBookCommand { get; protected set; }
         public ICommand AddBookCommand { get; protected set; }
 
-        public AddPublisherViewModel(Page page, Book book, bool isAddToCatalogue)
+        public AddPublisherViewModel(Book book, bool isAddToCatalogue)
         {
-            _page = page ?? throw new NotImplementedException();
             Publisher = new Publisher();
-            //NewName = null;
             _bookForAddition = book;
             _isAddToCatalogue = isAddToCatalogue;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -32,11 +28,9 @@ namespace Library
             AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
-        public AddPublisherViewModel(Page page)
+        public AddPublisherViewModel()
         {
-            _page = page ?? throw new NotImplementedException();
             Publisher = new Publisher();
-            //NewName = null;
             _bookForAddition = null;
             _isAddToCatalogue = true;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -49,7 +43,7 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await _page.Navigation.PushModalAsync(new AddBookPage(Publisher, false)); });
+            config.SetDestructive("New book", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage(Publisher, false)); });
             config.SetCancel("Cancel");
             foreach (var book in catalogue.BooksList)
             {
@@ -84,13 +78,13 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Publisher.Name))
             {
-                _page.DisplayAlert("Error", "This publisher can't be added.\nPublisher must have full name!", "Cancel");
+                App.Current.MainPage.DisplayAlert("Error", "This publisher can't be added.\nPublisher must have full name!", "Cancel");
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindPublisher(Publisher.Name) != null)
             {
-                _page.DisplayAlert("Error", "This publisher can't be added.\nThere is an publisher with such name!", "Cancel");
+                App.Current.MainPage.DisplayAlert("Error", "This publisher can't be added.\nThere is an publisher with such name!", "Cancel");
                 return;
             }
             if (IsFullAdd)

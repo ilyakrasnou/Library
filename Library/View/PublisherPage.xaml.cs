@@ -16,8 +16,7 @@ namespace Library
         public PublisherPage(Publisher publisher)
         {
             InitializeComponent();
-            BindingContext = new PublisherViewModel(this, publisher);
-            ((PublisherViewModel)BindingContext).Publisher.PropertyChanged += RefreshBooksView;
+            BindingContext = new PublisherViewModel(publisher);
         }
 
         protected internal async void BooksView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -29,15 +28,12 @@ namespace Library
             }
         }
 
-        public void RefreshBooksView(object sender, PropertyChangedEventArgs e)
+        protected override void OnAppearing()
         {
-            BooksView.ItemsSource = null;
-            BooksView.ItemsSource = ((PublisherViewModel)BindingContext).Publisher;
-        }
-
-        ~PublisherPage()
-        {
-            ((PublisherViewModel)BindingContext).Publisher.PropertyChanged -= RefreshBooksView;
+            if (Catalogue.GetCatalogue().FindPublisher(((PublisherViewModel)BindingContext).Publisher.Name) != ((PublisherViewModel)BindingContext).Publisher)
+                Navigation.PopAsync();
+            else
+                base.OnAppearing();
         }
     }
 }

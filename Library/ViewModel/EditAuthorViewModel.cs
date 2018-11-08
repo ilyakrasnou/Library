@@ -13,10 +13,10 @@ namespace Library
     class EditAuthorViewModel: INotifyPropertyChanged
     {
         public Author Author { get; protected set; }
-        private readonly Page _page;
         public string NewTitle { get; set; }
         private bool _couldRename;
-        public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); } }
+        public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
+        public string Rename => _couldRename ? "Save" : "Rename";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -29,9 +29,8 @@ namespace Library
         public ICommand RemoveBookCommand { get; protected set; }
         public ICommand RenameAuthorCommand { get; protected set; }
 
-        public EditAuthorViewModel(Page page)
+        public EditAuthorViewModel()
         {
-            _page = page ?? throw new NotImplementedException();
             Author = new Author();
             NewTitle = null;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -39,11 +38,10 @@ namespace Library
             RenameAuthorCommand = new Command(RenameAuthor);
         }
 
-        public EditAuthorViewModel(Page page, Author author)
+        public EditAuthorViewModel(Author author)
         {
             Author = author;
             NewTitle = Author.FullName;
-            _page = page ?? throw new NotImplementedException();
             AddBookCommand = new Command(OnAddBookClicked);
             RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenameAuthorCommand = new Command(RenameAuthor);
@@ -71,7 +69,7 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await _page.Navigation.PushModalAsync(new AddBookPage(Author, true)); });
+            config.SetDestructive("New book", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage(Author, true)); });
             config.SetCancel("Cancel");
             foreach (var book in catalogue.BooksList)
             {

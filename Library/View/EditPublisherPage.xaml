@@ -12,7 +12,7 @@
                         </ViewCell>-->
                         <EntryCell x:Name="Name" Label="Name: " Text="{Binding Publisher.Name}" IsEnabled="{Binding CouldRename}"/>
                         <ViewCell>
-                            <Button Text="{Binding CouldRename}" Command="{Binding RenamePublisherCommand}"/>
+                            <Button Text="{Binding Rename}" Command="{Binding RenamePublisherCommand}"/>
                         </ViewCell>
                         <EntryCell x:Name="City" Label="City: " Text="{Binding Publisher.City, Mode=TwoWay}"/>
                         <ViewCell>

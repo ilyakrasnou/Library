@@ -11,8 +11,6 @@ namespace Library
     class AddAuthorViewModel
     {
         public Author Author { get; protected set; }
-        private readonly Page _page;
-//        public string NewFullName { get; set; }
         public bool IsFullAdd { get => _bookForAddition == null ? true : false; }
         private Book _bookForAddition;
         private bool _isAddToCatalogue;
@@ -21,11 +19,9 @@ namespace Library
         public ICommand RemoveBookCommand { get; protected set; }
         public ICommand AddBookCommand { get; protected set; }
 
-        public AddAuthorViewModel(Page page, Book book, bool isAddToCatalogue)
+        public AddAuthorViewModel(Book book, bool isAddToCatalogue)
         {
-            _page = page ?? throw new NotImplementedException();
             Author = new Author();
-            //NewFullName = null;
             _bookForAddition = book;
             _isAddToCatalogue = isAddToCatalogue;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -33,11 +29,9 @@ namespace Library
             AddAuthorCommand = new Command(OnAddAuthorClicked);
         }
 
-        public AddAuthorViewModel(Page page)
+        public AddAuthorViewModel()
         {
-            _page = page ?? throw new NotImplementedException();
             Author = new Author();
-            //NewFullName = null;
             _bookForAddition = null;
             _isAddToCatalogue = true;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -50,7 +44,7 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await _page.Navigation.PushModalAsync(new AddBookPage(Author, false)); });
+            config.SetDestructive("New book", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage(Author, false)); });
             config.SetCancel("Cancel");
             foreach (var book in catalogue.BooksList)
             {
@@ -82,13 +76,13 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Author.FullName))
             {
-                _page.DisplayAlert("Error", "This author can't be added.\nAuthor must have full name!", "Cancel");
+                App.Current.MainPage.DisplayAlert("Error", "This author can't be added.\nAuthor must have full name!", "Cancel");
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindAuthor(Author.FullName) != null)
             {
-                _page.DisplayAlert("Error", "This author can't be added.\nThere is an author with such full name!", "Cancel");
+                App.Current.MainPage.DisplayAlert("Error", "This author can't be added.\nThere is an author with such full name!", "Cancel");
                 return;
             }
             if (IsFullAdd)
