@@ -2,6 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Library.AuthorPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Edit" Command="{Binding EditAuthorCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Remove" Order="Secondary" Command="{Binding RemoveAuthorCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{Binding Author.FullName}"
@@ -22,7 +26,7 @@
                     <Label Text="Few words"/>
                     
                 </StackLayout>
-                <ListView x:Name="BooksView" ItemsSource="{Binding Author.Books}" 
+                <ListView x:Name="BooksView" Header="Books: " ItemsSource="{Binding Author.Books}" 
                           ItemSelected="BooksView_ItemSelected" 
                           HasUnevenRows="True" Grid.Row="1" 
                           Grid.Column="0">
@@ -38,12 +42,12 @@
                 </ListView>
                 
             </Grid>
-            <StackLayout Orientation="Horizontal">
+            <!--<StackLayout Orientation="Horizontal">
                 <Button Text="Edit" 
                         Command="{Binding EditAuthorCommand}" HorizontalOptions="FillAndExpand"/>
                 <Button Text="Remove" 
                         Command="{Binding RemoveAuthorCommand}" HorizontalOptions="FillAndExpand"/>
-            </StackLayout>
+            </StackLayout>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

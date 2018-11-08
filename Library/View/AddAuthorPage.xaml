@@ -4,9 +4,9 @@
              x:Class="Library.AddAuthorPage">
     <ContentPage.Content>
         <StackLayout>
-            <TableView Intent="Data">
+            <TableView>
                 <TableRoot>
-                    <TableSection>
+                    <TableSection x:Name="AddTableSection">
                         <EntryCell x:Name="FullName" Label="Full name: " Text="{Binding Author.FullName, Mode=TwoWay}"/>
                         <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday, Mode=TwoWay}"/>
                         <ViewCell>
@@ -15,19 +15,6 @@
                                 <Button x:Name="AddBook" IsVisible="{Binding IsFullAdd}" Text="Add book" Command="{Binding AddBookCommand}" />
                                 <Button x:Name="RemoveAuthor" Text="Remove book" Command="{Binding RemoveBookCommand}" IsVisible="{Binding IsFullAdd}" />
                             </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <ListView x:Name="BooksView" IsEnabled="{Binding IsFullAdd}" IsVisible="{Binding IsFullAdd}" ItemsSource="{Binding Author.Books}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <ViewCell>
-                                            <ViewCell.View>
-                                                <Label Text="{Binding Title}"/>
-                                            </ViewCell.View>
-                                        </ViewCell>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
                         </ViewCell>
                     </TableSection>
                 </TableRoot>

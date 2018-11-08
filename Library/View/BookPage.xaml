@@ -2,6 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Library.BookPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Text="Edit" Command="{Binding EditCommand}" Order="Secondary" />
+        <ToolbarItem Text="Remove" Command="{Binding RemoveCommand}" Order="Secondary"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <Label x:Name="BookTitle" Text="{Binding Path=Book.Title}"
@@ -25,10 +29,10 @@
             <Label Text="{Binding Book.Pages}"/>
             <Label Text="ISBN"/>
             <Label Text="{Binding Book.ISBN}"/>
-            <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
+            <!--<StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
                 <Button x:Name="Add" Text="Edit" Command="{Binding EditCommand}" HorizontalOptions="FillAndExpand"/>
                 <Button x:Name="Remove" Text="Remove" Command="{Binding RemoveCommand}" HorizontalOptions="FillAndExpand"/>
-            </StackLayout>
+            </StackLayout>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

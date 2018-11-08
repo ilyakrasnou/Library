@@ -15,6 +15,31 @@ namespace Library
 		{
 			InitializeComponent();
             BindingContext = new AddAuthorViewModel();
+
+            AddTableSection.Add(new ViewCell
+            {
+                View = new ListView
+                {
+                    // Source of data items.
+                    ItemsSource = ((AddAuthorViewModel)BindingContext).Author.Books,
+
+                    // Define template for displaying each item.
+                    // (Argument of DataTemplate constructor is called for 
+                    //      each item; it must return a Cell derivative.)
+                    ItemTemplate = new DataTemplate(() =>
+                    {
+                        // Create views with bindings for displaying each property.
+                        Label nameLabel = new Label();
+                        nameLabel.SetBinding(Label.TextProperty, "Title");
+
+                        // Return an assembled ViewCell.
+                        return new ViewCell
+                        {
+                            View = nameLabel
+                        };
+                    })
+                }
+            });
         }
 
         public AddAuthorPage(Book book, bool isAddToCatalogue)
@@ -23,20 +48,14 @@ namespace Library
             BindingContext = new AddAuthorViewModel(book, isAddToCatalogue);
         }
 
-        /*public AddAuthorPage(bool book)
-        {
-            InitializeComponent();
-            BindingContext = new AddAuthorViewModel(this);
-        }*/
-
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
         {
             var action = await DisplayActionSheet("Do you really like to delete this book?", "Cancel", "Ok");
             if (action == "Cancel") return;
             ((AddAuthorViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
-            var binding = BooksView.ItemsSource;
-            BooksView.ItemsSource = null;
-            BooksView.ItemsSource = binding;
+            var binding = ((ListView)sender).ItemsSource;
+            ((ListView)sender).ItemsSource = null;
+            ((ListView)sender).ItemsSource = binding;
         }
 
         private void OnBackClicked(object sender, EventArgs e)

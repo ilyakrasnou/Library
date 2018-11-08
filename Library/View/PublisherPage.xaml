@@ -2,13 +2,17 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Library.PublisherPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Edit" Command="{Binding EditPublisherCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Remove" Command="{Binding RemovePublisherComand}" Order="Secondary"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{Binding Publisher.Name}"
                 HorizontalOptions="CenterAndExpand" />
             <Label Text="City"/>
             <Label Text="{Binding Publisher.City}"/>
-            <ListView x:Name="BooksView" 
+            <ListView x:Name="BooksView" Header="Books: "
                       ItemsSource="{Binding Publisher.Books}" 
                       HasUnevenRows="True" 
                       ItemSelected="BooksView_ItemSelected">
@@ -24,10 +28,10 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <StackLayout Orientation="Horizontal">
+            <!--<StackLayout Orientation="Horizontal">
                 <Button Text="Edit" Command="{Binding EditPublisherCommand}" HorizontalOptions="FillAndExpand"/>
                 <Button Text="Remove" Command="{Binding RemovePublisherComand}" HorizontalOptions="FillAndExpand"/>
-            </StackLayout>
+            </StackLayout>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

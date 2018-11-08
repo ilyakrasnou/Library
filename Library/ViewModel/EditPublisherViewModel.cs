@@ -72,7 +72,7 @@ namespace Library
             config.SetCancel("Cancel");
             foreach (var book in catalogue.BooksList)
             {
-                if (!Publisher.ContainsBook(book))
+                if (book.Publisher == null && !Publisher.ContainsBook(book))
                     config.Add(book.Title, () =>
                     {
                         book.Publisher = Publisher;

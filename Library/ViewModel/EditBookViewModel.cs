@@ -66,10 +66,7 @@ namespace Library
                     NewTitle = Book.Title;
                     OnPropertyChanged(NewTitle);
                 }
-                //((Button)sender).Text = "Rename";
             }
-            //else
-                //((View)sender).Text = "Save";
             CouldRename = !CouldRename;
         }
 
@@ -108,16 +105,6 @@ namespace Library
                 });
             }
             UserDialogs.Instance.ActionSheet(config);
-
-            /*var action = await _page.DisplayActionSheet("Select author to remove", "Cancel", null, Book.AuthorsToStringArray());
-            if (action == "Cancel") return;
-            Catalogue catalogue = Catalogue.GetCatalogue();
-            var author = catalogue.FindAuthor(action);
-            if (author == null) return;
-            Book.RemoveAuthor(author);
-            author.RemoveBook(Book);
-            if (author.IsEmpty())
-                catalogue.RemoveAuthor(author);*/
         }
 
         protected void OnAddPublisherClicked(object sender)

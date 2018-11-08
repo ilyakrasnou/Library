@@ -8,8 +8,8 @@
             <ToolbarItem Command="{Binding AddBookCommand}" Icon="{converter:ImageResource Source='Library.ImageResources.icon_add.png'}"/>
         </ContentPage.ToolbarItems>-->
         <ContentPage.ToolbarItems>
-            <ToolbarItem x:Name="AddBook" Command="{Binding AddBookCommand}"/>
-            <ToolbarItem Text="Sort by" Command="{Binding SortBooksListCommand}"/>
+            <ToolbarItem Text="Add book" Order="Secondary" Command="{Binding AddBookCommand}"/>
+            <ToolbarItem Text="Sort by" Order="Secondary" Command="{Binding SortBooksListCommand}"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
             <SearchBar Text="{Binding SearchBook}"/>
@@ -31,8 +31,8 @@
     </ContentPage>
     <ContentPage Title="Authors">
         <ContentPage.ToolbarItems>
-            <ToolbarItem x:Name="AddAuthor" Text="Add author" Command="{Binding AddAuthorCommand}"/>
-            <ToolbarItem Text="Sort by" Command="{Binding SortAuthorsListCommand}"/>
+            <ToolbarItem Text="Add author" Order="Secondary" Command="{Binding AddAuthorCommand}"/>
+            <ToolbarItem Text="Sort by" Order="Secondary" Command="{Binding SortAuthorsListCommand}"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
             <SearchBar Text="{Binding SearchAuthor}"/>
@@ -53,8 +53,8 @@
     </ContentPage>
     <ContentPage Title="Publishers">
         <ContentPage.ToolbarItems>
-            <ToolbarItem x:Name="AddPublisher" Text="Add publisher" Command="{Binding AddPublisherCommand}"/>
-            <ToolbarItem Text="Sort by" Command="{Binding SortPublishersListCommand}"/>
+            <ToolbarItem Text="Add publisher" Order="Secondary" Command="{Binding AddPublisherCommand}"/>
+            <ToolbarItem Text="Sort by" Order="Secondary" Command="{Binding SortPublishersListCommand}"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
             <SearchBar Text="{Binding SearchPublisher}"/>

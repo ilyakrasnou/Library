@@ -4,9 +4,9 @@
              x:Class="Library.AddPublisherPage">
     <ContentPage.Content>
         <StackLayout>
-            <TableView Intent="Data">
+            <TableView>
                 <TableRoot>
-                    <TableSection>
+                    <TableSection x:Name="AddTableSection">
                         <EntryCell x:Name="Name" Label="Name: " Text="{Binding Publisher.Name, Mode=TwoWay}"/>
                         <EntryCell x:Name="City" Label="City: " Text="{Binding Publisher.City, Mode=TwoWay}"/>
                         <ViewCell>
@@ -16,7 +16,7 @@
                                 <Button x:Name="RemoveAuthor" Text="Remove book" Command="{Binding RemoveBookCommand}" IsVisible="{Binding IsFullAdd}" />
                             </StackLayout>
                         </ViewCell>
-                        <ViewCell>
+                        <!--<ViewCell>
                             <ListView x:Name="BooksView" IsEnabled="{Binding IsFullAdd}" IsVisible="{Binding IsFullAdd}" ItemsSource="{Binding Publisher.Books}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
@@ -28,7 +28,7 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                        </ViewCell>
+                        </ViewCell>-->
                     </TableSection>
                 </TableRoot>
             </TableView>
