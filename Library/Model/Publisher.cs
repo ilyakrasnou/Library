@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
 using Xamarin.Forms;
 using System.Globalization;
 
 namespace Library
 {
+    [DataContract (IsReference = true)]
     public class Publisher : IEnumerable<Book>, INotifyPropertyChanged
     {
         private string _name;
+        [DataMember]
         public string Name
         {
             get => _name;
@@ -24,6 +27,7 @@ namespace Library
             }
         }
         private string _city;
+        [DataMember (EmitDefaultValue = false)]
         public string City
         {
             get => _city;
@@ -35,6 +39,7 @@ namespace Library
                 OnPropertyChanged();
             }
         }
+        [DataMember]
         private ObservableCollection<Book> _books;
 
         public ObservableCollection<Book> Books => _books;

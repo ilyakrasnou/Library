@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Globalization;
 using Xamarin.Forms;
 using System.Text;
 
 namespace Library
 {
+    [DataContract (IsReference = true)]
     public class Book : IEnumerable<Author>, INotifyPropertyChanged
     {
+        [DataMember]
         private string _title;
         public string Title
         {
@@ -23,8 +26,10 @@ namespace Library
                 OnPropertyChanged();
             }
         }
+        [DataMember]
         private ObservableCollection<Author> _authors;
         public ObservableCollection<Author> Authors => _authors;
+        [DataMember(EmitDefaultValue = false)]
         private uint? _pages;
         public string Pages
         {
@@ -39,6 +44,7 @@ namespace Library
                 OnPropertyChanged();
             }
         }
+        [DataMember(EmitDefaultValue = false)]
         private uint? _yearOfPublishing;
         public string YearOfPublishing
         {
@@ -52,6 +58,7 @@ namespace Library
                 OnPropertyChanged();
             }
         }
+        [DataMember(EmitDefaultValue = false)]
         private ulong? _ISBN;
         public string ISBN
         {
@@ -65,6 +72,7 @@ namespace Library
                 OnPropertyChanged();
             }
         }
+        [DataMember(EmitDefaultValue = false)]
         private Publisher _publisher;
         public Publisher Publisher
         {
@@ -76,8 +84,6 @@ namespace Library
             }
         }
         public string PublisherName { get => _publisher != null ? _publisher.Name : null; }
-
-        //private string _names;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

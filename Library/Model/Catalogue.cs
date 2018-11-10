@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Library
 {
+    [DataContract (IsReference = true)]
     class Catalogue: INotifyPropertyChanged
     {
+        private const string _fileOfDataBase = "FileCatalogue.txt";
         private static Catalogue _catalogue;
 
+        [DataMember]
         private Dictionary<string, Book> _books;
+        [DataMember]
         private Dictionary<string, Author> _authors;
+        [DataMember]
         private Dictionary<string, Publisher> _publishers;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -24,13 +32,15 @@ namespace Library
 
         private Catalogue()
         {
-            this._books = new Dictionary<string, Book>();
+            throw new NotImplementedException();
+            /*this._books = new Dictionary<string, Book>();
             this._authors = new Dictionary<string, Author>();
             this._publishers = new Dictionary<string, Publisher>();
             this.AddBook("Assembler", new[] { "Yurov", "Bagryanczev" }, "201", "2006", "98745623114", "Piter");
             this.AddBook("Assemblerr. Practicum", new[] { "Yurov" }, "305", "2007", "9876521483", "Piter");
             this.AddAuthor("Fichtengolcz", null, "1934", new[] { "Math analys t.1", "Math analys t.2", "Math analys t.3" });
-            this.AddAuthor("Bubela", null, null, new[] { "Dragon", "Adept", "Warrior" });
+            this.AddAuthor("Bubela", null, null, new[] { "Dragon", "Adept", "Warrior" });*/
+            
         }
 
         public bool AddBook(string title, string[] nameAuthors, string pages, string yearOfPublishing, string ISBN, string namePublisher)
@@ -236,7 +246,12 @@ namespace Library
         public static Catalogue GetCatalogue()
         {
             if (_catalogue == null)
-                _catalogue = new Catalogue();
+            {
+                DataContractSerializer dcs = new DataContractSerializer(typeof(Catalogue));
+                string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FileCatalogue.txt");
+                _catalogue = (Catalogue) dcs.ReadObject(File.OpenRead(fileName));
+                //_catalogue = new Catalogue();
+            }
             return _catalogue;
         }
 
@@ -393,6 +408,13 @@ namespace Library
                 publisher.Name = newName;
                 _publishers.Add(publisher.Name, publisher);
             }
+        }
+
+        ~Catalogue()
+        {
+            /*string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _fileOfDataBase);
+            DataContractSerializer dcs = new DataContractSerializer(typeof(Catalogue));
+            dcs.WriteObject(File.OpenWrite(fileName), this);*/
         }
     }
 }

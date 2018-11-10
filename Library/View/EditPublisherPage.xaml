@@ -10,7 +10,7 @@
                         <!--<ViewCell>
                             <Button x:Name="AddBook" Text="Add book" Command="{Binding AddBookCommand}"/>
                         </ViewCell>-->
-                        <EntryCell x:Name="Name" Label="Name: " Text="{Binding Publisher.Name}" IsEnabled="{Binding CouldRename}"/>
+                        <EntryCell x:Name="Name" Label="Name: " Text="{Binding NewTitle, Mode=TwoWay}" IsEnabled="{Binding CouldRename}"/>
                         <ViewCell>
                             <Button Text="{Binding Rename}" Command="{Binding RenamePublisherCommand}"/>
                         </ViewCell>

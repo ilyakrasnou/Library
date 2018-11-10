@@ -4,12 +4,15 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Library
 {
+    [DataContract (IsReference = true)]
     public class Author : IEnumerable<Book>, INotifyPropertyChanged
     {
+        [DataMember]
         private string _fullname;
         public string FullName
         {
@@ -21,7 +24,9 @@ namespace Library
                 OnPropertyChanged();
             }
         }
+        [DataMember (EmitDefaultValue = false)]
         private string Photo { get; set; }
+        [DataMember (EmitDefaultValue = false)]
         private uint? _birthday;
         public string Birthday
         {
@@ -36,6 +41,7 @@ namespace Library
                 OnPropertyChanged();
             }
         }
+        [DataMember]
         private ObservableCollection<Book> _books;
 
         public ObservableCollection<Book> Books { get => _books; }
