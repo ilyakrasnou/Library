@@ -16,7 +16,7 @@ namespace Library
         public PublisherPage(Publisher publisher)
         {
             InitializeComponent();
-            BindingContext = new PublisherViewModel(publisher);
+            BindingContext = new PublisherViewModel(Navigation, publisher);
         }
 
         protected internal async void BooksView_ItemSelected(object sender, SelectedItemChangedEventArgs e)

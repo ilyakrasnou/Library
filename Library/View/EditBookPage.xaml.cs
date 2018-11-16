@@ -18,13 +18,13 @@ namespace Library
 		public EditBookPage()
 		{
 			InitializeComponent ();
-            BindingContext = new EditBookViewModel();
+            BindingContext = new EditBookViewModel(Navigation);
         }
 
         public EditBookPage(Book book)
         {
             InitializeComponent();
-            BindingContext = new EditBookViewModel(book);
+            BindingContext = new EditBookViewModel(Navigation, book);
         }
     }
 }

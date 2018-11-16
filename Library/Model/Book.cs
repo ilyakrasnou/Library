@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Globalization;
@@ -69,6 +70,23 @@ namespace Library
                     if (ulong.TryParse(value, out var isbn)) _ISBN = isbn;
                     else return;
                 else _ISBN = null;
+                OnPropertyChanged();
+            }
+        }
+        [DataMember(EmitDefaultValue = false)]
+        private string _cover;
+        public string Cover
+        {
+            get => _cover;
+            set
+            {
+                if (value == _cover) return;
+                if (_cover != null && File.Exists(_cover))
+                {
+                    Catalogue.GetCatalogue().FilesForDeleting.Add(_cover);
+                }
+                //DependencyService.Get<IFileWorker>().DeleteAsync("C:\\Users\\admin\\AppData\\Local\\Packages\\7e9327b3-09c5-42e7-990f-2909dc14962b_bmwhy9gwvdd4m\\LocalState\\fretwalk — копия.jpg");
+                _cover = value;
                 OnPropertyChanged();
             }
         }

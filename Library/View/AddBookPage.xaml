@@ -11,6 +11,12 @@
                                    Label="Title: "
                                    Text="{Binding Book.Title, Mode=TwoWay}"/>
                         <ViewCell>
+                            <StackLayout>
+                                <Image Source="{Binding Book.Cover}"/>
+                                <Button Text="Pick cover" Command="{Binding PickCoverCommand}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="Authors:"
                                        VerticalOptions="Center"

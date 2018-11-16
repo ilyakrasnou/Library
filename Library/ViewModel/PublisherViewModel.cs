@@ -9,13 +9,16 @@ namespace Library
     class PublisherViewModel
     {
         public Publisher Publisher { get; protected set; }
+
+        public INavigation Navigation { get; }
         
         public ICommand EditPublisherCommand { get; protected set; }
         public ICommand RemovePublisherComand { get; protected set; }
 
-        public PublisherViewModel(Publisher publisher)
+        public PublisherViewModel(INavigation navigation, Publisher publisher)
         {
             Publisher = publisher;
+            Navigation = navigation;
             EditPublisherCommand = new Command(OnEditClicked);
             RemovePublisherComand = new Command(OnRemoveClicked);
 
@@ -23,7 +26,7 @@ namespace Library
 
         protected async void OnEditClicked(object sender)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new EditPublisherPage(Publisher));
+            await Navigation.PushModalAsync(new EditPublisherPage(Publisher));
         }
 
         protected void OnRemoveClicked(object sender)
@@ -31,7 +34,7 @@ namespace Library
             if (Publisher == null) return;
             Catalogue catalogue = Catalogue.GetCatalogue();
             catalogue.RemovePublisher(Publisher);
-            App.Current.MainPage.Navigation.PopAsync();
+            Navigation.PopAsync();
         }
     }
 }

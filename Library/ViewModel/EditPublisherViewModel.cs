@@ -16,6 +16,7 @@ namespace Library
         private bool _couldRename;
         public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
         public string Rename => _couldRename ? "Save" : "Rename";
+        public INavigation Navigation { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,18 +29,20 @@ namespace Library
         public ICommand RemoveBookCommand { get; protected set; }
         public ICommand RenamePublisherCommand { get; protected set; }
 
-        public EditPublisherViewModel()
+        public EditPublisherViewModel(INavigation navigation)
         {
             Publisher = new Publisher();
+            Navigation = navigation;
             NewTitle = null;
             AddBookCommand = new Command(OnAddBookClicked);
             RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenamePublisherCommand = new Command(RenamePublisher);
         }
 
-        public EditPublisherViewModel(Publisher publisher)
+        public EditPublisherViewModel(INavigation navigation, Publisher publisher)
         {
             Publisher = publisher;
+            Navigation = navigation;
             NewTitle = Publisher.Name;
             AddBookCommand = new Command(OnAddBookClicked);
             RemoveBookCommand = new Command(OnRemoveBookClicked);
@@ -68,7 +71,7 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage(Publisher, true)); });
+            config.SetDestructive("New book", async () => { await Navigation.PushModalAsync(new AddBookPage(Publisher, true)); });
             config.SetCancel("Cancel");
             foreach (var book in catalogue.BooksList)
             {

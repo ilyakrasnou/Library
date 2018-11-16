@@ -21,7 +21,7 @@ namespace Library
         public BookPage(Book book)
         {          
             InitializeComponent();
-            BindingContext = new BookViewModel(book);
+            BindingContext = new BookViewModel(Navigation, book);
         }
 
         protected override void OnAppearing()

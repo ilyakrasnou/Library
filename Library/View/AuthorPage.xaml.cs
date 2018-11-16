@@ -16,7 +16,7 @@ namespace Library
         public AuthorPage(Author author)
         {
             InitializeComponent();
-            BindingContext = new AuthorViewModel(author);
+            BindingContext = new AuthorViewModel(Navigation, author);
         }
 
         protected internal async void BooksView_ItemSelected(object sender, SelectedItemChangedEventArgs e)

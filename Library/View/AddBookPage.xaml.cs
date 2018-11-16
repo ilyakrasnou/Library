@@ -15,24 +15,31 @@ namespace Library
 		public AddBookPage ()
 		{
 			InitializeComponent();
-            BindingContext = new AddBookViewModel();
+            BindingContext = new AddBookViewModel(Navigation);
 		}
 
         public AddBookPage(Author author, bool isAddToCatalogue)
         {
             InitializeComponent();
-            BindingContext = new AddBookViewModel(author, isAddToCatalogue);
+            BindingContext = new AddBookViewModel(Navigation, author, isAddToCatalogue);
         }
 
         public AddBookPage(Publisher publisher, bool isAddToCatalogue)
         {
             InitializeComponent();
-            BindingContext = new AddBookViewModel(publisher, isAddToCatalogue);
+            BindingContext = new AddBookViewModel(Navigation, publisher, isAddToCatalogue);
         }
 
         private void OnBackClicked(object sender, EventArgs e)
         {
+            ((AddBookViewModel)BindingContext).OnDeleting();
             Navigation.PopModalAsync();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            ((AddBookViewModel)BindingContext).OnDeleting();
+            return base.OnBackButtonPressed();
         }
     }
 }

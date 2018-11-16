@@ -27,6 +27,12 @@
                             <Button Text="{Binding Rename, Mode=OneWay}" Command="{Binding RenameBookCommand}" CommandParameter=""/>
                         </ViewCell>
                         <ViewCell>
+                            <StackLayout>
+                                <Image Source="{Binding Book.Cover}"/>
+                                <Button Text="Pick cover" Command="{Binding PickCoverCommand}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="Authors:"
                                        VerticalOptions="Center"

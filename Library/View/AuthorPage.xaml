@@ -17,31 +17,28 @@
                 <Grid.ColumnDefinitions>
 
                 </Grid.ColumnDefinitions>
-                <Image>
-
-                </Image>
+                <Image Source="{Binding Author.Photo}"/>
                 <StackLayout Grid.Column="1">
                     <Label Text="Year"/>
                     <Label Text="{Binding Author.Birthday}"/>
                     <Label Text="Few words"/>
-                    
+
                 </StackLayout>
-                <ListView x:Name="BooksView" Header="Books: " ItemsSource="{Binding Author.Books}" 
-                          ItemSelected="BooksView_ItemSelected" 
-                          HasUnevenRows="True" Grid.Row="1" 
-                          Grid.Column="0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <ViewCell.View>
-                                    <Label Text="{Binding Title}"/>
-                                </ViewCell.View>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                
+
             </Grid>
+            <ListView x:Name="BooksView" Header="Books: " ItemsSource="{Binding Author.Books}" 
+                          ItemSelected="BooksView_ItemSelected" 
+                          HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Label Text="{Binding Title}"/>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <!--<StackLayout Orientation="Horizontal">
                 <Button Text="Edit" 
                         Command="{Binding EditAuthorCommand}" HorizontalOptions="FillAndExpand"/>

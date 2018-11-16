@@ -8,6 +8,12 @@
                 <TableRoot>
                     <TableSection x:Name="AddTableSection">
                         <EntryCell x:Name="FullName" Label="Full name: " Text="{Binding Author.FullName, Mode=TwoWay}"/>
+                        <ViewCell>
+                            <StackLayout>
+                                <Image Source="{Binding Author.Photo}"/>
+                                <Button Text="Pick photo" Command="{Binding PickPhotoCommand}"/>
+                            </StackLayout>
+                        </ViewCell>
                         <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday, Mode=TwoWay}"/>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal" VerticalOptions="Center">

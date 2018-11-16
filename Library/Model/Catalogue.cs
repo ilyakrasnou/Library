@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -13,7 +14,7 @@ namespace Library
     [DataContract (IsReference = true)]
     class Catalogue: INotifyPropertyChanged
     {
-        private const string _fileOfDataBase = "FileCatalogue.txt";
+        public static string CatalogueFileName = @"FileCatalogue.txt";
         private static Catalogue _catalogue;
 
         [DataMember]
@@ -22,6 +23,8 @@ namespace Library
         private Dictionary<string, Author> _authors;
         [DataMember]
         private Dictionary<string, Publisher> _publishers;
+        [DataMember]
+        public List<string> FilesForDeleting;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -32,7 +35,11 @@ namespace Library
 
         private Catalogue()
         {
-            throw new NotImplementedException();
+            _books = new Dictionary<string, Book>();
+            _authors = new Dictionary<string, Author>();
+            _publishers = new Dictionary<string, Publisher>();
+            FilesForDeleting = new List<string>();
+            //throw new NotImplementedException();
             /*this._books = new Dictionary<string, Book>();
             this._authors = new Dictionary<string, Author>();
             this._publishers = new Dictionary<string, Publisher>();
@@ -248,11 +255,45 @@ namespace Library
             if (_catalogue == null)
             {
                 DataContractSerializer dcs = new DataContractSerializer(typeof(Catalogue));
-                string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FileCatalogue.txt");
-                _catalogue = (Catalogue) dcs.ReadObject(File.OpenRead(fileName));
+                string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), CatalogueFileName);
+                try
+                { 
+                    using (var file = File.OpenRead(fileName))
+                    {
+                        using (GZipStream decompress = new GZipStream(file, CompressionMode.Decompress))
+                        {
+                            _catalogue = (Catalogue)dcs.ReadObject(decompress);
+                            if (_catalogue.FilesForDeleting == null)
+                                _catalogue.FilesForDeleting = new List<string>();
+                        }
+                    }
+                }
+                catch
+                {
+                    using (File.Create(fileName)) { }
+                    _catalogue = new Catalogue();
+                }
+                foreach (var path in _catalogue.FilesForDeleting)
+                {
+                    DeleteFile(path);
+                }
+                _catalogue.FilesForDeleting.Clear();
                 //_catalogue = new Catalogue();
             }
             return _catalogue;
+        }
+
+        private static bool DeleteFile(string path)
+        {
+            try
+            {
+                File.Delete(path);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         public ICollection<Book> BooksList

@@ -15,7 +15,7 @@ namespace Library
         public AddPublisherPage()
         {
             InitializeComponent();
-            BindingContext = new AddPublisherViewModel();
+            BindingContext = new AddPublisherViewModel(Navigation);
 
             AddTableSection.Add(new ViewCell
             {
@@ -46,7 +46,7 @@ namespace Library
         public AddPublisherPage(Book book, bool isAddToCatalogue)
         {
             InitializeComponent();
-            BindingContext = new AddPublisherViewModel(book, isAddToCatalogue);
+            BindingContext = new AddPublisherViewModel(Navigation, book, isAddToCatalogue);
         }
 
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
@@ -61,7 +61,14 @@ namespace Library
 
         private void OnBackClicked(object sender, EventArgs e)
         {
+            ((AddPublisherViewModel)BindingContext).OnDeleting();
             Navigation.PopModalAsync();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            ((AddPublisherViewModel)BindingContext).OnDeleting();
+            return base.OnBackButtonPressed();
         }
     }
 }

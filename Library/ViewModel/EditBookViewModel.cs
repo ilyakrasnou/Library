@@ -7,16 +7,18 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Acr.UserDialogs;
+using Plugin.Media;
 
 namespace Library
 {
-    class EditBookViewModel: INotifyPropertyChanged
+    class EditBookViewModel : INotifyPropertyChanged
     {
         public Book Book { get; protected set; }
         public string NewTitle { get; set; }
         private bool _couldRename;
         public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
         public string Rename => _couldRename ? "Save" : "Rename";
+        public INavigation Navigation { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -30,27 +32,32 @@ namespace Library
         public ICommand RenameBookCommand { get; protected set; }
         public ICommand AddPublisherCommand { get; protected set; }
         public ICommand RemovePublisherCommand { get; protected set; }
+        public ICommand PickCoverCommand { get; protected set; }
 
-        public EditBookViewModel()
+        public EditBookViewModel(INavigation navigation)
         {
             Book = new Book();
+            Navigation = navigation;
             NewTitle = null;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
             RenameBookCommand = new Command(RenameBook);
             RemovePublisherCommand = new Command(OnRemovePublisherClicked);
             AddPublisherCommand = new Command(OnAddPublisherClicked);
+            PickCoverCommand = new Command(OnPickCoverClicked);
         }
 
-        public EditBookViewModel(Book book)
+        public EditBookViewModel(INavigation navigation, Book book)
         {
             Book = book;
+            Navigation = navigation;
             NewTitle = Book.Title;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
             RenameBookCommand = new Command(RenameBook);
             RemovePublisherCommand = new Command(OnRemovePublisherClicked);
             AddPublisherCommand = new Command(OnAddPublisherClicked);
+            PickCoverCommand = new Command(OnPickCoverClicked);
         }
 
         public void RenameBook(object sender)
@@ -70,17 +77,40 @@ namespace Library
             CouldRename = !CouldRename;
         }
 
+        protected async void OnPickCoverClicked(object sender)
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await UserDialogs.Instance.AlertAsync("Photos Not Supported", "Permission not granted to photos.", "OK");
+                return;
+            }
+            var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+
+            });
+            if (file == null)
+                return;
+            Book.Cover = file.Path;
+            /*image.Source = ImageSource.FromStream(() =>
+            {
+                var stream = file.GetStream();
+                file.Dispose();
+                return stream;
+            });*/
+        }
+
         protected void OnAddAuthorClicked(object sender)
         {
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add author: ");
-            config.SetDestructive("New author", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddAuthorPage(Book, true)); });
+            config.SetDestructive("New author", async () => { await Navigation.PushModalAsync(new AddAuthorPage(Book, true)); });
             config.SetCancel("Cancel");
             foreach (var author in catalogue.AuthorsList)
             {
                 if (!Book.ContainsAuthor(author))
-                    config.Add(author.FullName, () => 
+                    config.Add(author.FullName, () =>
                     {
                         author.AddBook(Book);
                         Book.AddAuthor(author);
@@ -112,10 +142,10 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add publisher: ");
-            config.SetDestructive("New publisher", async () => 
+            config.SetDestructive("New publisher", async () =>
             {
                 OnRemovePublisherClicked(null);
-                await App.Current.MainPage.Navigation.PushModalAsync(new AddPublisherPage(Book, true));
+                await Navigation.PushModalAsync(new AddPublisherPage(Book, true));
             });
             config.SetCancel("Cancel");
             foreach (var publisher in catalogue.PublishersList)

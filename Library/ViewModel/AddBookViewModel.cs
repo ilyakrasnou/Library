@@ -4,6 +4,7 @@ using System.Text;
 using Xamarin.Forms;
 using System.Windows.Input;
 using Acr.UserDialogs;
+using Plugin.Media;
 
 namespace Library
 {
@@ -14,17 +15,20 @@ namespace Library
         private Author _authorForAddition;
         private Publisher _publisherForAddition;
         private bool _isAddToCatalogue;
+        public INavigation Navigation { get; }
 
         public ICommand AddAuthorCommand { get; protected set; }
         public ICommand RemoveAuthorCommand { get; protected set; }
         public ICommand AddBookCommand { get; protected set; }
         public ICommand AddPublisherCommand { get; protected set; }
         public ICommand RemovePublisherCommand { get; protected set; }
+        public ICommand PickCoverCommand { get; protected set; }
 
-        public AddBookViewModel(Author author, bool isAddToCatalogue)
+        public AddBookViewModel(INavigation navigation, Author author, bool isAddToCatalogue)
         {
             Book = new Book();
             //NewTitle = null;
+            Navigation = navigation;
             _authorForAddition = author;
             _isAddToCatalogue = isAddToCatalogue;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
@@ -32,11 +36,13 @@ namespace Library
             AddBookCommand = new Command(OnAddBookClicked);
             RemovePublisherCommand = new Command(OnRemovePublisherClicked);
             AddPublisherCommand = new Command(OnAddPublisherClicked);
+            PickCoverCommand = new Command(OnPickCoverClicked);
         }
 
-        public AddBookViewModel(Publisher publisher, bool isAddToCatalogue)
+        public AddBookViewModel(INavigation navigation, Publisher publisher, bool isAddToCatalogue)
         {
             Book = new Book();
+            Navigation = navigation;
             _publisherForAddition = publisher;
             _isAddToCatalogue = isAddToCatalogue;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
@@ -46,15 +52,40 @@ namespace Library
             AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
-        public AddBookViewModel()
+        public AddBookViewModel(INavigation navigation)
         {
             Book = new Book();
+            Navigation = navigation;
             _isAddToCatalogue = true;
             AddAuthorCommand = new Command(OnAddAuthorClicked);
             RemoveAuthorCommand = new Command(OnRemoveAuthorClicked);
             AddBookCommand = new Command(OnAddBookClicked);
             RemovePublisherCommand = new Command(OnRemovePublisherClicked);
             AddPublisherCommand = new Command(OnAddPublisherClicked);
+            PickCoverCommand = new Command(OnPickCoverClicked);
+        }
+
+        protected async void OnPickCoverClicked(object sender)
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await UserDialogs.Instance.AlertAsync("Photos Not Supported", "Permission not granted to photos.", "OK");
+                return;
+            }
+            var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+
+            });
+            if (file == null)
+                return;
+            Book.Cover = file.Path;
+            /*image.Source = ImageSource.FromStream(() =>
+            {
+                var stream = file.GetStream();
+                file.Dispose();
+                return stream;
+            });*/
         }
 
         protected void OnAddAuthorClicked(object sender)
@@ -62,7 +93,7 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add author: ");
-            config.SetDestructive("New author", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddAuthorPage(Book, false)); });
+            config.SetDestructive("New author", async () => { await Navigation.PushModalAsync(new AddAuthorPage(Book, false)); });
             config.SetCancel("Cancel");
             foreach (var author in catalogue.AuthorsList)
             {
@@ -93,13 +124,13 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Book.Title))
             {
-                App.Current.MainPage.DisplayAlert("Error", "This book can't be added.\nBook must have Title!", "Cancel");
+                UserDialogs.Instance.Alert("Error", "This book can't be added.\nBook must have Title!", "Cancel");
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindAuthor(Book.Title) != null)
             {
-                App.Current.MainPage.DisplayAlert("Error", "This book can't be added.\nThere is a book with such title!", "Cancel");
+                UserDialogs.Instance.Alert("Error", "This book can't be added.\nThere is a book with such title!", "Cancel");
                 return;
             }
             if (IsFullAdd)
@@ -129,7 +160,7 @@ namespace Library
                         _authorForAddition.AddBook(Book);
                 }
             }
-            Application.Current.MainPage.Navigation.PopModalAsync();
+            Navigation.PopModalAsync();
         }
 
         protected void OnAddPublisherClicked(object sender)
@@ -140,7 +171,7 @@ namespace Library
             config.SetDestructive("New publisher", async () => 
             {
                 OnRemovePublisherClicked(null);
-                await App.Current.MainPage.Navigation.PushModalAsync(new AddPublisherPage(Book, false));
+                await Navigation.PushModalAsync(new AddPublisherPage(Book, false));
             });
             config.SetCancel("Cancel");
             foreach (var publisher in catalogue.PublishersList)
@@ -159,6 +190,13 @@ namespace Library
         {
             if (Book.Publisher == null) return;
             Book.Publisher = null;
+        }
+
+        public void OnDeleting()
+        {
+            Book.Cover = null;
+            foreach (var author in Book)
+                author.Photo = null;
         }
     }
 }

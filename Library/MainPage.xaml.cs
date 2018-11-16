@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 
 namespace Library
 {
@@ -18,7 +20,7 @@ namespace Library
         public MainPage()
         {
             InitializeComponent();
-            _catalogueViewModel = new CatalogueViewModel();
+            _catalogueViewModel = new CatalogueViewModel(Navigation);
             BindingContext = _catalogueViewModel;
             _catalogueViewModel.PropertyChanged += RefreshListView;
             //AddBook.Icon = (FileImageSource) ImageSource.FromFile("Library.ImageResources.icon_add.png") ;
@@ -96,6 +98,28 @@ namespace Library
         ~MainPage()
         {
             _catalogueViewModel.PropertyChanged -= RefreshListView;
+        }
+
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            /*if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await DisplayAlert("Photos Not Supported", "Permission not granted to photos.", "OK");
+                return;
+            }
+            var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+
+            });
+            if (file == null)
+                return;
+            image.Source = ImageSource.FromStream(() =>
+            {
+                var stream = file.GetStream();
+                file.Dispose();
+                return stream;
+            });*/
         }
     }
 

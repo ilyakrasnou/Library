@@ -6,12 +6,15 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Acr.UserDialogs;
 
 namespace Library
 {
     class CatalogueViewModel: INotifyPropertyChanged
     {
         public Catalogue Catalogue { get; private set; }
+
+        public INavigation Navigation { get; }
 
         public ICommand AddBookCommand { get; }
         public ICommand AddAuthorCommand { get; }
@@ -83,9 +86,10 @@ namespace Library
             PropertyChanged?.Invoke(this, e);
         }
 
-        public CatalogueViewModel()
+        public CatalogueViewModel(INavigation navigation)
         {
             Catalogue = Catalogue.GetCatalogue();
+            Navigation = navigation;
             //BooksItemSelectedCommand = new Command(BooksView_ItemSelected());
             AddBookCommand = new Command(OnAddBookClicked);
             AddAuthorCommand = new Command(OnAddAuthorClicked);
@@ -187,7 +191,7 @@ namespace Library
         private async void OnSortAuthorsListClicked(object sender)
         {
             int sort = 0;
-            var action = await App.Current.MainPage.DisplayActionSheet("Sort by", "Cancel", null, "None", "Name",
+            var action = await UserDialogs.Instance.ActionSheetAsync("Sort by", "Cancel", null, null, "None", "Name",
              "Birthday");
             switch (action)
             {
@@ -202,7 +206,7 @@ namespace Library
         private async void OnSortPublishersListClicked(object sender)
         {
             int sort = 0;
-            var action = await App.Current.MainPage.DisplayActionSheet("Sort by", "Cancel", null, "None", "Name",
+            var action = await UserDialogs.Instance.ActionSheetAsync("Sort by", "Cancel", null, null, "None", "Name",
              "City");
             switch (action)
             {
@@ -216,17 +220,17 @@ namespace Library
 
         protected async void OnAddBookClicked(object sender)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage());
+            await Navigation.PushModalAsync(new AddBookPage());
         }
 
         protected async void OnAddAuthorClicked(object sender)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new AddAuthorPage());
+            await Navigation.PushModalAsync(new AddAuthorPage());
         }
 
         protected async void OnAddPublisherClicked(object sender)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new AddPublisherPage());
+            await Navigation.PushModalAsync(new AddPublisherPage());
         }
 
         ~CatalogueViewModel()

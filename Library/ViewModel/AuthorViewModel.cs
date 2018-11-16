@@ -9,10 +9,12 @@ namespace Library
     class AuthorViewModel
     {
         public Author Author { get; protected set; }
+        public INavigation Navigation { get; }
 
-        public AuthorViewModel(Author author)
+        public AuthorViewModel(INavigation navigation, Author author)
         {
             Author = author;
+            Navigation = navigation;
             EditAuthorCommand = new Command(OnEditClicked);
             RemoveAuthorCommand = new Command(OnRemoveClicked);
         }
@@ -22,7 +24,7 @@ namespace Library
 
         protected async void OnEditClicked(object sender)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new EditAuthorPage(Author));
+            await Navigation.PushModalAsync(new EditAuthorPage(Author));
         }
 
         protected void OnRemoveClicked(object sender)
@@ -30,7 +32,7 @@ namespace Library
             if (Author == null) return;
             Catalogue catalogue = Catalogue.GetCatalogue();
             catalogue.RemoveAuthor(Author);
-            App.Current.MainPage.Navigation.PopAsync();
+            Navigation.PopAsync();
         }
     }
 }

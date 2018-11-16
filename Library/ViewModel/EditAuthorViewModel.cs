@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using Acr.UserDialogs;
+using Plugin.Media;
 
 namespace Library
 {
@@ -17,6 +18,7 @@ namespace Library
         private bool _couldRename;
         public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
         public string Rename => _couldRename ? "Save" : "Rename";
+        public INavigation Navigation { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,23 +30,45 @@ namespace Library
         public ICommand AddBookCommand { get; protected set; }
         public ICommand RemoveBookCommand { get; protected set; }
         public ICommand RenameAuthorCommand { get; protected set; }
+        public ICommand PickPhotoCommand { get; }
 
-        public EditAuthorViewModel()
+        public EditAuthorViewModel(INavigation navigation)
         {
             Author = new Author();
+            Navigation = navigation;
             NewTitle = null;
             AddBookCommand = new Command(OnAddBookClicked);
             RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenameAuthorCommand = new Command(RenameAuthor);
+            PickPhotoCommand = new Command(OnPickPhotoClicked);
         }
 
-        public EditAuthorViewModel(Author author)
+        public EditAuthorViewModel(INavigation navigation, Author author)
         {
             Author = author;
+            Navigation = navigation;
             NewTitle = Author.FullName;
             AddBookCommand = new Command(OnAddBookClicked);
             RemoveBookCommand = new Command(OnRemoveBookClicked);
             RenameAuthorCommand = new Command(RenameAuthor);
+            PickPhotoCommand = new Command(OnPickPhotoClicked);
+        }
+
+        protected async void OnPickPhotoClicked(object sender)
+        {
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await UserDialogs.Instance.AlertAsync("Photos Not Supported", "Permission not granted to photos.", "OK");
+                return;
+            }
+            var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+
+            });
+            if (file == null)
+                return;
+            Author.Photo = file.Path;
         }
 
         public void RenameAuthor(object sender)
@@ -69,7 +93,7 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage(Author, true)); });
+            config.SetDestructive("New book", async () => { await Navigation.PushModalAsync(new AddBookPage(Author, true)); });
             config.SetCancel("Cancel");
             foreach (var book in catalogue.BooksList)
             {

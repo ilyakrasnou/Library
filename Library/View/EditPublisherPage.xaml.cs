@@ -16,13 +16,13 @@ namespace Library
 		public EditPublisherPage ()
 		{
 			InitializeComponent ();
-            BindingContext = new EditPublisherViewModel();
+            BindingContext = new EditPublisherViewModel(Navigation);
 		}
 
         public EditPublisherPage(Publisher publisher)
         {
             InitializeComponent();
-            BindingContext = new EditPublisherViewModel(publisher);
+            BindingContext = new EditPublisherViewModel(Navigation, publisher);
         }
 
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)

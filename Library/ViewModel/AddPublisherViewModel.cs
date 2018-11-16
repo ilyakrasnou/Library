@@ -13,14 +13,16 @@ namespace Library
         public bool IsFullAdd { get => _bookForAddition == null ? true : false; }
         private Book _bookForAddition;
         private bool _isAddToCatalogue;
+        public INavigation Navigation { get; }
 
         public ICommand AddPublisherCommand { get; protected set; }
         public ICommand RemoveBookCommand { get; protected set; }
         public ICommand AddBookCommand { get; protected set; }
 
-        public AddPublisherViewModel(Book book, bool isAddToCatalogue)
+        public AddPublisherViewModel(INavigation navigation, Book book, bool isAddToCatalogue)
         {
             Publisher = new Publisher();
+            Navigation = navigation;
             _bookForAddition = book;
             _isAddToCatalogue = isAddToCatalogue;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -28,9 +30,10 @@ namespace Library
             AddPublisherCommand = new Command(OnAddPublisherClicked);
         }
 
-        public AddPublisherViewModel()
+        public AddPublisherViewModel(INavigation navigation)
         {
             Publisher = new Publisher();
+            Navigation = navigation;
             _bookForAddition = null;
             _isAddToCatalogue = true;
             AddBookCommand = new Command(OnAddBookClicked);
@@ -43,7 +46,7 @@ namespace Library
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
             config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage(Publisher, false)); });
+            config.SetDestructive("New book", async () => { await Navigation.PushModalAsync(new AddBookPage(Publisher, false)); });
             config.SetCancel("Cancel");
             foreach (var book in catalogue.BooksList)
             {
@@ -78,13 +81,13 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Publisher.Name))
             {
-                App.Current.MainPage.DisplayAlert("Error", "This publisher can't be added.\nPublisher must have full name!", "Cancel");
+                UserDialogs.Instance.Alert("Error", "This publisher can't be added.\nPublisher must have full name!", "Cancel");
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindPublisher(Publisher.Name) != null)
             {
-                App.Current.MainPage.DisplayAlert("Error", "This publisher can't be added.\nThere is an publisher with such name!", "Cancel");
+                UserDialogs.Instance.Alert("Error", "This publisher can't be added.\nThere is an publisher with such name!", "Cancel");
                 return;
             }
             if (IsFullAdd)
@@ -101,7 +104,13 @@ namespace Library
                 else
                     _bookForAddition.Publisher = Publisher;
             }
-            Application.Current.MainPage.Navigation.PopModalAsync();
+            Navigation.PopModalAsync();
+        }
+
+        public void OnDeleting()
+        {
+            foreach (var book in Publisher)
+                book.Cover = null;
         }
     }
 }

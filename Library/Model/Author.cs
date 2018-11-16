@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
@@ -24,8 +25,19 @@ namespace Library
                 OnPropertyChanged();
             }
         }
-        [DataMember (EmitDefaultValue = false)]
-        private string Photo { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        private string _photo;
+        public string Photo
+        {
+            get => _photo;
+            set
+            {
+                if (_photo == value) return;
+                //if (_photo != null && File.Exists(_photo)) File.Delete(_photo);
+                _photo = value;
+                OnPropertyChanged();
+            }
+        }
         [DataMember (EmitDefaultValue = false)]
         private uint? _birthday;
         public string Birthday

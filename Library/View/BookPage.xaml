@@ -10,29 +10,38 @@
         <StackLayout>
             <Label x:Name="BookTitle" Text="{Binding Path=Book.Title}"
                 HorizontalOptions ="CenterAndExpand" />
-            <Image>
+            <Grid>
+                
+                <Grid.RowDefinitions>
 
-            </Image>
-            <Label Text="Authors:"/>
-            <Button x:Name="Authors" HorizontalOptions="StartAndExpand" 
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding Book.Cover}" VerticalOptions="Start"/>
+                <StackLayout Grid.Column="1">
+                    <Label Text="Authors:"/>
+                    <Button x:Name="Authors" HorizontalOptions="StartAndExpand" 
                     BackgroundColor="White" BorderColor="White" 
                     Text="{Binding Path=Book.AuthorsNames}" 
                     Command="{Binding AuthorsNamesCommand}"/>
-            <Label Text="Year"/>
-            <Label Text="{Binding Path=Book.YearOfPublishing}"/>
-            <Label Text="Publisher"/>
-            <Button x:Name="PublisherName" BackgroundColor="White" 
+                    <Label Text="Year"/>
+                    <Label Text="{Binding Path=Book.YearOfPublishing}"/>
+                    <Label Text="Publisher"/>
+                    <Button x:Name="PublisherName" BackgroundColor="White" 
                     BorderColor="White" HorizontalOptions="StartAndExpand" 
                     Text="{Binding  Path=Book.Publisher.Name}" 
                     Command="{Binding PublisherCommand}" />
-            <Label Text="Pages"/>
-            <Label Text="{Binding Book.Pages}"/>
-            <Label Text="ISBN"/>
-            <Label Text="{Binding Book.ISBN}"/>
-            <!--<StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
+                    <Label Text="Pages"/>
+                    <Label Text="{Binding Book.Pages}"/>
+                    <Label Text="ISBN"/>
+                    <Label Text="{Binding Book.ISBN}"/>
+                    <!--<StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
                 <Button x:Name="Add" Text="Edit" Command="{Binding EditCommand}" HorizontalOptions="FillAndExpand"/>
                 <Button x:Name="Remove" Text="Remove" Command="{Binding RemoveCommand}" HorizontalOptions="FillAndExpand"/>
             </StackLayout>-->
+                </StackLayout>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
