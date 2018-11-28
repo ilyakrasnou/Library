@@ -17,14 +17,14 @@
                 <Grid.ColumnDefinitions>
 
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding Author.Photo}"/>
+                <Image Source="{Binding Author.Photo}" Grid.Column="0" Grid.Row="0"/>
                 <StackLayout Grid.Column="1">
                     <Label Text="Year"/>
                     <Label Text="{Binding Author.Birthday}"/>
                     <Label Text="Few words"/>
-
+                    <Label Text="{Binding Author.Biography}"/>
                 </StackLayout>
-
+                
             </Grid>
             <ListView x:Name="BooksView" Header="Books: " ItemsSource="{Binding Author.Books}" 
                           ItemSelected="BooksView_ItemSelected" 

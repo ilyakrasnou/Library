@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Acr.UserDialogs;
+using Library.Resources;
 
 namespace Library
 {
@@ -30,9 +31,9 @@ namespace Library
 
         protected async void OnAuthorsNamesClicked(object sender)
         {
-            var action = await UserDialogs.Instance.ActionSheetAsync("Authors:", "Cancel", null, null, Book.AuthorsToStringArray());
+            var action = await UserDialogs.Instance.ActionSheetAsync(Localization.Authors, Localization.Cancel, null, null, Book.AuthorsToStringArray());
             Book.AuthorsToStringArray();
-            if (action == "Cancel") return;
+            if (action == Localization.Cancel) return;
             Catalogue catalogue = Catalogue.GetCatalogue();
             var selectedAuthor = catalogue.FindAuthor(action);
             if (selectedAuthor != null)

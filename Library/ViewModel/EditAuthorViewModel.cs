@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using Acr.UserDialogs;
 using Plugin.Media;
+using Library.Resources;
 
 namespace Library
 {
@@ -17,7 +18,7 @@ namespace Library
         public string NewTitle { get; set; }
         private bool _couldRename;
         public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
-        public string Rename => _couldRename ? "Save" : "Rename";
+        public string Rename => _couldRename ? Localization.Save : Localization.Rename;
         public INavigation Navigation { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -58,7 +59,7 @@ namespace Library
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-                await UserDialogs.Instance.AlertAsync("Photos Not Supported", "Permission not granted to photos.", "OK");
+                await UserDialogs.Instance.AlertAsync(Localization.PhotosNotSupport, Localization.NoPermission, Localization.Ok);
                 return;
             }
             var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -68,6 +69,7 @@ namespace Library
             });
             if (file == null)
                 return;
+            Catalogue.GetCatalogue().AddFileForDeleting(Author.Photo);
             Author.Photo = file.Path;
         }
 
@@ -92,9 +94,9 @@ namespace Library
         {
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
-            config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await Navigation.PushModalAsync(new AddBookPage(Author, true)); });
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.AddBook);
+            config.SetDestructive(Localization.NewBook, async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage(Author, true)); });
+            config.SetCancel(Localization.Cancel);
             foreach (var book in catalogue.BooksList)
             {
                 if (!Author.ContainsBook(book))
@@ -110,8 +112,8 @@ namespace Library
         protected void OnRemoveBookClicked(object sender)
         {
             var config = new ActionSheetConfig();
-            config.SetTitle("Select book to remove");
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.BookToRemove);
+            config.SetCancel(Localization.Cancel);
             foreach (var book in Author)
             {
                 config.Add(book.Title, () =>
@@ -126,7 +128,7 @@ namespace Library
         {
             if (sender == null) return;
             var catalogue = Catalogue.GetCatalogue();
-            var book = catalogue.FindBook(((Book)sender).Title);
+            var book = catalogue.FindBook(sender.Title);
             if (book == null) return;
             catalogue.RemoveBook(book);
         }

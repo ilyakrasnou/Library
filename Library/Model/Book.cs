@@ -74,18 +74,23 @@ namespace Library
             }
         }
         [DataMember(EmitDefaultValue = false)]
+        private string _review;
+        public string Review
+        {
+            get => _review;
+            set
+            {
+                _review = value;
+                OnPropertyChanged();
+            }
+        }
+        [DataMember(EmitDefaultValue = false)]
         private string _cover;
         public string Cover
         {
             get => _cover;
             set
             {
-                if (value == _cover) return;
-                if (_cover != null && File.Exists(_cover))
-                {
-                    Catalogue.GetCatalogue().FilesForDeleting.Add(_cover);
-                }
-                //DependencyService.Get<IFileWorker>().DeleteAsync("C:\\Users\\admin\\AppData\\Local\\Packages\\7e9327b3-09c5-42e7-990f-2909dc14962b_bmwhy9gwvdd4m\\LocalState\\fretwalk — копия.jpg");
                 _cover = value;
                 OnPropertyChanged();
             }

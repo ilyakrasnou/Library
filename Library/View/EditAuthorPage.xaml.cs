@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,8 +28,8 @@ namespace Library
 
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
         {
-            var action = await DisplayActionSheet("Do you really like to delete this book?", "Cancel", "Ok");
-            if (action == "Cancel") return;
+            var action = await DisplayActionSheet(Localization.DeleteQuery, Localization.DeleteQuery, Localization.Cancel);
+            if (action == Localization.Cancel) return;
             ((EditAuthorViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
             var binding = BooksView.ItemsSource;
             BooksView.ItemsSource = null;

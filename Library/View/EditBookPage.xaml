@@ -50,6 +50,12 @@
                         <ViewCell>
                             <Entry Text="{Binding Book.AuthorsNames}" InputTransparent="True" />
                         </ViewCell>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="Review"/>
+                                <Editor Text="{Binding Book.Review, Mode=TwoWay}" MaxLength="256"/>
+                            </StackLayout>
+                        </ViewCell>
                         <EntryCell x:Name="Year" Label="Year: " 
                                    Keyboard="Numeric" 
                                    Text="{Binding Book.YearOfPublishing, Mode=TwoWay}"/>

@@ -26,15 +26,7 @@ namespace Library
         protected override void OnSleep()
         {
             // Handle when your app sleeps
-            string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Catalogue.CatalogueFileName);
-            DataContractSerializer dcs = new DataContractSerializer(typeof(Catalogue));
-            using (var fstream = File.Open(fileName, FileMode.Create, FileAccess.Write))
-            {
-                using (GZipStream compress = new GZipStream(fstream, CompressionMode.Compress))
-                {
-                    dcs.WriteObject(compress, Catalogue.GetCatalogue());
-                }
-            }
+            Catalogue.GetCatalogue().Save();
         }
 
         protected override void OnResume()

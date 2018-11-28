@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using Acr.UserDialogs;
+using Library.Resources;
 
 namespace Library
 {
@@ -15,7 +16,7 @@ namespace Library
         public string NewTitle { get; set; }
         private bool _couldRename;
         public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
-        public string Rename => _couldRename ? "Save" : "Rename";
+        public string Rename => _couldRename ? Localization.Save : Localization.Rename;
         public INavigation Navigation { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -70,9 +71,9 @@ namespace Library
         {
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
-            config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await Navigation.PushModalAsync(new AddBookPage(Publisher, true)); });
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.AddBook);
+            config.SetDestructive(Localization.NewBook, async () => { await App.Current.MainPage.Navigation.PushModalAsync(new AddBookPage(Publisher, true)); });
+            config.SetCancel(Localization.Cancel);
             foreach (var book in catalogue.BooksList)
             {
                 if (book.Publisher == null && !Publisher.ContainsBook(book))
@@ -88,8 +89,8 @@ namespace Library
         protected void OnRemoveBookClicked(object sender)
         {
             var config = new ActionSheetConfig();
-            config.SetTitle("Select book to remove");
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.BookToRemove);
+            config.SetCancel(Localization.Cancel);
             foreach (var book in Publisher)
             {
                 config.Add(book.Title, () =>

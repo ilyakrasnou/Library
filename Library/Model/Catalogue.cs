@@ -14,7 +14,7 @@ namespace Library
     [DataContract (IsReference = true)]
     class Catalogue: INotifyPropertyChanged
     {
-        public static string CatalogueFileName = @"FileCatalogue.txt";
+        private static string _filename = @"FileCatalogue.txt";
         private static Catalogue _catalogue;
 
         [DataMember]
@@ -24,7 +24,7 @@ namespace Library
         [DataMember]
         private Dictionary<string, Publisher> _publishers;
         [DataMember]
-        public List<string> FilesForDeleting;
+        private List<string> _filesForDeleting;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -38,7 +38,7 @@ namespace Library
             _books = new Dictionary<string, Book>();
             _authors = new Dictionary<string, Author>();
             _publishers = new Dictionary<string, Publisher>();
-            FilesForDeleting = new List<string>();
+            _filesForDeleting = new List<string>();
             //throw new NotImplementedException();
             /*this._books = new Dictionary<string, Book>();
             this._authors = new Dictionary<string, Author>();
@@ -50,7 +50,7 @@ namespace Library
             
         }
 
-        public bool AddBook(string title, string[] nameAuthors, string pages, string yearOfPublishing, string ISBN, string namePublisher)
+        /*public bool AddBook(string title, string[] nameAuthors, string pages, string yearOfPublishing, string ISBN, string namePublisher)
         {
             bool isAuthorAdded = false;
             bool isPublisherAdded = false;
@@ -134,7 +134,7 @@ namespace Library
             OnPropertyChanged("PublishersList");
             OnPropertyChanged("BooksList");
             return true;
-        }
+        }*/
 
         public bool AddBook(Book book)
         {
@@ -144,10 +144,10 @@ namespace Library
             if (this.FindBook(book.Title) != null) return false;
             foreach (var nameAuthor in book)
             {
-                var author = this.FindAuthor(nameAuthor.FullName);
-                if (author == null)
+                if (FindAuthor(nameAuthor.FullName) == null)
                 {
                     _authors.Add(nameAuthor.FullName, nameAuthor);
+                    ResetFileForDeleting(nameAuthor.Photo);
                     isAuthorAdded = true;
                 }
             }
@@ -157,6 +157,7 @@ namespace Library
                 isPublisherAdded = true;
             }
             _books.Add(book.Title, book);
+            ResetFileForDeleting(book.Cover);
             foreach (var author in book)
                 author.AddBook(book);
             book.Publisher?.AddBook(book);
@@ -177,14 +178,15 @@ namespace Library
             //if (author.IsEmpty()) return false;
             foreach (var newBook in author)
             {
-                var book = this.FindBook(newBook.Title);
-                if (book == null)
+                if (FindBook(newBook.Title) == null)
                 {
                     _books.Add(newBook.Title, newBook);
+                    ResetFileForDeleting(newBook.Cover);
                     isBooksAdded = true;
                 }
             }
             _authors.Add(author.FullName, author);
+            ResetFileForDeleting(author.Photo);
             foreach (var book in author)
                 book.AddAuthor(author);
             OnPropertyChanged("AuthorsList");
@@ -200,19 +202,17 @@ namespace Library
             if (string.IsNullOrWhiteSpace(publisher.Name)) return false;
             if (this.FindPublisher(publisher.Name) != null) return false;
             //if (publisher.IsEmpty()) return false;
-            List<Book> books = new List<Book>();
             foreach (var newBook in publisher)
             {
-                var book = this.FindBook(newBook.Title);
-                if (book == null)
+                if (FindBook(newBook.Title) == null)
                 {
-                    _books.Add(book.Title, book);
+                    _books.Add(newBook.Title, newBook);
+                    ResetFileForDeleting(newBook.Cover);
                     isBookAdded = true;
                 }
-                books.Add(book);
             }
             _publishers.Add(publisher.Name, publisher);
-            foreach (var book in books)
+            foreach (var book in publisher)
             {
                 if (book.Publisher != null) throw new MemberAccessException();
                 book.Publisher = publisher;
@@ -254,31 +254,7 @@ namespace Library
         {
             if (_catalogue == null)
             {
-                DataContractSerializer dcs = new DataContractSerializer(typeof(Catalogue));
-                string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), CatalogueFileName);
-                try
-                { 
-                    using (var file = File.OpenRead(fileName))
-                    {
-                        using (GZipStream decompress = new GZipStream(file, CompressionMode.Decompress))
-                        {
-                            _catalogue = (Catalogue)dcs.ReadObject(decompress);
-                            if (_catalogue.FilesForDeleting == null)
-                                _catalogue.FilesForDeleting = new List<string>();
-                        }
-                    }
-                }
-                catch
-                {
-                    using (File.Create(fileName)) { }
-                    _catalogue = new Catalogue();
-                }
-                foreach (var path in _catalogue.FilesForDeleting)
-                {
-                    DeleteFile(path);
-                }
-                _catalogue.FilesForDeleting.Clear();
-                //_catalogue = new Catalogue();
+                _catalogue = Load();
             }
             return _catalogue;
         }
@@ -294,6 +270,76 @@ namespace Library
                 return false;
             }
             return true;
+        }
+
+        private static Catalogue Load()
+        {
+            Catalogue catalogue;
+            DataContractSerializer dcs = new DataContractSerializer(typeof(Catalogue));
+            string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _filename);
+            try
+            {
+                using (var file = File.OpenRead(fileName))
+                {
+                    using (GZipStream decompress = new GZipStream(file, CompressionMode.Decompress))
+                    {
+                        catalogue = (Catalogue)dcs.ReadObject(decompress);
+                        if (catalogue._filesForDeleting == null)
+                            catalogue._filesForDeleting = new List<string>();
+                    }
+                }
+            }
+            catch
+            {                
+                DirectoryInfo dir = Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+                foreach (var fileInfo in dir.EnumerateFiles())
+                {
+                    try
+                    {
+                        File.Delete(fileInfo.FullName);
+                    }
+                    catch { }
+                }
+                using (File.Create(fileName)) { }
+                catalogue = new Catalogue();
+            }
+            foreach (var path in catalogue._filesForDeleting)
+            {
+                DeleteFile(path);
+            }
+            catalogue._filesForDeleting.Clear();
+            return catalogue;
+        }
+
+        public void Save()
+        {
+            string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _filename);
+            DataContractSerializer dcs = new DataContractSerializer(typeof(Catalogue));
+            using (var fstream = File.Open(fileName, FileMode.Create, FileAccess.Write))
+            {
+                using (GZipStream compress = new GZipStream(fstream, CompressionMode.Compress))
+                {
+                    dcs.WriteObject(compress, this);
+                }
+            }
+        }
+
+        public void AddFileForDeleting(string path)
+        {
+            if (path == null) return;
+            if (!_filesForDeleting.Contains(path))
+            {
+                _filesForDeleting.Add(path);
+            }
+        }
+
+        protected void ResetFileForDeleting(string path)
+        {
+            if (path == null) return;
+            if (_filesForDeleting.Contains(path))
+            {
+                _filesForDeleting.Remove(path);
+            }
         }
 
         public ICollection<Book> BooksList
@@ -338,6 +384,7 @@ namespace Library
                 if (author.IsEmpty() == true)
                 {
                     _authors.Remove(author.FullName);
+                    AddFileForDeleting(author.Photo);
                     isAuthorsRemoved = true;
                 }
             }
@@ -351,6 +398,7 @@ namespace Library
                 }
             }
             _books.Remove(removableBook.Title);
+            AddFileForDeleting(removableBook.Cover);
             OnPropertyChanged("BooksList");
             if (isAuthorsRemoved)
                 OnPropertyChanged("AuthorsList");
@@ -371,7 +419,10 @@ namespace Library
                     {
                         author.RemoveBook(book);
                         if (author.IsEmpty() == true)
+                        {
                             _authors.Remove(author.FullName);
+                            AddFileForDeleting(author.Photo);
+                        }
                     }
                 }
                 if (book.Publisher != null)
@@ -384,8 +435,10 @@ namespace Library
                     }
                 }
                 _books.Remove(book.Title);
+                AddFileForDeleting(book.Cover);
             }
             _authors.Remove(removableAuthor.FullName);
+            AddFileForDeleting(removableAuthor.Photo);
             OnPropertyChanged("AuthorsList");
             OnPropertyChanged("BooksList");
             if (isPublisherRemoved)
@@ -405,10 +458,12 @@ namespace Library
                     if (author.IsEmpty() == true)
                     {
                         _authors.Remove(author.FullName);
+                        AddFileForDeleting(author.Photo);
                         isAuthorRemoved = true;
                     }
                 }
                 _books.Remove(book.Title);
+                AddFileForDeleting(book.Cover);
             }
             _publishers.Remove(removablePublisher.Name);
             OnPropertyChanged("PublishersList");
@@ -449,13 +504,6 @@ namespace Library
                 publisher.Name = newName;
                 _publishers.Add(publisher.Name, publisher);
             }
-        }
-
-        ~Catalogue()
-        {
-            /*string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _fileOfDataBase);
-            DataContractSerializer dcs = new DataContractSerializer(typeof(Catalogue));
-            dcs.WriteObject(File.OpenWrite(fileName), this);*/
         }
     }
 }

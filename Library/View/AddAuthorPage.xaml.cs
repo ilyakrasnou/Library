@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Library.Resources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -50,8 +51,8 @@ namespace Library
 
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
         {
-            var action = await DisplayActionSheet("Do you really like to delete this book?", "Cancel", "Ok");
-            if (action == "Cancel") return;
+            var action = await DisplayActionSheet(Localization.DeleteQuery, Localization.Cancel, Localization.Ok);
+            if (action == Localization.Cancel) return;
             ((AddAuthorViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
             var binding = ((ListView)sender).ItemsSource;
             ((ListView)sender).ItemsSource = null;
@@ -60,14 +61,7 @@ namespace Library
 
         private void OnBackClicked(object sender, EventArgs e)
         {
-            ((AddAuthorViewModel)BindingContext).OnDeleting();
             Navigation.PopModalAsync();
-        }
-
-        protected override bool OnBackButtonPressed()
-        {
-            ((AddAuthorViewModel)BindingContext).OnDeleting();
-            return base.OnBackButtonPressed();
         }
     }
 }

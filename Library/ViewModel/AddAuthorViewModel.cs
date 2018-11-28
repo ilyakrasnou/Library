@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Plugin.Media;
+using Library.Resources;
 
 namespace Library
 {
@@ -50,9 +51,9 @@ namespace Library
         {
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
-            config.SetTitle("Add book: ");
-            config.SetDestructive("New book", async () => { await Navigation.PushModalAsync(new AddBookPage(Author, false)); });
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.AddBook);
+            config.SetDestructive(Localization.NewBook, async () => { await Navigation.PushModalAsync(new AddBookPage(Author, false)); });
+            config.SetCancel(Localization.Cancel);
             foreach (var book in catalogue.BooksList)
             {
                 if (!Author.ContainsBook(book))
@@ -65,7 +66,7 @@ namespace Library
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-                await UserDialogs.Instance.AlertAsync("Photos Not Supported", "Permission not granted to photos.", "OK");
+                await UserDialogs.Instance.AlertAsync(Localization.PhotosNotSupport, Localization.NoPermission, Localization.Ok);
                 return;
             }
             var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -76,13 +77,14 @@ namespace Library
             if (file == null)
                 return;
             Author.Photo = file.Path;
+            Catalogue.GetCatalogue().AddFileForDeleting(Author.Photo);
         }
 
         protected void OnRemoveBookClicked(object sender)
         {
             var config = new ActionSheetConfig();
-            config.SetTitle("Select book to remove");
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.BookToRemove);
+            config.SetCancel(Localization.Cancel);
             foreach (var book in Author)
             {
                 config.Add(book.Title, () => Author.RemoveBook(book));
@@ -100,13 +102,13 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Author.FullName))
             {
-                UserDialogs.Instance.Alert("Error", "This author can't be added.\nAuthor must have full name!", "Cancel");
+                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddAuthor+Localization.AuthorWithoutName, Localization.Cancel);
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindAuthor(Author.FullName) != null)
             {
-                UserDialogs.Instance.Alert("Error", "This author can't be added.\nThere is an author with such full name!", "Cancel");
+                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddAuthor+Localization.ExistSuchAuthor, Localization.Cancel);
                 return;
             }
             if (IsFullAdd)
@@ -126,11 +128,12 @@ namespace Library
            Navigation.PopModalAsync();
         }
 
-        public void OnDeleting()
+        /*public void OnDeleting()
         {
-            Author.Photo = null;
+            var catalogue = Catalogue.GetCatalogue();
+            catalogue.AddFileForDeleting(Author.Photo);
             foreach (var book in Author)
-                book.Cover = null;
-        }
+                catalogue.AddFileForDeleting(book.Cover);
+        }*/
     }
 }

@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Acr.UserDialogs;
+using Library.Resources;
 using Plugin.Media;
 
 namespace Library
@@ -17,7 +18,7 @@ namespace Library
         public string NewTitle { get; set; }
         private bool _couldRename;
         public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
-        public string Rename => _couldRename ? "Save" : "Rename";
+        public string Rename => _couldRename ? Localization.Save : Localization.Rename;
         public INavigation Navigation { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -81,7 +82,7 @@ namespace Library
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-                await UserDialogs.Instance.AlertAsync("Photos Not Supported", "Permission not granted to photos.", "OK");
+                await UserDialogs.Instance.AlertAsync(Localization.PhotosNotSupport, Localization.NoPermission, Localization.Ok);
                 return;
             }
             var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -91,6 +92,7 @@ namespace Library
             });
             if (file == null)
                 return;
+            Catalogue.GetCatalogue().AddFileForDeleting(Book.Cover);
             Book.Cover = file.Path;
             /*image.Source = ImageSource.FromStream(() =>
             {
@@ -104,9 +106,9 @@ namespace Library
         {
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
-            config.SetTitle("Add author: ");
-            config.SetDestructive("New author", async () => { await Navigation.PushModalAsync(new AddAuthorPage(Book, true)); });
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.AddAuthor);
+            config.SetDestructive(Localization.NewAuthor, async () => { await Navigation.PushModalAsync(new AddAuthorPage(Book, true)); });
+            config.SetCancel(Localization.Cancel);
             foreach (var author in catalogue.AuthorsList)
             {
                 if (!Book.ContainsAuthor(author))
@@ -122,16 +124,16 @@ namespace Library
         protected void OnRemoveAuthorClicked(object sender)
         {
             var config = new ActionSheetConfig();
-            config.SetTitle("Select author to remove");
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.AuthorToRemove);
+            config.SetCancel(Localization.Cancel);
             foreach (var author in Book)
             {
                 config.Add(author.FullName, () =>
                 {
                     Book.RemoveAuthor(author);
+                    author.RemoveBook(Book);
                     if (author.IsEmpty())
                         Catalogue.GetCatalogue().RemoveAuthor(author);
-                    else author.RemoveBook(Book);
                 });
             }
             UserDialogs.Instance.ActionSheet(config);
@@ -141,13 +143,13 @@ namespace Library
         {
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
-            config.SetTitle("Add publisher: ");
-            config.SetDestructive("New publisher", async () =>
+            config.SetTitle(Localization.AddPublisher);
+            config.SetDestructive(Localization.NewPublisher, async () =>
             {
                 OnRemovePublisherClicked(null);
                 await Navigation.PushModalAsync(new AddPublisherPage(Book, true));
             });
-            config.SetCancel("Cancel");
+            config.SetCancel(Localization.Cancel);
             foreach (var publisher in catalogue.PublishersList)
             {
                 if (Book.Publisher != publisher)

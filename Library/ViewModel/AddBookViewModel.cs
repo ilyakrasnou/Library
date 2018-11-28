@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Plugin.Media;
+using Library.Resources;
 
 namespace Library
 {
@@ -69,7 +70,7 @@ namespace Library
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-                await UserDialogs.Instance.AlertAsync("Photos Not Supported", "Permission not granted to photos.", "OK");
+                await UserDialogs.Instance.AlertAsync(Localization.PhotosNotSupport, Localization.NoPermission, Localization.Ok);
                 return;
             }
             var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -80,6 +81,7 @@ namespace Library
             if (file == null)
                 return;
             Book.Cover = file.Path;
+            Catalogue.GetCatalogue().AddFileForDeleting(Book.Cover);
             /*image.Source = ImageSource.FromStream(() =>
             {
                 var stream = file.GetStream();
@@ -92,9 +94,9 @@ namespace Library
         {
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
-            config.SetTitle("Add author: ");
-            config.SetDestructive("New author", async () => { await Navigation.PushModalAsync(new AddAuthorPage(Book, false)); });
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.AddAuthor);
+            config.SetDestructive(Localization.NewAuthor, async () => { await Navigation.PushModalAsync(new AddAuthorPage(Book, false)); });
+            config.SetCancel(Localization.Cancel);
             foreach (var author in catalogue.AuthorsList)
             {
                 if (!Book.ContainsAuthor(author))
@@ -106,8 +108,8 @@ namespace Library
         protected void OnRemoveAuthorClicked(object sender)
         {
             var config = new ActionSheetConfig();
-            config.SetTitle("Select author to remove");
-            config.SetCancel("Cancel");
+            config.SetTitle(Localization.AuthorToRemove);
+            config.SetCancel(Localization.Cancel);
             foreach(var author in Book)
             {
                 config.Add(author.FullName, () => Book.RemoveAuthor(author));
@@ -124,13 +126,13 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Book.Title))
             {
-                UserDialogs.Instance.Alert("Error", "This book can't be added.\nBook must have Title!", "Cancel");
+                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddBook + Localization.BookWithoutName, Localization.Cancel);
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindAuthor(Book.Title) != null)
             {
-                UserDialogs.Instance.Alert("Error", "This book can't be added.\nThere is a book with such title!", "Cancel");
+                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddBook + Localization.ExistSuchBook, Localization.Cancel);
                 return;
             }
             if (IsFullAdd)
@@ -167,13 +169,13 @@ namespace Library
         {
             Catalogue catalogue = Catalogue.GetCatalogue();
             var config = new ActionSheetConfig();
-            config.SetTitle("Add publisher: ");
-            config.SetDestructive("New publisher", async () => 
+            config.SetTitle(Localization.AddPublisher);
+            config.SetDestructive(Localization.NewPublisher, async () => 
             {
                 OnRemovePublisherClicked(null);
                 await Navigation.PushModalAsync(new AddPublisherPage(Book, false));
             });
-            config.SetCancel("Cancel");
+            config.SetCancel(Localization.Cancel);
             foreach (var publisher in catalogue.PublishersList)
             {
                 if (Book.Publisher != publisher)
@@ -192,11 +194,12 @@ namespace Library
             Book.Publisher = null;
         }
 
-        public void OnDeleting()
+        /*public void OnDeleting()
         {
-            Book.Cover = null;
+            var catalogue = Catalogue.GetCatalogue();
+            catalogue.AddFileForDeleting(Book.Cover);
             foreach (var author in Book)
-                author.Photo = null;
-        }
+                catalogue.AddFileForDeleting(author.Photo);
+        }*/
     }
 }

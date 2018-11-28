@@ -32,14 +32,7 @@ namespace Library
 
         private void OnBackClicked(object sender, EventArgs e)
         {
-            ((AddBookViewModel)BindingContext).OnDeleting();
             Navigation.PopModalAsync();
-        }
-
-        protected override bool OnBackButtonPressed()
-        {
-            ((AddBookViewModel)BindingContext).OnDeleting();
-            return base.OnBackButtonPressed();
         }
     }
 }

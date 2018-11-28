@@ -14,6 +14,12 @@
                                 <Button Text="Pick photo" Command="{Binding PickPhotoCommand}"/>
                             </StackLayout>
                         </ViewCell>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="Biography"/>
+                                <Editor Text="{Binding Author.Biography, Mode=TwoWay}" MaxLength="256"/>
+                            </StackLayout>
+                        </ViewCell>
                         <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday, Mode=TwoWay}"/>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal" VerticalOptions="Center">

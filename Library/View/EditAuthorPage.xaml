@@ -22,6 +22,12 @@
                         </ViewCell>
                         <EntryCell x:Name="Birthday" Label="Birthday (year): " Keyboard="Numeric" Text="{Binding Author.Birthday, Mode=TwoWay}"/>
                         <ViewCell>
+                            <StackLayout>
+                                <Label Text="Biography"/>
+                                <Editor Text="{Binding Author.Biography, Mode=TwoWay}" MaxLength="256"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
                             <StackLayout Orientation="Horizontal" VerticalOptions="Center">
                                 <Label Text="Book " IsVisible="{Binding IsFullAdd}" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
                                 <Button x:Name="AddBook" Text="Add book" Command="{Binding AddBookCommand}" />

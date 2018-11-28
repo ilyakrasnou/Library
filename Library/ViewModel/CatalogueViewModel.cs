@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Acr.UserDialogs;
+using Library.Resources;
 
 namespace Library
 {
@@ -25,6 +26,7 @@ namespace Library
         public ICommand SortPublishersListCommand { get; }
 
         private int _sortListBy;
+        private const int _countQuery = 10;
 
         public int SortListBy
         {
@@ -107,9 +109,10 @@ namespace Library
                 if (_isSearching)
                 {
                     _isSearching = false;
-                    return from book in BooksList
+                    if (String.IsNullOrWhiteSpace(_searchText)) return BooksList;
+                    return (from book in BooksList
                            where book.Title.ToLower().Contains(_searchText)
-                           select book;
+                           select book).Take(_countQuery);
                 }
                 if (SortListBy % 10 == (int)SortListParam.Book)
                 {
@@ -132,9 +135,10 @@ namespace Library
                 if (_isSearching)
                 {
                     _isSearching = false;
-                    return from author in AuthorsList
+                    if (String.IsNullOrWhiteSpace(_searchText)) return AuthorsList;
+                    return (from author in AuthorsList
                            where author.FullName.ToLower().Contains(_searchText)
-                           select author;
+                           select author).Take(_countQuery);
                 }
                 if (SortListBy % 10 == (int)SortListParam.Author)
                 {
@@ -155,9 +159,10 @@ namespace Library
                 if (_isSearching)
                 {
                     _isSearching = false;
-                    return from publisher in PublishersList
+                    if (String.IsNullOrWhiteSpace(_searchText)) return PublishersList;
+                    return (from publisher in PublishersList
                            where publisher.Name.ToLower().Contains(_searchText)
-                           select publisher;
+                           select publisher).Take(_countQuery);
                 }
                 if (SortListBy % 10 == (int)SortListParam.Publisher)
                 {
@@ -174,16 +179,16 @@ namespace Library
         private async void OnSortBooksListClicked(object sender)
         {
             int sort = 0;
-            var action = await App.Current.MainPage.DisplayActionSheet("Sort by", "Cancel", null, "None", "Title",
-             "Pages", "Year", "ISBN");
-            switch(action)
-            {
-                case "None": sort = (int) SortBookParam.None; break;
-                case "Title": sort = (int) SortBookParam.Title; break;
-                case "Pages": sort = (int) SortBookParam.Pages; break;
-                case "Year": sort = (int) SortBookParam.Year; break;
-                case "ISBN": sort = (int) SortBookParam.ISBN; break;
-            }
+            var action = await App.Current.MainPage.DisplayActionSheet(Localization.SortBy, Localization.Cancel, null, Localization.None, 
+                Localization.Title,
+                Localization.Pages, 
+                Localization.YearOfPublishing, 
+                Localization.ISBN);
+            if (action == Localization.None) sort = (int)SortBookParam.None;
+            else if (action == Localization.Title) sort = (int)SortBookParam.Title;
+            else if (action == Localization.Pages) sort = (int)SortBookParam.Pages;
+            else if (action == Localization.YearOfPublishing) sort = (int)SortBookParam.Year;
+            else if (action == Localization.ISBN) sort = (int)SortBookParam.ISBN;
             if (sort != 0)
                 SortListBy = sort * 10 + (int)SortListParam.Book;
         }
@@ -191,14 +196,11 @@ namespace Library
         private async void OnSortAuthorsListClicked(object sender)
         {
             int sort = 0;
-            var action = await UserDialogs.Instance.ActionSheetAsync("Sort by", "Cancel", null, null, "None", "Name",
-             "Birthday");
-            switch (action)
-            {
-                case "None": sort = (int)SortAuthorParam.None; break;
-                case "Name": sort = (int)SortAuthorParam.Name; break;
-                case "Birthday": sort = (int)SortAuthorParam.Birthday; break;
-            }
+            var action = await App.Current.MainPage.DisplayActionSheet(Localization.SortBy, Localization.Cancel, null, Localization.None, Localization.FullName,
+                Localization.Birthday);
+            if (action == Localization.None) sort = (int)SortAuthorParam.None;
+            else if (action == Localization.FullName) sort = (int)SortAuthorParam.Name;
+            else if (action == Localization.Birthday) sort = (int)SortAuthorParam.Birthday;
             if (sort != 0)
                 SortListBy = sort * 10 + (int)SortListParam.Author;
         }
@@ -206,14 +208,11 @@ namespace Library
         private async void OnSortPublishersListClicked(object sender)
         {
             int sort = 0;
-            var action = await UserDialogs.Instance.ActionSheetAsync("Sort by", "Cancel", null, null, "None", "Name",
-             "City");
-            switch (action)
-            {
-                case "None": sort = (int) SortPublisherParam.None; break;
-                case "Name": sort = (int)SortPublisherParam.Name; break;
-                case "City": sort = (int)SortPublisherParam.City; break;
-            }
+            var action = await App.Current.MainPage.DisplayActionSheet(Localization.SortBy, Localization.Cancel, null, Localization.None,
+               Localization.Name, Localization.City);
+            if (action == Localization.None) sort = (int)SortPublisherParam.None;
+            else if (action == Localization.Name) sort = (int)SortPublisherParam.Name;
+            else if (action == Localization.City) sort = (int)SortPublisherParam.City;
             if (sort != 0)
                 SortListBy = sort * 10 + (int) SortListParam.Publisher;
         }

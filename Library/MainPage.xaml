@@ -10,7 +10,6 @@
         <ContentPage.ToolbarItems>
             <ToolbarItem Text="Add book" Order="Secondary" Command="{Binding AddBookCommand}"/>
             <ToolbarItem Text="Sort by" Order="Secondary" Command="{Binding SortBooksListCommand}"/>
-            <ToolbarItem Text="Pick image" Order="Secondary" Clicked="ToolbarItem_Clicked"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
             <SearchBar x:Name="Search" Text="{Binding SearchBook}"/>

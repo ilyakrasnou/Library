@@ -32,8 +32,6 @@ namespace Library
             get => _photo;
             set
             {
-                if (_photo == value) return;
-                //if (_photo != null && File.Exists(_photo)) File.Delete(_photo);
                 _photo = value;
                 OnPropertyChanged();
             }
@@ -50,6 +48,17 @@ namespace Library
                         _birthday = birthday;
                     else return;
                 else _birthday = null;
+                OnPropertyChanged();
+            }
+        }
+        [DataMember (EmitDefaultValue = false)]
+        private string _biography;
+        public string Biography
+        {
+            get => _biography;
+            set
+            {
+                _biography = value;
                 OnPropertyChanged();
             }
         }
