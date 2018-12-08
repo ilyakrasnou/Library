@@ -1,8 +1,110 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:valid="clr-namespace:Library.TriggerAction"
+             xmlns:convert="clr-namespace:Library.Converters"
              x:Class="Library.App">
     <Application.Resources>
+        <ResourceDictionary>
+            <Style TargetType="NavigationPage">
+                <Style.Triggers>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="DarkSeaGreen">
+                        <Setter Property="BarBackgroundColor" Value="SeaGreen"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="Olive">
+                        <Setter Property="BarBackgroundColor" Value="DarkOliveGreen"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="SlateBlue">
+                        <Setter Property="BarBackgroundColor" Value="DarkSlateBlue"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="White">
+                        <Setter Property="BarBackgroundColor" Value="Default"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="Violet">
+                        <Setter Property="BarBackgroundColor" Value="DarkViolet"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="Turquoise">
+                        <Setter Property="BarBackgroundColor" Value="DarkTurquoise"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="Salmon">
+                        <Setter Property="BarBackgroundColor" Value="DarkSalmon"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="Cyan">
+                        <Setter Property="BarBackgroundColor" Value="DarkCyan"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="Goldenrod">
+                        <Setter Property="BarBackgroundColor" Value="DarkGoldenrod"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="Orchid">
+                        <Setter Property="BarBackgroundColor" Value="DarkOrchid"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="Orange">
+                        <Setter Property="BarBackgroundColor" Value="DarkOrange"/>
+                    </Trigger>
+                    <Trigger TargetType="NavigationPage" Property="BackgroundColor" Value="Khaki">
+                        <Setter Property="BarBackgroundColor" Value="DarkKhaki"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
+            <Style x:Key="baseEntryStyle" TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="#35ffffff"/>
+                <Style.Triggers>
+                    <Trigger TargetType="Entry" Property="IsFocused" Value="True">
+                        <Setter Property="BackgroundColor" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="Editor">
+                <Setter Property="BackgroundColor" Value="#40ffffff"/>
+                <Style.Triggers>
+                    <Trigger TargetType="Editor" Property="IsFocused" Value="True">
+                        <Setter Property="BackgroundColor" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="ImageButton">
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+            <Style x:Key="pages" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+                <Style.Triggers>
+                    <EventTrigger Event="Unfocused">
+                        <valid:PagesValidation />
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="isbn" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+                <Style.Triggers>
+                    <EventTrigger Event="Unfocused">
+                        <valid:IsbnValidation />
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="year" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+                <Style.Triggers>
+                    <EventTrigger Event="Unfocused">
+                        <valid:YearValidation />
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="birthday" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+                <Style.Triggers>
+                    <EventTrigger Event="Unfocused">
+                        <valid:BirthdayValidation />
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="title" TargetType="Entry" BasedOn="{StaticResource baseEntryStyle}">
+                <Style.Triggers>
+                    <EventTrigger Event="Unfocused">
+                        <valid:TitleValidation />
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <convert:DefaultImageSourse x:Key="defaultImage"/>
+            
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

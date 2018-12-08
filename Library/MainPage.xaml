@@ -1,38 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:converter="clr-namespace:Library.Converters"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"         
+            xmlns:local="clr-namespace:Library.MyResources"
             x:Class="Library.MainPage">
-    <ContentPage Title="Books">
-        <!--<ContentPage.ToolbarItems>
-            <ToolbarItem Command="{Binding AddBookCommand}" Icon="{converter:ImageResource Source='Library.ImageResources.icon_add.png'}"/>
-        </ContentPage.ToolbarItems>-->
+    <TabbedPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Frame">
+                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="IsClippedToBounds" Value="True"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Margin" Value="2.5"/>
+            </Style>
+        </ResourceDictionary>
+    </TabbedPage.Resources>
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem x:Name="Settings" Priority="1" Text="{x:Static local:Localization.Settings}" Order="Primary" Icon="icon-settings.png" Command="{Binding SettingsCommand}"/>
+    </TabbedPage.ToolbarItems>
+    <ContentPage x:Name="Books" Title="{x:Static local:Localization.Books}">
         <ContentPage.ToolbarItems>
-            <ToolbarItem Text="Add book" Order="Secondary" Command="{Binding AddBookCommand}"/>
-            <ToolbarItem Text="Sort by" Order="Secondary" Command="{Binding SortBooksListCommand}"/>
+            <ToolbarItem x:Name="AddBook" Text="{x:Static local:Localization.AddBook}" Order="Primary" Icon="icon-add-book.png" Command="{Binding AddBookCommand}"/>
+            <ToolbarItem x:Name="BookSortBy" Text="{x:Static local:Localization.SortBy}" Order="Primary" Icon="icon-sortby.png" Command="{Binding SortBooksListCommand}"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
             <SearchBar x:Name="Search" Text="{Binding SearchBook}"/>
             <ListView x:Name="BooksView" 
                       ItemsSource="{Binding BooksList}"
-                      ItemSelected="BooksView_ItemSelected">
+                      ItemSelected="BooksView_ItemSelected"
+                      SeparatorVisibility="Default">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout>
-                                <Label Text="{Binding Title}"/>
-                                <Label Text="{Binding AuthorsNames}"/>
-                            </StackLayout>
+                            <Frame>
+                            <Grid IsClippedToBounds="True" RowSpacing="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="28"/>
+                                        <RowDefinition Height="26"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="56" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding Cover, Converter={StaticResource defaultImage}}" />
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontSize="19"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding AuthorsNames}" FontSize="16"/>
+                                </Grid>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
     </ContentPage>
-    <ContentPage Title="Authors">
+    <ContentPage x:Name="Authors" Title="{x:Static local:Localization.Authors}">
         <ContentPage.ToolbarItems>
-            <ToolbarItem Text="Add author" Order="Secondary" Command="{Binding AddAuthorCommand}"/>
-            <ToolbarItem Text="Sort by" Order="Secondary" Command="{Binding SortAuthorsListCommand}"/>
+            <ToolbarItem x:Name="AddAuthor" Text="{x:Static local:Localization.AddAuthor}" Order="Primary" Icon="icon-add-author.png" Command="{Binding AddAuthorCommand}"/>
+            <ToolbarItem x:Name="AuthorSortBy" Text="{x:Static local:Localization.SortBy}" Order="Primary" Icon="icon-sortby.png" Command="{Binding SortAuthorsListCommand}"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
             <SearchBar Text="{Binding SearchAuthor}"/>
@@ -42,19 +64,31 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout>
-                                <Label Text="{Binding FullName}"/>
-                            </StackLayout>
+                            <Frame>
+                                <Grid IsClippedToBounds="True">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="56"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="56" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0" Source="{Binding Photo, Converter={StaticResource defaultImage}}" />
+                                <StackLayout Grid.Column="1">
+                                    <Label Text="{Binding FullName}" FontSize="19"/>
+                                </StackLayout>
+                            </Grid>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
     </ContentPage>
-    <ContentPage Title="Publishers">
+    <ContentPage x:Name="Publishers" Title="{x:Static local:Localization.Publishers}">
         <ContentPage.ToolbarItems>
-            <ToolbarItem Text="Add publisher" Order="Secondary" Command="{Binding AddPublisherCommand}"/>
-            <ToolbarItem Text="Sort by" Order="Secondary" Command="{Binding SortPublishersListCommand}"/>
+            <ToolbarItem x:Name="AddPublisher" Text="{x:Static local:Localization.AddPublisher}" Order="Primary" Icon="icon-add-publisher.png" Command="{Binding AddPublisherCommand}"/>
+            <ToolbarItem x:Name="PublisherSortBy" Text="{x:Static local:Localization.SortBy}" Order="Primary" Icon="icon-sortby.png" Command="{Binding SortPublishersListCommand}"/>
         </ContentPage.ToolbarItems>
         <StackLayout>
             <SearchBar Text="{Binding SearchPublisher}"/>
@@ -64,10 +98,19 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout>
-                                <Label Text="{Binding Name}"/>
-                                <Label Text="{Binding City}"/>
-                            </StackLayout>
+                            <Frame>
+                                <Grid RowSpacing="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="28"/>
+                                        <RowDefinition Height="26"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Grid.Row="0" Text="{Binding Name}" FontSize="19"/>
+                                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding City}" FontSize="16"/>
+                                </Grid>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

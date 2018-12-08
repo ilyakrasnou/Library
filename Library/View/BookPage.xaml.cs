@@ -29,8 +29,16 @@ namespace Library
             if (Catalogue.GetCatalogue().FindBook(((BookViewModel)BindingContext).Book.Title) != ((BookViewModel)BindingContext).Book)
                 Navigation.PopAsync();
             else
+            {
+                image.RotationY = 360;
+                image.RotateYTo(0, 1500,Easing.SpringIn);
                 base.OnAppearing();
+            }
         }
 
+        private void Home_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopToRootAsync();
+        }
     }
 }

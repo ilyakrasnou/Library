@@ -35,5 +35,10 @@ namespace Library
             else
                 base.OnAppearing();
         }
+
+        private void Home_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopToRootAsync();
+        }
     }
 }

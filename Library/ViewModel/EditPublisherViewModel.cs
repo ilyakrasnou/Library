@@ -6,7 +6,7 @@ using Xamarin.Forms;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using Acr.UserDialogs;
-using Library.Resources;
+using Library.MyResources;
 
 namespace Library
 {
@@ -14,9 +14,6 @@ namespace Library
     {
         public Publisher Publisher { get; protected set; }
         public string NewTitle { get; set; }
-        private bool _couldRename;
-        public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
-        public string Rename => _couldRename ? Localization.Save : Localization.Rename;
         public INavigation Navigation { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -52,19 +49,15 @@ namespace Library
 
         public void RenamePublisher(object sender)
         {
-            if (CouldRename == true)
+            try
             {
-                try
-                {
-                    Catalogue.GetCatalogue().RenamePublisher(Publisher, NewTitle);
-                }
-                catch (FormatException)
-                {
-                    NewTitle = Publisher.Name;
-                    OnPropertyChanged(NewTitle);
-                }
+                Catalogue.GetCatalogue().RenamePublisher(Publisher, NewTitle);
             }
-            CouldRename = !CouldRename;
+            catch (FormatException)
+            {
+                NewTitle = Publisher.Name;
+                OnPropertyChanged(NewTitle);
+            }
         }
 
         protected void OnAddBookClicked(object sender)

@@ -167,6 +167,11 @@ namespace Library
             _authors = new ObservableCollection<Author>();
         }
 
+        public void RefreshProperty(string property)
+        {
+            OnPropertyChanged(property);
+        }
+
         public bool ContainsAuthor(Author author) =>_authors.Contains(author);
 
         public void AddAuthor(Author author)
@@ -190,7 +195,6 @@ namespace Library
         {
             get
             {
-                //_names = null;
                 if (_authors.Count != 0)
                 {
                     string names = null;

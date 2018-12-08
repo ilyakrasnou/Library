@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Acr.UserDialogs;
-using Library.Resources;
+using Library.MyResources;
 
 namespace Library
 {
@@ -24,6 +24,8 @@ namespace Library
         public ICommand SortBooksListCommand { get; }
         public ICommand SortAuthorsListCommand { get; }
         public ICommand SortPublishersListCommand { get; }
+
+        public ICommand SettingsCommand { get; }
 
         private int _sortListBy;
         private const int _countQuery = 10;
@@ -99,6 +101,7 @@ namespace Library
             SortBooksListCommand = new Command(OnSortBooksListClicked);
             SortAuthorsListCommand = new Command(OnSortAuthorsListClicked);
             SortPublishersListCommand = new Command(OnSortPublishersListClicked);
+            SettingsCommand = new Command(OnSettingsClicked);
             Catalogue.PropertyChanged += OnModelChanged;
         }
 
@@ -230,6 +233,11 @@ namespace Library
         protected async void OnAddPublisherClicked(object sender)
         {
             await Navigation.PushModalAsync(new AddPublisherPage());
+        }
+
+        protected void OnSettingsClicked(object sender)
+        {
+            Navigation.PushAsync(new UserSettingsPage());
         }
 
         ~CatalogueViewModel()

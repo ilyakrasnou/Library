@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using Acr.UserDialogs;
 using Plugin.Media;
-using Library.Resources;
+using Library.MyResources;
 
 namespace Library
 {
@@ -16,9 +16,6 @@ namespace Library
     {
         public Author Author { get; protected set; }
         public string NewTitle { get; set; }
-        private bool _couldRename;
-        public bool CouldRename { get => _couldRename; protected set { _couldRename = value; OnPropertyChanged(); OnPropertyChanged("Rename"); } }
-        public string Rename => _couldRename ? Localization.Save : Localization.Rename;
         public INavigation Navigation { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -59,7 +56,7 @@ namespace Library
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-                await UserDialogs.Instance.AlertAsync(Localization.PhotosNotSupport, Localization.NoPermission, Localization.Ok);
+                await UserDialogs.Instance.AlertAsync(Localization.NoPermission, Localization.PhotosNotSupport, Localization.Ok);
                 return;
             }
             var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -75,19 +72,15 @@ namespace Library
 
         public void RenameAuthor(object sender)
         {
-            if (CouldRename == true)
+            try
             {
-                try
-                {
-                    Catalogue.GetCatalogue().RenameAuthor(Author, NewTitle);
-                }
-                catch (FormatException)
-                {
-                    NewTitle = Author.FullName;
-                    OnPropertyChanged(NewTitle);
-                }
+                Catalogue.GetCatalogue().RenameAuthor(Author, NewTitle);
             }
-            CouldRename = !CouldRename;
+            catch (FormatException)
+            {
+                NewTitle = Author.FullName;
+                OnPropertyChanged(NewTitle);
+            }
         }
 
         protected void OnAddBookClicked(object sender)

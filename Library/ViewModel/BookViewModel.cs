@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Acr.UserDialogs;
-using Library.Resources;
+using Library.MyResources;
 
 namespace Library
 {

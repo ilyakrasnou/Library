@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Acr.UserDialogs;
-using Library.Resources;
+using Library.MyResources;
 
 namespace Library
 {
@@ -82,17 +82,22 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Publisher.Name))
             {
-                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddPublisher + Localization.PublisherWithoutName, Localization.Cancel);
+                UserDialogs.Instance.Alert(Localization.CannotAddPublisher +"\n"+ Localization.PublisherWithoutName, Localization.Error, Localization.Cancel);
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindPublisher(Publisher.Name) != null)
             {
-                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddPublisher + Localization.ExistSuchPublisher, Localization.Cancel);
+                UserDialogs.Instance.Alert(Localization.CannotAddPublisher +"\n"+ Localization.ExistSuchPublisher, Localization.Error, Localization.Cancel);
                 return;
             }
             if (IsFullAdd)
             {
+                if (Publisher.IsEmpty())
+                {
+                    UserDialogs.Instance.Alert(Localization.CannotAddPublisher + "\n" + Localization.PublisherIsEmpty, Localization.Error, Localization.Cancel);
+                    return;
+                }
                 catalogue.AddPublisher(Publisher);
             }
             else

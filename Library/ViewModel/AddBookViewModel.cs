@@ -5,7 +5,7 @@ using Xamarin.Forms;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Plugin.Media;
-using Library.Resources;
+using Library.MyResources;
 
 namespace Library
 {
@@ -70,7 +70,7 @@ namespace Library
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-                await UserDialogs.Instance.AlertAsync(Localization.PhotosNotSupport, Localization.NoPermission, Localization.Ok);
+                await UserDialogs.Instance.AlertAsync( Localization.NoPermission, Localization.PhotosNotSupport, Localization.Ok);
                 return;
             }
             var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -126,13 +126,13 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Book.Title))
             {
-                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddBook + Localization.BookWithoutName, Localization.Cancel);
+                UserDialogs.Instance.Alert( Localization.CannotAddBook +"\n"+ Localization.BookWithoutName, Localization.Error, Localization.Cancel);
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindAuthor(Book.Title) != null)
             {
-                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddBook + Localization.ExistSuchBook, Localization.Cancel);
+                UserDialogs.Instance.Alert(Localization.CannotAddBook +"\n"+ Localization.ExistSuchBook, Localization.Error, Localization.Cancel);
                 return;
             }
             if (IsFullAdd)

@@ -1,4 +1,4 @@
-﻿using Library.Resources;
+﻿using Library.MyResources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,22 +42,26 @@ namespace Library
                     })
                 }
             });
+            BackgroundColor = App.Current.MainPage.BackgroundColor;
         }
 
         public AddPublisherPage(Book book, bool isAddToCatalogue)
         {
             InitializeComponent();
             BindingContext = new AddPublisherViewModel(Navigation, book, isAddToCatalogue);
+            BackgroundColor = App.Current.MainPage.BackgroundColor;
         }
 
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
         {
-            var action = await DisplayActionSheet(Localization.DeleteQuery, Localization.Cancel, Localization.Ok);
-            if (action == Localization.Cancel) return;
-            ((AddPublisherViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
-            var binding = ((ListView)sender).ItemsSource;
-            ((ListView)sender).ItemsSource = null;
-            ((ListView)sender).ItemsSource = binding;
+            var action = await DisplayActionSheet(Localization.DeleteQuery, Localization.No, Localization.Yes);
+            if (action == Localization.Yes)
+            {
+                ((AddPublisherViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
+                var binding = ((ListView)sender).ItemsSource;
+                ((ListView)sender).ItemsSource = null;
+                ((ListView)sender).ItemsSource = binding;
+            }
         }
 
         private void OnBackClicked(object sender, EventArgs e)

@@ -1,18 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Library.MyResources"
              x:Class="Library.PublisherPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Edit" Command="{Binding EditPublisherCommand}" Order="Secondary"/>
-        <ToolbarItem Text="Remove" Command="{Binding RemovePublisherComand}" Order="Secondary"/>
+        <ToolbarItem Icon="icon-edit.png" Text="{x:Static local:Localization.Edit}" Command="{Binding EditPublisherCommand}" Order="Primary"/>
+        <ToolbarItem Icon="icon-delete.png" Text="{x:Static local:Localization.Remove}" Command="{Binding RemovePublisherComand}" Order="Primary"/>
+        <ToolbarItem Icon="icon-home.png" Text="{x:Static local:Localization.Remove}" Clicked="Home_Clicked"  Order="Primary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{Binding Publisher.Name}"
+                   FontSize="Medium"
                 HorizontalOptions="CenterAndExpand" />
-            <Label Text="City"/>
+            <Label Text="{x:Static local:Localization.City}" FontAttributes="Bold"/>
             <Label Text="{Binding Publisher.City}"/>
-            <ListView x:Name="BooksView" Header="Books: "
+            <Label Text="{x:Static local:Localization.Books}" FontAttributes="Bold"/>
+            <ListView x:Name="BooksView"
                       ItemsSource="{Binding Publisher.Books}" 
                       HasUnevenRows="True" 
                       ItemSelected="BooksView_ItemSelected">

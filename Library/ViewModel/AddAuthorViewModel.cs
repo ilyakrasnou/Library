@@ -6,7 +6,7 @@ using Xamarin.Forms;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Plugin.Media;
-using Library.Resources;
+using Library.MyResources;
 
 namespace Library
 {
@@ -66,7 +66,7 @@ namespace Library
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-                await UserDialogs.Instance.AlertAsync(Localization.PhotosNotSupport, Localization.NoPermission, Localization.Ok);
+                await UserDialogs.Instance.AlertAsync( Localization.NoPermission, Localization.PhotosNotSupport, Localization.Ok);
                 return;
             }
             var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -102,17 +102,22 @@ namespace Library
         {
             if (string.IsNullOrWhiteSpace(Author.FullName))
             {
-                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddAuthor+Localization.AuthorWithoutName, Localization.Cancel);
+                UserDialogs.Instance.Alert(Localization.CannotAddAuthor+"\n"+Localization.AuthorWithoutName, Localization.Error, Localization.Cancel);
                 return;
             }
             Catalogue catalogue = Catalogue.GetCatalogue();
             if (catalogue.FindAuthor(Author.FullName) != null)
             {
-                UserDialogs.Instance.Alert(Localization.Error, Localization.CannotAddAuthor+Localization.ExistSuchAuthor, Localization.Cancel);
+                UserDialogs.Instance.Alert(Localization.CannotAddAuthor +"\n"+Localization.ExistSuchAuthor, Localization.Error, Localization.Cancel);
                 return;
-            }
+            }        
             if (IsFullAdd)
-            {   
+            {
+                if (Author.IsEmpty())
+                {
+                    UserDialogs.Instance.Alert(Localization.CannotAddAuthor + "\n" + Localization.AuthorIsEmpty, Localization.Error, Localization.Cancel);
+                    return;
+                }
                 catalogue.AddAuthor(Author);
             }
             else

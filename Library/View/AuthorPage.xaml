@@ -1,14 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Library.MyResources"
              x:Class="Library.AuthorPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Edit" Command="{Binding EditAuthorCommand}" Order="Secondary"/>
-        <ToolbarItem Text="Remove" Order="Secondary" Command="{Binding RemoveAuthorCommand}"/>
+        <ToolbarItem Icon="icon-edit.png" Text="{x:Static local:Localization.Edit}" Command="{Binding EditAuthorCommand}" Order="Primary"/>
+        <ToolbarItem Icon="icon-delete.png" Text="{x:Static local:Localization.Remove}" Order="Primary" Command="{Binding RemoveAuthorCommand}"/>
+        <ToolbarItem Icon="icon-home.png" Text="{x:Static local:Localization.Remove}" Clicked="Home_Clicked"  Order="Primary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{Binding Author.FullName}"
+                   FontSize="Medium"
                 HorizontalOptions="CenterAndExpand" />
             <Grid>
                 <Grid.RowDefinitions>
@@ -17,16 +27,17 @@
                 <Grid.ColumnDefinitions>
 
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding Author.Photo}" Grid.Column="0" Grid.Row="0"/>
+                <Image x:Name="image" Source="{Binding Author.Photo, Converter={StaticResource defaultImage}}" Grid.Column="0" Grid.Row="0"/>
                 <StackLayout Grid.Column="1">
-                    <Label Text="Year"/>
+                    <Label Text="{x:Static local:Localization.YearOfPublishing}" FontAttributes="Bold"/>
                     <Label Text="{Binding Author.Birthday}"/>
-                    <Label Text="Few words"/>
+                    <Label Text="{x:Static local:Localization.Biography}" FontAttributes="Bold"/>
                     <Label Text="{Binding Author.Biography}"/>
                 </StackLayout>
                 
             </Grid>
-            <ListView x:Name="BooksView" Header="Books: " ItemsSource="{Binding Author.Books}" 
+            <Label Text="{x:Static local:Localization.Books}" FontAttributes="Bold"/>
+            <ListView x:Name="BooksView" ItemsSource="{Binding Author.Books}" 
                           ItemSelected="BooksView_ItemSelected" 
                           HasUnevenRows="True">
                 <ListView.ItemTemplate>

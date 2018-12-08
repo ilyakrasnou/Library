@@ -7,9 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using Plugin.Media;
-using Plugin.Media.Abstractions;
+using Library.MyResources;
 
 namespace Library
 {
@@ -23,6 +21,7 @@ namespace Library
             _catalogueViewModel = new CatalogueViewModel(Navigation);
             BindingContext = _catalogueViewModel;
             _catalogueViewModel.PropertyChanged += RefreshListView;
+            UserSettings.Current.PropertyChanged += Translate;
             //AddBook.Icon = (FileImageSource) ImageSource.FromFile("Library.ImageResources.icon_add.png") ;
             //AddBook.Icon.File = "Library.ImageResources.icon_add.png";
         }
@@ -74,30 +73,29 @@ namespace Library
                 PublishersView.ItemsSource = null;
                 PublishersView.ItemsSource = _catalogueViewModel.PublishersList;
             }
-            /*IEnumerable itemsSourse;
-            if (nameList == "BooksList")
+        }
+
+        public void Translate(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Language")
             {
-                itemsSourse = BooksView.ItemsSource;
-                BooksView.ItemsSource = null;
-                BooksView.ItemsSource = itemsSourse;
+                Books.Title = Localization.Books;
+                AddBook.Text = Localization.AddBook;
+                BookSortBy.Text = Localization.SortBy;
+                Settings.Text = Localization.Settings;
+                Authors.Title = Localization.Authors;
+                AddAuthor.Text = Localization.AddAuthor;
+                AuthorSortBy.Text = Localization.SortBy;
+                Publishers.Title = Localization.Publishers;
+                AddPublisher.Text = Localization.AddPublisher;
+                PublisherSortBy.Text = Localization.SortBy;
             }
-            if (nameList == "AuthorsList")
-            {
-                itemsSourse = AuthorsView.ItemsSource;
-                AuthorsView.ItemsSource = null;
-                AuthorsView.ItemsSource = itemsSourse;
-            }
-            if (nameList == "PublishersList")
-            {
-                itemsSourse = PublishersView.ItemsSource;
-                PublishersView.ItemsSource = null;
-                PublishersView.ItemsSource = item;
-            }*/
         }
 
         ~MainPage()
         {
             _catalogueViewModel.PropertyChanged -= RefreshListView;
+            UserSettings.Current.PropertyChanged -= Translate;
         }
     }
 

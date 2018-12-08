@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Library.Resources;
+using Library.MyResources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -41,27 +41,38 @@ namespace Library
                     })
                 }
             });
+            BackgroundColor = App.Current.MainPage.BackgroundColor;
         }
 
         public AddAuthorPage(Book book, bool isAddToCatalogue)
         {
             InitializeComponent();
             BindingContext = new AddAuthorViewModel(Navigation, book, isAddToCatalogue);
+            BackgroundColor = App.Current.MainPage.BackgroundColor;
         }
 
         protected async void OnRemoveBookClicked(object sender, SelectedItemChangedEventArgs e)
         {
-            var action = await DisplayActionSheet(Localization.DeleteQuery, Localization.Cancel, Localization.Ok);
-            if (action == Localization.Cancel) return;
-            ((AddAuthorViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
-            var binding = ((ListView)sender).ItemsSource;
-            ((ListView)sender).ItemsSource = null;
-            ((ListView)sender).ItemsSource = binding;
+            var action = await DisplayActionSheet(Localization.DeleteQuery, Localization.No, Localization.Yes);
+            if (action == Localization.Yes)
+            {
+                ((AddAuthorViewModel)BindingContext).OnRemoveBookClicked(e.SelectedItem as Book);
+                var binding = ((ListView)sender).ItemsSource;
+                ((ListView)sender).ItemsSource = null;
+                ((ListView)sender).ItemsSource = binding;
+            }
         }
 
         private void OnBackClicked(object sender, EventArgs e)
         {
             Navigation.PopModalAsync();
+        }
+
+        private void AddAuthor_Clicked(object sender, EventArgs e)
+        {
+            if (BirthdayEntry.BackgroundColor == Color.Red)
+                return;
+            ((AddAuthorViewModel)BindingContext).AddAuthorCommand.Execute(null);
         }
     }
 }

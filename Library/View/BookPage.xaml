@@ -1,42 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Library.MyResources"
              x:Class="Library.BookPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="transparentButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="Padding" Value="-0.5, 0, 0, 0"/>
+                <Setter Property="BorderWidth" Value="0"/>
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem  Text="Edit" Command="{Binding EditCommand}" Order="Secondary" />
-        <ToolbarItem Text="Remove" Command="{Binding RemoveCommand}" Order="Secondary"/>
+        <ToolbarItem Icon="icon-edit.png" Text="{x:Static local:Localization.Edit}" Command="{Binding EditCommand}" Order="Primary" />
+        <ToolbarItem Icon="icon-delete.png" Text="{x:Static local:Localization.Remove}" Command="{Binding RemoveCommand}" Order="Primary"/>
+        <ToolbarItem Icon="icon-home.png" Text="{x:Static local:Localization.Remove}" Clicked="Home_Clicked"  Order="Primary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="BookTitle" Text="{Binding Path=Book.Title}"
+            <Label x:Name="BookTitle" Text="{Binding Path=Book.Title}" FontSize="Medium"
                     HorizontalOptions ="CenterAndExpand" />
             <Grid>
-
                 <Grid.RowDefinitions>
-
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding Book.Cover}" Grid.Column="1" Grid.Row="0" VerticalOptions="Start"/>
-                <StackLayout Grid.Column="0" Grid.Row="0">
-                    <Label Text="Authors:"/>
-                    <Button x:Name="Authors" HorizontalOptions="Start"
-                        BackgroundColor="White" BorderColor="White" 
+                <Image x:Name="image" Source="{Binding Book.Cover, Converter={StaticResource defaultImage}}" Grid.Column="0" Grid.Row="0" VerticalOptions="Start"/>
+                <StackLayout Grid.Column="1" Grid.Row="0">
+                    <Label Text="{x:Static local:Localization.Authors}" FontAttributes="Bold"/>
+                    <Button x:Name="Authors" 
+                            Style="{StaticResource transparentButton}"
                         Text="{Binding Path=Book.AuthorsNames}" 
                         Command="{Binding AuthorsNamesCommand}"/>
-                    <Label Text="Year"/>
-                    <Label Text="Review"/>
-                    <Label Text="{Binding Book.Review}"/>
+                    <Label Text="{x:Static local:Localization.YearOfPublishing}" FontAttributes="Bold"/>
                     <Label Text="{Binding Path=Book.YearOfPublishing}"/>
-                    <Label Text="Publisher"/>
-                    <Button x:Name="PublisherName" BackgroundColor="White" 
-                        BorderColor="White" HorizontalOptions="Start"
+                    <Label Text="{x:Static local:Localization.Review}" FontAttributes="Bold"/>
+                    <Label Text="{Binding Book.Review}"/>
+                    <Label Text="{x:Static local:Localization.Publisher}" FontAttributes="Bold"/>
+                    <Button x:Name="PublisherName" 
+                         Style="{StaticResource transparentButton}"   
                         Text="{Binding  Path=Book.Publisher.Name}" 
                         Command="{Binding PublisherCommand}" />
-                    <Label Text="Pages"/>
+                    <Label Text="{x:Static local:Localization.Pages}" FontAttributes="Bold"/>
                     <Label Text="{Binding Book.Pages}"/>
-                    <Label Text="ISBN"/>
+                    <Label Text="{x:Static local:Localization.ISBN}" FontAttributes="Bold"/>
                     <Label Text="{Binding Book.ISBN}"/>
                     <!--<StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
                     <Button x:Name="Add" Text="Edit" Command="{Binding EditCommand}" HorizontalOptions="FillAndExpand"/>

@@ -252,11 +252,16 @@ namespace Library
 
         public static Catalogue GetCatalogue()
         {
-            if (_catalogue == null)
+            /*if (_catalogue == null)
             {
                 _catalogue = Load();
-            }
+            }*/
             return _catalogue;
+        }
+
+        static Catalogue()
+        {
+            _catalogue = Load();
         }
 
         private static bool DeleteFile(string path)
@@ -493,6 +498,8 @@ namespace Library
                 author.FullName = newName;
                 _authors.Add(author.FullName, author);
             }
+            foreach (var book in author)
+                book.RefreshProperty("AuthorsNames");
         }
 
         public void RenamePublisher(Publisher publisher, string newName)

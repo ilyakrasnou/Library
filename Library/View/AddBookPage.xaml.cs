@@ -16,23 +16,33 @@ namespace Library
 		{
 			InitializeComponent();
             BindingContext = new AddBookViewModel(Navigation);
-		}
+            BackgroundColor = App.Current.MainPage.BackgroundColor;
+        }
 
         public AddBookPage(Author author, bool isAddToCatalogue)
         {
             InitializeComponent();
             BindingContext = new AddBookViewModel(Navigation, author, isAddToCatalogue);
+            BackgroundColor = App.Current.MainPage.BackgroundColor;
         }
 
         public AddBookPage(Publisher publisher, bool isAddToCatalogue)
         {
             InitializeComponent();
             BindingContext = new AddBookViewModel(Navigation, publisher, isAddToCatalogue);
+            BackgroundColor = App.Current.MainPage.BackgroundColor;
         }
 
         private void OnBackClicked(object sender, EventArgs e)
         {
             Navigation.PopModalAsync();
+        }
+
+        private void AddBook_Clicked(object sender, EventArgs e)
+        {
+            if (IsbnEntry.BackgroundColor == Color.Red || PagesEntry.BackgroundColor == Color.Red || YearEntry.BackgroundColor == Color.Red)
+                return;
+            ((AddBookViewModel)BindingContext).AddBookCommand.Execute(null);
         }
     }
 }

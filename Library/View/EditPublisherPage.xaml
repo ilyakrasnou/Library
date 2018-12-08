@@ -1,25 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Library.MyResources"
+             xmlns:valid="clr-namespace:Library.TriggerAction"
              x:Class="Library.EditPublisherPage">
     <ContentPage.Content>
         <StackLayout>
             <TableView Intent="Data">
                 <TableRoot>
                     <TableSection>
-                        <!--<ViewCell>
-                            <Button x:Name="AddBook" Text="Add book" Command="{Binding AddBookCommand}"/>
-                        </ViewCell>-->
-                        <EntryCell x:Name="Name" Label="Name: " Text="{Binding NewTitle, Mode=TwoWay}" IsEnabled="{Binding CouldRename}"/>
                         <ViewCell>
-                            <Button Text="{Binding Rename}" Command="{Binding RenamePublisherCommand}"/>
+                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                <Label Text="{x:Static local:Localization.Name}" FontAttributes="Bold"/>
+                                <Entry x:Name="TitleEntry" Text="{Binding NewTitle, Mode=TwoWay}" Style="{StaticResource title}" Unfocused="Entry_Unfocused"/>
+                            </StackLayout>
                         </ViewCell>
-                        <EntryCell x:Name="City" Label="City: " Text="{Binding Publisher.City, Mode=TwoWay}"/>
+                        <EntryCell x:Name="City" Label="{x:Static local:Localization.City}" Text="{Binding Publisher.City, Mode=TwoWay}"/>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-                                <Label Text="Book " VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-                                <Button x:Name="AddBook" Text="Add book" Command="{Binding AddBookCommand}" />
-                                <Button x:Name="RemoveAuthor" Text="Remove book" Command="{Binding RemoveBookCommand}"/>
+                                <Label Text="{x:Static local:Localization.Books}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                                <ImageButton x:Name="AddBook" Source="icon-add-book.png" Command="{Binding AddBookCommand}" />
+                                <ImageButton x:Name="RemoveAuthor" Source="icon-remove-book.png" Command="{Binding RemoveBookCommand}"/>
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>

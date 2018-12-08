@@ -34,7 +34,16 @@ namespace Library
             if (Catalogue.GetCatalogue().FindAuthor(((AuthorViewModel)BindingContext).Author.FullName) != ((AuthorViewModel)BindingContext).Author)
                 Navigation.PopAsync();
             else
+            {
+                image.Opacity = 0;
+                image.FadeTo(1, 2000, Easing.Linear);
                 base.OnAppearing();
+            }
+        }
+
+        private void Home_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopToRootAsync();
         }
     }
 }

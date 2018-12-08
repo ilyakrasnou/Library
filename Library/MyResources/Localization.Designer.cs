@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Library.Resources {
+namespace Library.MyResources {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Library.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Localization {
+    public class Localization {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Library.Resources {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Library.Resources.Localization", typeof(Localization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Library.MyResources.Localization", typeof(Localization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Library.Resources {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Add author.
         /// </summary>
-        internal static string AddAuthor {
+        public static string AddAuthor {
             get {
                 return ResourceManager.GetString("AddAuthor", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Add book.
         /// </summary>
-        internal static string AddBook {
+        public static string AddBook {
             get {
                 return ResourceManager.GetString("AddBook", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Add publisher.
         /// </summary>
-        internal static string AddPublisher {
+        public static string AddPublisher {
             get {
                 return ResourceManager.GetString("AddPublisher", resourceCulture);
             }
@@ -90,16 +90,25 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Author.
         /// </summary>
-        internal static string Author {
+        public static string Author {
             get {
                 return ResourceManager.GetString("Author", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Author must have books..
+        /// </summary>
+        public static string AuthorIsEmpty {
+            get {
+                return ResourceManager.GetString("AuthorIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Authors.
         /// </summary>
-        internal static string Authors {
+        public static string Authors {
             get {
                 return ResourceManager.GetString("Authors", resourceCulture);
             }
@@ -108,7 +117,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Select author to remove.
         /// </summary>
-        internal static string AuthorToRemove {
+        public static string AuthorToRemove {
             get {
                 return ResourceManager.GetString("AuthorToRemove", resourceCulture);
             }
@@ -117,16 +126,25 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Author can&apos;t be without full name.
         /// </summary>
-        internal static string AuthorWithoutName {
+        public static string AuthorWithoutName {
             get {
                 return ResourceManager.GetString("AuthorWithoutName", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Biography.
+        /// </summary>
+        public static string Biography {
+            get {
+                return ResourceManager.GetString("Biography", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Birthday.
         /// </summary>
-        internal static string Birthday {
+        public static string Birthday {
             get {
                 return ResourceManager.GetString("Birthday", resourceCulture);
             }
@@ -135,7 +153,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Book.
         /// </summary>
-        internal static string Book {
+        public static string Book {
             get {
                 return ResourceManager.GetString("Book", resourceCulture);
             }
@@ -144,7 +162,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Books.
         /// </summary>
-        internal static string Books {
+        public static string Books {
             get {
                 return ResourceManager.GetString("Books", resourceCulture);
             }
@@ -153,7 +171,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Select book to remove.
         /// </summary>
-        internal static string BookToRemove {
+        public static string BookToRemove {
             get {
                 return ResourceManager.GetString("BookToRemove", resourceCulture);
             }
@@ -162,7 +180,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Book can&apos;t be without title.
         /// </summary>
-        internal static string BookWithoutName {
+        public static string BookWithoutName {
             get {
                 return ResourceManager.GetString("BookWithoutName", resourceCulture);
             }
@@ -171,7 +189,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
-        internal static string Cancel {
+        public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
             }
@@ -180,7 +198,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на This author can&apos;t be added.
         /// </summary>
-        internal static string CannotAddAuthor {
+        public static string CannotAddAuthor {
             get {
                 return ResourceManager.GetString("CannotAddAuthor", resourceCulture);
             }
@@ -189,7 +207,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на This book can&apos;t be added.
         /// </summary>
-        internal static string CannotAddBook {
+        public static string CannotAddBook {
             get {
                 return ResourceManager.GetString("CannotAddBook", resourceCulture);
             }
@@ -198,7 +216,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на This publisher can&apos;t be added.
         /// </summary>
-        internal static string CannotAddPublisher {
+        public static string CannotAddPublisher {
             get {
                 return ResourceManager.GetString("CannotAddPublisher", resourceCulture);
             }
@@ -207,25 +225,52 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на City.
         /// </summary>
-        internal static string City {
+        public static string City {
             get {
                 return ResourceManager.GetString("City", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Cyan.
+        /// </summary>
+        public static string Cyan {
+            get {
+                return ResourceManager.GetString("Cyan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Default.
+        /// </summary>
+        public static string Default {
+            get {
+                return ResourceManager.GetString("Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Do you really like to delete?.
         /// </summary>
-        internal static string DeleteQuery {
+        public static string DeleteQuery {
             get {
                 return ResourceManager.GetString("DeleteQuery", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Error!.
         /// </summary>
-        internal static string Error {
+        public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
             }
@@ -234,7 +279,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на There is an author with such full name.
         /// </summary>
-        internal static string ExistSuchAuthor {
+        public static string ExistSuchAuthor {
             get {
                 return ResourceManager.GetString("ExistSuchAuthor", resourceCulture);
             }
@@ -243,7 +288,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на There is a book with such title.
         /// </summary>
-        internal static string ExistSuchBook {
+        public static string ExistSuchBook {
             get {
                 return ResourceManager.GetString("ExistSuchBook", resourceCulture);
             }
@@ -252,7 +297,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на There is a publisher with such name.
         /// </summary>
-        internal static string ExistSuchPublisher {
+        public static string ExistSuchPublisher {
             get {
                 return ResourceManager.GetString("ExistSuchPublisher", resourceCulture);
             }
@@ -261,25 +306,61 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Surname, Name.
         /// </summary>
-        internal static string FullName {
+        public static string FullName {
             get {
                 return ResourceManager.GetString("FullName", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Goldenrod.
+        /// </summary>
+        public static string Goldenrod {
+            get {
+                return ResourceManager.GetString("Goldenrod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на ISBN.
         /// </summary>
-        internal static string ISBN {
+        public static string ISBN {
             get {
                 return ResourceManager.GetString("ISBN", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Khaki.
+        /// </summary>
+        public static string Khaki {
+            get {
+                return ResourceManager.GetString("Khaki", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Name.
         /// </summary>
-        internal static string Name {
+        public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
             }
@@ -288,7 +369,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на New author.
         /// </summary>
-        internal static string NewAuthor {
+        public static string NewAuthor {
             get {
                 return ResourceManager.GetString("NewAuthor", resourceCulture);
             }
@@ -297,7 +378,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на New book.
         /// </summary>
-        internal static string NewBook {
+        public static string NewBook {
             get {
                 return ResourceManager.GetString("NewBook", resourceCulture);
             }
@@ -306,7 +387,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на New publisher.
         /// </summary>
-        internal static string NewPublisher {
+        public static string NewPublisher {
             get {
                 return ResourceManager.GetString("NewPublisher", resourceCulture);
             }
@@ -315,7 +396,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на No.
         /// </summary>
-        internal static string No {
+        public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
             }
@@ -324,7 +405,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на None.
         /// </summary>
-        internal static string None {
+        public static string None {
             get {
                 return ResourceManager.GetString("None", resourceCulture);
             }
@@ -333,7 +414,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Permission not granted to photos..
         /// </summary>
-        internal static string NoPermission {
+        public static string NoPermission {
             get {
                 return ResourceManager.GetString("NoPermission", resourceCulture);
             }
@@ -342,16 +423,43 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Ok.
         /// </summary>
-        internal static string Ok {
+        public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Olive.
+        /// </summary>
+        public static string Olive {
+            get {
+                return ResourceManager.GetString("Olive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Orange.
+        /// </summary>
+        public static string Orange {
+            get {
+                return ResourceManager.GetString("Orange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Orchid.
+        /// </summary>
+        public static string Orchid {
+            get {
+                return ResourceManager.GetString("Orchid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Pages.
         /// </summary>
-        internal static string Pages {
+        public static string Pages {
             get {
                 return ResourceManager.GetString("Pages", resourceCulture);
             }
@@ -360,7 +468,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Photo.
         /// </summary>
-        internal static string Photo {
+        public static string Photo {
             get {
                 return ResourceManager.GetString("Photo", resourceCulture);
             }
@@ -369,7 +477,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Photos Not Supported.
         /// </summary>
-        internal static string PhotosNotSupport {
+        public static string PhotosNotSupport {
             get {
                 return ResourceManager.GetString("PhotosNotSupport", resourceCulture);
             }
@@ -378,61 +486,160 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Publisher.
         /// </summary>
-        internal static string Publisher {
+        public static string Publisher {
             get {
                 return ResourceManager.GetString("Publisher", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Publisher must have books..
+        /// </summary>
+        public static string PublisherIsEmpty {
+            get {
+                return ResourceManager.GetString("PublisherIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Publishers.
+        /// </summary>
+        public static string Publishers {
+            get {
+                return ResourceManager.GetString("Publishers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Publisher can&apos;t be without name.
         /// </summary>
-        internal static string PublisherWithoutName {
+        public static string PublisherWithoutName {
             get {
                 return ResourceManager.GetString("PublisherWithoutName", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Rename.
         /// </summary>
-        internal static string Rename {
+        public static string Rename {
             get {
                 return ResourceManager.GetString("Rename", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Review.
+        /// </summary>
+        public static string Review {
+            get {
+                return ResourceManager.GetString("Review", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Salmon.
+        /// </summary>
+        public static string Salmon {
+            get {
+                return ResourceManager.GetString("Salmon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Save.
         /// </summary>
-        internal static string Save {
+        public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Sea green.
+        /// </summary>
+        public static string SeaGreen {
+            get {
+                return ResourceManager.GetString("SeaGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Slate blue.
+        /// </summary>
+        public static string SlateBlue {
+            get {
+                return ResourceManager.GetString("SlateBlue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Sort by.
         /// </summary>
-        internal static string SortBy {
+        public static string SortBy {
             get {
                 return ResourceManager.GetString("SortBy", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Theme.
+        /// </summary>
+        public static string Theme {
+            get {
+                return ResourceManager.GetString("Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Title.
         /// </summary>
-        internal static string Title {
+        public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Turqiose.
+        /// </summary>
+        public static string Turquoise {
+            get {
+                return ResourceManager.GetString("Turquoise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Violet.
+        /// </summary>
+        public static string Violet {
+            get {
+                return ResourceManager.GetString("Violet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Year of publishing.
         /// </summary>
-        internal static string YearOfPublishing {
+        public static string YearOfPublishing {
             get {
                 return ResourceManager.GetString("YearOfPublishing", resourceCulture);
             }
@@ -441,7 +648,7 @@ namespace Library.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Yes.
         /// </summary>
-        internal static string Yes {
+        public static string Yes {
             get {
                 return ResourceManager.GetString("Yes", resourceCulture);
             }

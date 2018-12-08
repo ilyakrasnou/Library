@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Library.MyResources"
+             x:Class="Library.UserSettingsPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{x:Static local:Localization.Language}"/>
+            <Picker x:Name="LangPicker"  SelectedItem="{Binding Language, Mode=TwoWay}"/>
+            <Label Text="{x:Static local:Localization.Theme}"/>
+            <Picker x:Name="ThemePicker" SelectedItem="{Binding Theme, Mode=TwoWay}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
