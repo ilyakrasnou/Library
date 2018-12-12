@@ -20,7 +20,7 @@
             <Label Text="{Binding Author.FullName}"
                    FontSize="Medium"
                 HorizontalOptions="CenterAndExpand" />
-            <Grid>
+            <Grid IsClippedToBounds="True">
                 <Grid.RowDefinitions>
 
                 </Grid.RowDefinitions>
@@ -28,13 +28,16 @@
 
                 </Grid.ColumnDefinitions>
                 <Image x:Name="image" Source="{Binding Author.Photo, Converter={StaticResource defaultImage}}" Grid.Column="0" Grid.Row="0"/>
-                <StackLayout Grid.Column="1">
-                    <Label Text="{x:Static local:Localization.YearOfPublishing}" FontAttributes="Bold"/>
-                    <Label Text="{Binding Author.Birthday}"/>
-                    <Label Text="{x:Static local:Localization.Biography}" FontAttributes="Bold"/>
-                    <Label Text="{Binding Author.Biography}"/>
-                </StackLayout>
-                
+                <ScrollView Grid.Column="1">
+                    <StackLayout>
+                        <Label Text="{x:Static local:Localization.YearOfPublishing}" FontAttributes="Bold"/>
+                        <Label Text="{Binding Author.Birthday}"/>
+                        <Label Text="{x:Static local:Localization.Biography}" FontAttributes="Bold"/>
+                        <ScrollView>
+                            <Label Text="{Binding Author.Biography}"/>
+                        </ScrollView>
+                    </StackLayout>
+                </ScrollView>
             </Grid>
             <Label Text="{x:Static local:Localization.Books}" FontAttributes="Bold"/>
             <ListView x:Name="BooksView" ItemsSource="{Binding Author.Books}" 
@@ -56,6 +59,6 @@
                 <Button Text="Remove" 
                         Command="{Binding RemoveAuthorCommand}" HorizontalOptions="FillAndExpand"/>
             </StackLayout>-->
-        </StackLayout>
+        </StackLayout>        
     </ContentPage.Content>
 </ContentPage>

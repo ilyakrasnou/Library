@@ -88,6 +88,15 @@ namespace Library.MyResources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на ascending.
+        /// </summary>
+        public static string Ascending {
+            get {
+                return ResourceManager.GetString("Ascending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Author.
         /// </summary>
         public static string Author {
@@ -255,6 +264,15 @@ namespace Library.MyResources {
         public static string DeleteQuery {
             get {
                 return ResourceManager.GetString("DeleteQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на descending.
+        /// </summary>
+        public static string Descending {
+            get {
+                return ResourceManager.GetString("Descending", resourceCulture);
             }
         }
         

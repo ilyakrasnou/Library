@@ -4,11 +4,13 @@
              xmlns:local="clr-namespace:Library.MyResources"
              x:Class="Library.UserSettingsPage">
     <ContentPage.Content>
+        <ScrollView>
         <StackLayout>
             <Label Text="{x:Static local:Localization.Language}"/>
             <Picker x:Name="LangPicker"  SelectedItem="{Binding Language, Mode=TwoWay}"/>
             <Label Text="{x:Static local:Localization.Theme}"/>
             <Picker x:Name="ThemePicker" SelectedItem="{Binding Theme, Mode=TwoWay}"/>
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

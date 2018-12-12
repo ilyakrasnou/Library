@@ -23,6 +23,7 @@
         <ToolbarItem Icon="icon-home.png" Text="{x:Static local:Localization.Remove}" Clicked="Home_Clicked"  Order="Primary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
+        <ScrollView>
         <StackLayout>
             <Label x:Name="BookTitle" Text="{Binding Path=Book.Title}" FontSize="Medium"
                     HorizontalOptions ="CenterAndExpand" />
@@ -41,7 +42,9 @@
                     <Label Text="{x:Static local:Localization.YearOfPublishing}" FontAttributes="Bold"/>
                     <Label Text="{Binding Path=Book.YearOfPublishing}"/>
                     <Label Text="{x:Static local:Localization.Review}" FontAttributes="Bold"/>
-                    <Label Text="{Binding Book.Review}"/>
+                    <ScrollView HeightRequest="100">
+                        <Label Text="{Binding Book.Review}"/>
+                    </ScrollView>
                     <Label Text="{x:Static local:Localization.Publisher}" FontAttributes="Bold"/>
                     <Button x:Name="PublisherName" 
                          Style="{StaticResource transparentButton}"   
@@ -58,5 +61,6 @@
                 </StackLayout>
             </Grid>
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

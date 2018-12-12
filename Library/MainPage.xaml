@@ -31,9 +31,9 @@
                     <DataTemplate>
                         <ViewCell>
                             <Frame>
-                            <Grid IsClippedToBounds="True" RowSpacing="2">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="28"/>
+                                <Grid IsClippedToBounds="True" RowSpacing="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="28"/>
                                         <RowDefinition Height="26"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -50,6 +50,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
+        
     </ContentPage>
     <ContentPage x:Name="Authors" Title="{x:Static local:Localization.Authors}">
         <ContentPage.ToolbarItems>
@@ -66,18 +67,18 @@
                         <ViewCell>
                             <Frame>
                                 <Grid IsClippedToBounds="True">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="56"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="56" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Image Grid.Column="0" Source="{Binding Photo, Converter={StaticResource defaultImage}}" />
-                                <StackLayout Grid.Column="1">
-                                    <Label Text="{Binding FullName}" FontSize="19"/>
-                                </StackLayout>
-                            </Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="56"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="56" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Source="{Binding Photo, Converter={StaticResource defaultImage}}" />
+                                    <StackLayout Grid.Column="1">
+                                        <Label Text="{Binding FullName}" FontSize="19"/>
+                                    </StackLayout>
+                                </Grid>
                             </Frame>
                         </ViewCell>
                     </DataTemplate>

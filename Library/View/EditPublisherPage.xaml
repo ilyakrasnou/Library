@@ -6,7 +6,7 @@
              x:Class="Library.EditPublisherPage">
     <ContentPage.Content>
         <StackLayout>
-            <TableView Intent="Data">
+            <TableView Intent="Data" >
                 <TableRoot>
                     <TableSection>
                         <ViewCell>
@@ -24,7 +24,7 @@
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>
-                            <ListView x:Name="BooksView" ItemsSource="{Binding Publisher.Books}" HasUnevenRows="True" ItemSelected="OnRemoveBookClicked">
+                            <ListView x:Name="BooksView" ItemsSource="{Binding Publisher.Books}" ItemSelected="OnRemoveBookClicked">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>

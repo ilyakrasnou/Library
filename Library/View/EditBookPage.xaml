@@ -5,85 +5,84 @@
              x:Class="Library.EditBookPage">
     <ContentPage.Content>
         <StackLayout>
-            
-            <TableView Intent="Data">
-                <TableRoot>
-                    <TableSection>
-                        <ViewCell>
-                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                <Label Text="{x:Static local:Localization.Title}" FontAttributes="Bold"/>
-                                <Entry x:Name="TitleEntry" Text="{Binding NewTitle, Mode=TwoWay}" Style="{StaticResource title}" Unfocused="Entry_Unfocused"/>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <StackLayout>
-                                <Image Source="{Binding Book.Cover}"/>
-                                <ImageButton Source="icon-edit-image.png" HorizontalOptions="CenterAndExpand" Command="{Binding PickCoverCommand}"/>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="{x:Static local:Localization.Authors}"
+                <TableView Intent="Data">
+                    <TableRoot>
+                        <TableSection>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{x:Static local:Localization.Title}" FontAttributes="Bold"/>
+                                    <Entry x:Name="TitleEntry" Text="{Binding NewTitle, Mode=TwoWay}" Style="{StaticResource title}" Unfocused="Entry_Unfocused"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Image Source="{Binding Book.Cover}"/>
+                                    <ImageButton Source="icon-edit-image.png" HorizontalOptions="CenterAndExpand" Command="{Binding PickCoverCommand}"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{x:Static local:Localization.Authors}"
                                        FontAttributes="Bold"
                                        VerticalOptions="Center"
                                        HorizontalOptions="StartAndExpand"/>
-                                <ImageButton x:Name="AddAuthor" 
+                                    <ImageButton x:Name="AddAuthor" 
                                         Source="icon-add-author.png" 
                                         Command="{Binding AddAuthorCommand}"
                                         VerticalOptions="Center"/>
-                                <ImageButton x:Name="RemoveAuthor" 
+                                    <ImageButton x:Name="RemoveAuthor" 
                                         Source="icon-remove-author.png"
                                         Command="{Binding RemoveAuthorCommand}"
                                         VerticalOptions="Center"/>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <Entry Text="{Binding Book.AuthorsNames}" InputTransparent="True" Style="{StaticResource baseEntryStyle}" />
-                        </ViewCell>
-                        <ViewCell>
-                            <StackLayout>
-                                <Label Text="{x:Static local:Localization.Review}" FontAttributes="Bold"/>
-                                <Editor Text="{Binding Book.Review, Mode=TwoWay}" MaxLength="256"/>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                <Label Text="{x:Static local:Localization.YearOfPublishing}" FontAttributes="Bold"/>
-                                <Entry x:Name="YearEntry" BindingContext="{Binding Book}" Text="{Binding YearOfPublishing, Mode=TwoWay}" Style="{StaticResource year}"/>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <Label x:Name="Publisher" Text="{x:Static local:Localization.Publisher}"
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <Entry Text="{Binding Book.AuthorsNames}" InputTransparent="True" Style="{StaticResource baseEntryStyle}" />
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Label Text="{x:Static local:Localization.Review}" FontAttributes="Bold"/>
+                                    <Editor Text="{Binding Book.Review, Mode=TwoWay}" HeightRequest="80" />
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{x:Static local:Localization.YearOfPublishing}" FontAttributes="Bold"/>
+                                    <Entry x:Name="YearEntry" BindingContext="{Binding Book}" Text="{Binding YearOfPublishing, Mode=TwoWay}" Style="{StaticResource year}"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="Publisher" Text="{x:Static local:Localization.Publisher}"
                                        FontAttributes="Bold"
                                        VerticalOptions="Center"
                                        HorizontalOptions="StartAndExpand"/>
-                                <ImageButton Source="icon-add-publisher.png"
+                                    <ImageButton Source="icon-add-publisher.png"
                                         Command="{Binding AddPublisherCommand}"
                                         VerticalOptions="Center"/>
-                                <ImageButton Source="icon-remove-publisher.png" 
+                                    <ImageButton Source="icon-remove-publisher.png" 
                                         Command="{Binding RemovePublisherCommand}" 
                                         VerticalOptions="Center"/>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <Entry Text="{Binding Path=Book.Publisher.Name}" InputTransparent="True" Style="{StaticResource baseEntryStyle}"/>
-                        </ViewCell>
-                        <ViewCell>
-                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                <Label Text="{x:Static local:Localization.Pages}" FontAttributes="Bold"/>
-                                <Entry x:Name="PagesEntry" BindingContext="{Binding Book}" Text="{Binding Pages, Mode=TwoWay}" Style="{StaticResource pages}"/>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                <Label Text="{x:Static local:Localization.ISBN}" FontAttributes="Bold"/>
-                                <Entry x:Name="IsbnEntry" BindingContext="{Binding Book}" Text="{Binding ISBN, Mode=TwoWay}" Style="{StaticResource isbn}"/>
-                            </StackLayout>
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </TableView>
-        </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <Entry Text="{Binding Path=Book.Publisher.Name}" InputTransparent="True" Style="{StaticResource baseEntryStyle}"/>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{x:Static local:Localization.Pages}" FontAttributes="Bold"/>
+                                    <Entry x:Name="PagesEntry" BindingContext="{Binding Book}" Text="{Binding Pages, Mode=TwoWay}" Style="{StaticResource pages}"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{x:Static local:Localization.ISBN}" FontAttributes="Bold"/>
+                                    <Entry x:Name="IsbnEntry" BindingContext="{Binding Book}" Text="{Binding ISBN, Mode=TwoWay}" Style="{StaticResource isbn}"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+            </StackLayout>
     </ContentPage.Content>
 </ContentPage>

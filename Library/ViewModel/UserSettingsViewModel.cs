@@ -24,68 +24,45 @@ namespace Library
         {
             get
             {
-                switch(UserSettings.Current.Language)
-                {
-                    case "ru": return "Русский";
-                    case "be": return "Беларуская";
-                    default: return "English";
-                }
+                _index = LangLocale.IndexOf(UserSettings.Current.Language);
+                if (_index == -1)
+                    return Languages[0];
+                else
+                    return Languages[_index];
             }
             set
             {
-                if (value != null)
-                {
-                    switch (value)
-                    {
-                        case "Русский": UserSettings.Current.Language = "ru"; break;
-                        case "Беларуская": UserSettings.Current.Language = "be"; break;
-                        default: UserSettings.Current.Language = "en"; break;
-                    }
-                }
+                _index = Languages.IndexOf(value);
+                if (_index != -1)
+                    UserSettings.Current.Language = LangLocale[_index];
+                OnPropertyChanged();
             }
         }
         public string Theme
         {
             get
             {
-                switch(UserSettings.Current.Theme)
-                {
-                    case "ffffff": return Colors[0];
-                    case "ff8fbc8f": return Colors[1];
-                    case "808000": return Colors[2];
-                    case "ff6a5acd": return Colors[3];
-                    case "ffee82ee": return Colors[4];
-                    case "ff40e0d0": return Colors[5];
-                    case "fffa8072": return Colors[6];
-                    case "ff00ffff": return Colors[7];
-                    case "ffdaa520": return Colors[8];
-                    case "ffda70d6": return Colors[9];
-                    case "ffa500": return Colors[10];
-                    case "fff0e68c": return Colors[11];
-                    default: return Colors[0];
-                }
+                _index = ColorsRGB.IndexOf(UserSettings.Current.Theme);
+                if (_index == -1)
+                    return Colors[0];
+                else return Colors[_index];
             }
             set
             {
-                if (value == Colors[0]) UserSettings.Current.Theme = "ffffff";
-                else if (value == Colors[1]) UserSettings.Current.Theme = "ff8fbc8f";
-                else if (value == Colors[2]) UserSettings.Current.Theme = "808000";
-                else if (value == Colors[3]) UserSettings.Current.Theme = "ff6a5acd";
-                else if (value == Colors[4]) UserSettings.Current.Theme = "ffee82ee";
-                else if (value == Colors[5])UserSettings.Current.Theme = "ff40e0d0";
-                else if (value == Colors[6]) UserSettings.Current.Theme = "fffa8072";
-                else if (value == Colors[7]) UserSettings.Current.Theme = "ff00ffff";
-                else if (value == Colors[8]) UserSettings.Current.Theme = "ffdaa520";
-                else if (value == Colors[9]) UserSettings.Current.Theme = "ffda70d6";
-                else if (value == Colors[10]) UserSettings.Current.Theme = "ffa500";
-                else if (value == Colors[11]) UserSettings.Current.Theme = "fff0e68c";
+                _index = Colors.IndexOf(value);
+                if (_index != -1)
+                    UserSettings.Current.Theme = ColorsRGB[_index];
                 OnPropertyChanged();
             }
         }
 
+        private int _index;
+
         public List<string> Colors;
+        public List<string> ColorsRGB;
 
         public List<string> Languages;
+        public List<string> LangLocale;
 
         public UserSettingsViewModel()
         {
@@ -105,11 +82,32 @@ namespace Library
                 Localization.Orange,
                 Localization.Khaki
             };
+            ColorsRGB = new List<string>
+            {
+                "ffffff",
+                "ff8fbc8f",
+                "808000",
+                "ff6a5acd",
+                "ffee82ee",
+                "ff40e0d0",
+                "fffa8072",
+                "ff00ffff",
+                "ffdaa520",
+                "ffda70d6",
+                "ffa500",
+                "fff0e68c"
+            };
             Languages = new List<string>
             {
                 "English",
                 "Русский",
                 "Беларуская"
+            };
+            LangLocale = new List<string>
+            {
+                "en",
+                "ru",
+                "be"
             };
         }
     }

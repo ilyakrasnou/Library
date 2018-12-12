@@ -53,7 +53,11 @@ namespace Library
             set
             {
                 if (!string.IsNullOrWhiteSpace(value))
-                    if (uint.TryParse(value, out var year)) _yearOfPublishing = year;
+                    if (uint.TryParse(value, out var year))
+                    {
+                        if (year <= DateTime.Today.Year)
+                            _yearOfPublishing = year;
+                    }
                     else return;
                 else _yearOfPublishing = null;
                 OnPropertyChanged();
@@ -67,7 +71,8 @@ namespace Library
             set
             {
                 if (!string.IsNullOrWhiteSpace(value))
-                    if (ulong.TryParse(value, out var isbn)) _ISBN = isbn;
+                    if (ulong.TryParse(value, out var isbn))
+                        if (isbn < 10000000000000)_ISBN = isbn;
                     else return;
                 else _ISBN = null;
                 OnPropertyChanged();

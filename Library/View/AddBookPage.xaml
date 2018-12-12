@@ -42,7 +42,7 @@
                         <ViewCell>
                             <StackLayout>
                                 <Label Text="{x:Static local:Localization.Review}" FontAttributes="Bold"/>
-                                <Editor Text="{Binding Book.Review, Mode=TwoWay}" MaxLength="256"/>
+                                <Editor Text="{Binding Book.Review, Mode=TwoWay}" HeightRequest="80"/>
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>

@@ -31,7 +31,7 @@
                         <ViewCell>
                             <StackLayout>
                                 <Label Text="{x:Static local:Localization.Biography}" FontAttributes="Bold"/>
-                                <Editor Text="{Binding Author.Biography, Mode=TwoWay}" MaxLength="256"/>
+                                <Editor Text="{Binding Author.Biography, Mode=TwoWay}" HeightRequest="80" />
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>

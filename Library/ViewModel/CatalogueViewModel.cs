@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Acr.UserDialogs;
 using Library.MyResources;
+using System.Threading.Tasks;
 
 namespace Library
 {
@@ -117,14 +118,29 @@ namespace Library
                            where book.Title.ToLower().Contains(_searchText)
                            select book).Take(_countQuery);
                 }
-                if (SortListBy % 10 == (int)SortListParam.Book)
+                if (SortListBy % 10 == (int)SortListParam.Author)
                 {
-                    switch (SortListBy / 10)
+                    int order = SortListBy / 100;
+                    switch (order)
                     {
-                        case (int)SortBookParam.Title: return Catalogue.BooksList.OrderBy(x => x.Title);
-                        case (int)SortBookParam.Pages: return Catalogue.BooksList.OrderBy(x => UInt32.TryParse(x.Pages, out var rez) ? rez : 0);
-                        case (int)SortBookParam.Year: return Catalogue.BooksList.OrderBy(x => UInt32.TryParse(x.YearOfPublishing, out uint rez) ? rez : 0);
-                        case (int)SortBookParam.ISBN: return Catalogue.BooksList.OrderBy(x => UInt64.TryParse(x.ISBN, out var rez) ? rez : 0);
+                        case (int)SortOrderParam.Ascending:
+                            switch (SortListBy / 10 - order * 10)
+                            {
+                                case (int)SortBookParam.Title: return Catalogue.BooksList.OrderBy(x => x.Title);
+                                case (int)SortBookParam.Pages: return Catalogue.BooksList.OrderBy(x => UInt32.TryParse(x.Pages, out var rez) ? rez : 0);
+                                case (int)SortBookParam.Year: return Catalogue.BooksList.OrderBy(x => UInt32.TryParse(x.YearOfPublishing, out uint rez) ? rez : 0);
+                                case (int)SortBookParam.ISBN: return Catalogue.BooksList.OrderBy(x => UInt64.TryParse(x.ISBN, out var rez) ? rez : 0);
+                            };
+                            break;
+                        case (int)SortOrderParam.Descending:
+                            switch (SortListBy / 10 - order * 10)
+                            {
+                                case (int)SortBookParam.Title: return Catalogue.BooksList.OrderByDescending (x => x.Title);
+                                case (int)SortBookParam.Pages: return Catalogue.BooksList.OrderByDescending (x => UInt32.TryParse(x.Pages, out var rez) ? rez : 0);
+                                case (int)SortBookParam.Year: return Catalogue.BooksList.OrderByDescending (x => UInt32.TryParse(x.YearOfPublishing, out uint rez) ? rez : 0);
+                                case (int)SortBookParam.ISBN: return Catalogue.BooksList.OrderByDescending (x => UInt64.TryParse(x.ISBN, out var rez) ? rez : 0);
+                            };
+                            break;
                     }
                 }
                 return Catalogue.BooksList;
@@ -145,10 +161,23 @@ namespace Library
                 }
                 if (SortListBy % 10 == (int)SortListParam.Author)
                 {
-                    switch (SortListBy / 10)
+                    int order = SortListBy / 100;
+                    switch (order)
                     {
-                        case (int)SortAuthorParam.Name: return Catalogue.AuthorsList.OrderBy(x => x.FullName);
-                        case (int)SortAuthorParam.Birthday: return Catalogue.AuthorsList.OrderBy(x => UInt32.TryParse(x.Birthday, out var rez) ? rez : 0);
+                        case (int)SortOrderParam.Ascending:
+                            switch (SortListBy / 10 - order * 10)
+                            {
+                                case (int)SortAuthorParam.Name: return Catalogue.AuthorsList.OrderBy(x => x.FullName);
+                                case (int)SortAuthorParam.Birthday: return Catalogue.AuthorsList.OrderBy(x => UInt32.TryParse(x.Birthday, out var rez) ? rez : 0);
+                            };
+                            break;
+                        case (int)SortOrderParam.Descending:
+                            switch (SortListBy / 10 - order * 10)
+                            {
+                                case (int)SortAuthorParam.Name: return Catalogue.AuthorsList.OrderByDescending(x => x.FullName);
+                                case (int)SortAuthorParam.Birthday: return Catalogue.AuthorsList.OrderByDescending(x => UInt32.TryParse(x.Birthday, out var rez) ? rez : 0);
+                            };
+                            break;
                     }
                 }
                 return Catalogue.AuthorsList;
@@ -169,10 +198,23 @@ namespace Library
                 }
                 if (SortListBy % 10 == (int)SortListParam.Publisher)
                 {
-                    switch (SortListBy / 10)
+                    int order = SortListBy / 100;
+                    switch (order)
                     {
-                        case (int)SortPublisherParam.Name: return Catalogue.PublishersList.OrderBy(x => x.Name);
-                        case (int)SortPublisherParam.City: return Catalogue.PublishersList.OrderBy(x => UInt32.TryParse(x.City, out var rez) ? rez : 0);
+                        case (int)SortOrderParam.Ascending:
+                            switch (SortListBy/10 - order * 10)
+                            {
+                                case (int)SortPublisherParam.Name: return Catalogue.PublishersList.OrderBy(x => x.Name);
+                                case (int)SortPublisherParam.City: return Catalogue.PublishersList.OrderBy(x => UInt32.TryParse(x.City, out var rez) ? rez : 0);
+                            };
+                            break;
+                        case (int)SortOrderParam.Descending:
+                            switch (SortListBy / 10 - order * 10)
+                            {
+                                case (int)SortPublisherParam.Name: return Catalogue.PublishersList.OrderByDescending(x => x.Name);
+                                case (int)SortPublisherParam.City: return Catalogue.PublishersList.OrderByDescending(x => UInt32.TryParse(x.City, out var rez) ? rez : 0);
+                            };
+                            break;
                     }
                 }
                 return Catalogue.PublishersList;
@@ -193,7 +235,14 @@ namespace Library
             else if (action == Localization.YearOfPublishing) sort = (int)SortBookParam.Year;
             else if (action == Localization.ISBN) sort = (int)SortBookParam.ISBN;
             if (sort != 0)
-                SortListBy = sort * 10 + (int)SortListParam.Book;
+            {
+                var order = await SortOrder();
+                if (order != 0)
+                {
+                    SortListBy = sort * 10 + order * 100 + (int)SortListParam.Author;
+                    OnPropertyChanged("BooksList");
+                }
+            }
         }
 
         private async void OnSortAuthorsListClicked(object sender)
@@ -205,7 +254,23 @@ namespace Library
             else if (action == Localization.FullName) sort = (int)SortAuthorParam.Name;
             else if (action == Localization.Birthday) sort = (int)SortAuthorParam.Birthday;
             if (sort != 0)
-                SortListBy = sort * 10 + (int)SortListParam.Author;
+            {
+                var order = await SortOrder();
+                if (order != 0)
+                {
+                    SortListBy = sort * 10 + order * 100 + (int)SortListParam.Author;
+                    OnPropertyChanged("AuthorsList");
+                }
+            }
+        }
+
+        private async Task<int> SortOrder()
+        {
+            int order = 0;
+            var action = await App.Current.MainPage.DisplayActionSheet(Localization.SortBy, Localization.Cancel, null, Localization.Ascending, Localization.Descending);
+            if (action == Localization.Descending) order = (int)SortOrderParam.Descending;
+            else if (action == Localization.Ascending) order = (int)SortOrderParam.Ascending;
+            return order;
         }
 
         private async void OnSortPublishersListClicked(object sender)
@@ -217,7 +282,14 @@ namespace Library
             else if (action == Localization.Name) sort = (int)SortPublisherParam.Name;
             else if (action == Localization.City) sort = (int)SortPublisherParam.City;
             if (sort != 0)
-                SortListBy = sort * 10 + (int) SortListParam.Publisher;
+            {
+                var order = await SortOrder();
+                if (order != 0)
+                {
+                    SortListBy = sort * 10 + order * 100 + (int)SortListParam.Author;
+                    OnPropertyChanged("PublishersList");
+                }
+            }
         }
 
         protected async void OnAddBookClicked(object sender)
@@ -261,6 +333,12 @@ namespace Library
         Book = 1,
         Author,
         Publisher
+    }
+
+    public enum SortOrderParam
+    {
+        Descending = 1,
+        Ascending
     }
 
     public enum SortBookParam

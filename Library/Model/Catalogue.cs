@@ -166,6 +166,8 @@ namespace Library
                 OnPropertyChanged("AuthorsList");
             if (isPublisherAdded)
                 OnPropertyChanged("PublishersList");
+            int[, ] a = new int[9,9];
+
             return true;
         }
 
