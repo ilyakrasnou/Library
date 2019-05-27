@@ -236,7 +236,11 @@ namespace Library
             else if (action == Localization.ISBN) sort = (int)SortBookParam.ISBN;
             if (sort != 0)
             {
-                var order = await SortOrder();
+                int order = 0;
+                if (sort == (int)SortBookParam.None)
+                    order = 1;
+                else
+                    order = await SortOrder();
                 if (order != 0)
                 {
                     SortListBy = sort * 10 + order * 100 + (int)SortListParam.Author;
@@ -255,7 +259,11 @@ namespace Library
             else if (action == Localization.Birthday) sort = (int)SortAuthorParam.Birthday;
             if (sort != 0)
             {
-                var order = await SortOrder();
+                int order = 0;
+                if (sort == (int)SortAuthorParam.None)
+                    order = 1;
+                else
+                    order = await SortOrder();
                 if (order != 0)
                 {
                     SortListBy = sort * 10 + order * 100 + (int)SortListParam.Author;
@@ -283,7 +291,11 @@ namespace Library
             else if (action == Localization.City) sort = (int)SortPublisherParam.City;
             if (sort != 0)
             {
-                var order = await SortOrder();
+                int order = 0;
+                if (sort == (int)SortPublisherParam.None)
+                    order = 1;
+                else
+                    order = await SortOrder();
                 if (order != 0)
                 {
                     SortListBy = sort * 10 + order * 100 + (int)SortListParam.Author;

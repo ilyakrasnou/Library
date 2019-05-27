@@ -72,7 +72,9 @@ namespace Library
             {
                 if (!string.IsNullOrWhiteSpace(value))
                     if (ulong.TryParse(value, out var isbn))
-                        if (isbn < 10000000000000)_ISBN = isbn;
+                    {
+                        if (isbn < 10000000000000) _ISBN = isbn;
+                    }
                     else return;
                 else _ISBN = null;
                 OnPropertyChanged();

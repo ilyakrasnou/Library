@@ -13,7 +13,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon-edit.png" Text="{x:Static local:Localization.Edit}" Command="{Binding EditAuthorCommand}" Order="Primary"/>
         <ToolbarItem Icon="icon-delete.png" Text="{x:Static local:Localization.Remove}" Order="Primary" Command="{Binding RemoveAuthorCommand}"/>
-        <ToolbarItem Icon="icon-home.png" Text="{x:Static local:Localization.Remove}" Clicked="Home_Clicked"  Order="Primary"/>
+        <ToolbarItem Icon="icon-home.png" Text="{x:Static local:Localization.Home}" Clicked="Home_Clicked"  Order="Primary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
@@ -30,7 +30,7 @@
                 <Image x:Name="image" Source="{Binding Author.Photo, Converter={StaticResource defaultImage}}" Grid.Column="0" Grid.Row="0"/>
                 <ScrollView Grid.Column="1">
                     <StackLayout>
-                        <Label Text="{x:Static local:Localization.YearOfPublishing}" FontAttributes="Bold"/>
+                        <Label Text="{x:Static local:Localization.Birthday}" FontAttributes="Bold"/>
                         <Label Text="{Binding Author.Birthday}"/>
                         <Label Text="{x:Static local:Localization.Biography}" FontAttributes="Bold"/>
                         <ScrollView>

@@ -45,8 +45,10 @@ namespace Library
             {
                 if (!string.IsNullOrWhiteSpace(value))
                     if (uint.TryParse(value, out var birthday))
+                    {
                         if (birthday <= DateTime.Today.Year)
-                        _birthday = birthday;
+                            _birthday = birthday;
+                    }
                     else return;
                 else _birthday = null;
                 OnPropertyChanged();

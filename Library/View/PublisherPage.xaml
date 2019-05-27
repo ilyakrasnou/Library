@@ -13,7 +13,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon-edit.png" Text="{x:Static local:Localization.Edit}" Command="{Binding EditPublisherCommand}" Order="Primary"/>
         <ToolbarItem Icon="icon-delete.png" Text="{x:Static local:Localization.Remove}" Command="{Binding RemovePublisherComand}" Order="Primary"/>
-        <ToolbarItem Icon="icon-home.png" Text="{x:Static local:Localization.Remove}" Clicked="Home_Clicked"  Order="Primary"/>
+        <ToolbarItem Icon="icon-home.png" Text="{x:Static local:Localization.Home}" Clicked="Home_Clicked"  Order="Primary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
